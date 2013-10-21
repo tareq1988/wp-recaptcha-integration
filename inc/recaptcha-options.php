@@ -52,7 +52,6 @@ class WordPress_reCaptcha_Options {
 			array('name'=>'recaptcha_disable_for_known_users','label'=>__( 'Disable reCaptcha verification for logged in users.','recaptcha' )) 
 		);
 
-		
 		if ( ! get_option( 'recaptcha_publickey' ) || ! get_option( 'recaptcha_privatekey' ) )
 			add_settings_error('recaptcha',1,__('Please configure the public and private key. <a href="http://www.google.com/recaptcha/whyrecaptcha">What are you trying to tell me?</a>','recaptcha'),'updated');
 	}
