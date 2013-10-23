@@ -88,7 +88,7 @@ class WordPress_reCaptcha_Options {
 		
 		?><select name="recaptcha_theme"><?php
 			foreach ( $themes as $value => $label ) {
-				?><option <?php selected( $value , $value , true) ?> value="<?php echo $value ?>"><?php echo $label ?></option><?php
+				?><option <?php selected( $value , $theme , true) ?> value="<?php echo $value ?>"><?php echo $label ?></option><?php
 			}
 		?></select><?php
 	}
