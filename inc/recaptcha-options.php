@@ -94,7 +94,7 @@ class WordPress_reCaptcha_Options {
 	}
 	public static function add_options_page() {
 		add_options_page( 
-			__('ReCaptcha','recaptcha'), __('Recaptcha Settings','recaptcha'), 
+			__('ReCaptcha','recaptcha'), __('ReCaptcha Settings','recaptcha'), 
 			'manage_options', 'recaptcha', 
 			array(__CLASS__,'render_options_page')
 		);

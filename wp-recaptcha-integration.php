@@ -7,6 +7,7 @@ Version: 0.0.3
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 Text Domain: recaptcha
+Domain Path: /lang/
 */
 
 
@@ -44,10 +45,11 @@ class WordPress_reCaptcha {
 		
 		if ( function_exists('ninja_forms_register_field') )
 			include_once dirname(__FILE__).'/inc/ninja_forms_field_recaptcha.php';
-
 	}
 	
 	function init() {
+		load_plugin_textdomain( 'recaptcha', false , dirname( plugin_basename( __FILE__ ) ).'/lang/' );
+		
 		$require_recaptcha = ! ( get_option('recaptcha_disable_for_known_users') && current_user_can( 'read' ) );
 		
 		if ( get_option('recaptcha_enable_comments') && $require_recaptcha ) {
