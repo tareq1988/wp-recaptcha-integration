@@ -32,8 +32,20 @@ function ninja_forms_register_field_recaptcha(){
 
 	ninja_forms_register_field('_recaptcha', $args);
 }
-if ( function_exists('ninja_forms_register_field') )
+if ( function_exists('ninja_forms_register_field') ) {
 	add_action('init', 'ninja_forms_register_field_recaptcha');
+	add_action('wp_footer','ninja_forms_recaptcha_script');
+}
+
+function ninja_forms_recaptcha_script($id) {
+	// print script
+	$html = '<script type="text/javascript"> 
+		jQuery(document).on("submitResponse.default", function(e, response){
+			Recaptcha.reload();
+		});
+	</script>';
+	echo $html;
+}
 
 function ninja_forms_field_recaptcha_edit($field_id, $data){
 
