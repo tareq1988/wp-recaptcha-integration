@@ -83,6 +83,7 @@ class WordPress_reCaptcha_Options {
 			'white' => __('White','recaptcha'),
 			'blackglass' => __('Black Glass','recaptcha'),
 			'clean' => __('Clean','recaptcha'),
+			'custom' => __('Custom','recaptcha'),
 		);
 		$theme = get_option('recaptcha_theme');
 		
