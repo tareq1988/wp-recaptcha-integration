@@ -120,5 +120,5 @@ class WordPress_reCaptcha_Options {
 }
 
 
-$recaptcha = new WordPress_reCaptcha_Options();
+$recaptcha_options = new WordPress_reCaptcha_Options();
 

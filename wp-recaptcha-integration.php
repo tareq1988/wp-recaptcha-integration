@@ -50,7 +50,7 @@ class WordPress_reCaptcha {
 	function init() {
 		load_plugin_textdomain( 'recaptcha', false , dirname( plugin_basename( __FILE__ ) ).'/lang/' );
 		
-		$require_recaptcha = ! ( get_option('recaptcha_disable_for_known_users') && current_user_can( 'read' ) );
+		$require_recaptcha = $this->is_required();
 		
 		if ( get_option('recaptcha_enable_comments') && $require_recaptcha ) {
 			add_action('comment_form',array($this,'print_recaptcha_html'));
@@ -65,10 +65,13 @@ class WordPress_reCaptcha {
 			add_action('login_form',array($this,'print_recaptcha_html'));
 			add_filter('wp_authenticate_user',array(&$this,'deny_login'),99 );
 		}
-		
-		
-		
 	}
+	
+	function is_required() {
+		$is_required = ! ( get_option('recaptcha_disable_for_known_users') && current_user_can( 'read' ) );
+		return apply_filters( 'recaptcha_required' , $is_required );
+	}
+	
 	function deny_login( $user ){
 		if ( isset( $_POST["log"] ) && ! $this->recaptcha_check() ) {
 			return new WP_Error( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'recaptcha') );

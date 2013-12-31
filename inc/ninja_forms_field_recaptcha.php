@@ -11,7 +11,7 @@ function ninja_forms_register_field_recaptcha(){
 		'edit_label' => true,
 		'edit_label_pos' => true,
 		'edit_req' => false,
-		'edit_custom_class' => true,
+		'edit_custom_class' => false,
 		'edit_help' => true,
 		'edit_meta' => false,
 		'sidebar' => 'template_fields',
@@ -35,6 +35,15 @@ function ninja_forms_register_field_recaptcha(){
 if ( function_exists('ninja_forms_register_field') ) {
 	add_action('init', 'ninja_forms_register_field_recaptcha');
 	add_action('wp_footer','ninja_forms_recaptcha_script');
+	add_filter('ninja_forms_field','ninja_forms_recaptcha_field_data',10,2);
+}
+
+function ninja_forms_recaptcha_field_data( $data, $field_id ) {
+	global $recaptcha;
+	$field_row = ninja_forms_get_field_by_id($field_id);
+	if ( $field_row['type'] == '_recaptcha' ) 
+		$data['show_field'] = $recaptcha->is_required();
+	return $data;
 }
 
 function ninja_forms_recaptcha_script($id) {
@@ -47,58 +56,25 @@ function ninja_forms_recaptcha_script($id) {
 	echo $html;
 }
 
-function ninja_forms_field_recaptcha_edit($field_id, $data){
-
-}
-
 function ninja_forms_field_recaptcha_display($field_id, $data){
-	if(isset($data['default_value'])){
-		$default_value = $data['default_value'];
-	}else{
-		$default_value = '';
-	}
-
-	if(isset($data['show_field'])){
-		$show_field = $data['show_field'];
-	}else{
-		$show_field = true;
-	}
-
-	$field_class = ninja_forms_get_field_class($field_id);
-	if(isset($data['label_pos'])){
-		$label_pos = $data['label_pos'];
-	}else{
-		$label_pos = "left";
-	}
-
-	if(isset($data['label'])){
-		$label = $data['label'];
-	}else{
-		$label = '';
-	}
-
-	if($label_pos == 'inside'){
-		$default_value = $label;
-	}
-
 	global $recaptcha;
-	$recaptcha->print_recaptcha_html();
+	if ( $recaptcha->is_required() )
+		$recaptcha->print_recaptcha_html();
 }
 
 function ninja_forms_field_recaptcha_pre_process( $field_id, $user_value ){
-	global $ninja_forms_processing;
+	global $ninja_forms_processing , $recaptcha;
+	$recaptcha_error = __("<strong>Error:</strong> the Captcha didn’t verify.",'recaptcha');
 
 	$field_row = ninja_forms_get_field_by_id($field_id);
 	$field_data = $field_row['data'];
 	$form_row = ninja_forms_get_form_by_field_id($field_id);
 	$form_id = $form_row['id'];
 
-	$recaptcha_error = __("<strong>Error:</strong> the Captcha didn’t verify.",'recaptcha');
 
-	global $recaptcha;
-	$require_recaptcha = !( get_option('recaptcha_disable_for_known_users') && current_user_can( 'read' ) );
+	$require_recaptcha = $recaptcha->is_required();
 	
-	if ( $ninja_forms_processing->get_action() != 'save' && $ninja_forms_processing->get_action() != 'mp_save' && $require_recaptcha && !$recaptcha->recaptcha_check() ){
+	if ( $ninja_forms_processing->get_action() != 'save' && $ninja_forms_processing->get_action() != 'mp_save' && $require_recaptcha && ! $recaptcha->recaptcha_check() ){
 		$ninja_forms_processing->add_error('recaptcha-general', $recaptcha_error, 'general');
 		$ninja_forms_processing->add_error('recaptcha-'.$field_id, $recaptcha_error, $field_id);				
 	}
