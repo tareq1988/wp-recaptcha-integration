@@ -3,21 +3,13 @@
 Plugin Name: WordPress reCaptcha Integration
 Plugin URI: https://github.com/mcguffin/wp-recaptcha-integration
 Description: Integrate reCaptcha in Your blog. Provides of the box integration for Signup, login and comment forms as well as a plugin API for your own integrations.
-Version: 0.0.4
+Version: 0.0.5
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 Text Domain: recaptcha
 Domain Path: /lang/
 */
 
-
-
-/*
-settings:
-- pubkey
-- privkey
-- theme: red | white | blackglass | clean
-*/
 
 
 
@@ -38,6 +30,7 @@ class WordPress_reCaptcha {
 		add_action( 'wp_head' , array($this,'recaptcha_script') );
 
 		add_action('init' , array(&$this,'init') );
+		add_action('plugins_loaded' , array(&$this,'plugins_loaded') );
 
 		if ( get_option('recaptcha_enable_signup') || get_option('recaptcha_enable_login') )
 			add_action( 'login_head' , array(&$this,'recaptcha_script') );
@@ -45,8 +38,14 @@ class WordPress_reCaptcha {
 		
 		if ( function_exists('ninja_forms_register_field') )
 			include_once dirname(__FILE__).'/inc/ninja_forms_field_recaptcha.php';
+
+		if ( function_exists('wpcf7_add_tag_generator') )
+			include_once dirname(__FILE__).'/inc/contact_form_7_recaptcha.php';
 	}
-	
+	function plugins_loaded(){
+		if ( defined('WPCF7_VERSION') )
+			include_once dirname(__FILE__).'/inc/contact_form_7_recaptcha.php';
+	}
 	function init() {
 		load_plugin_textdomain( 'recaptcha', false , dirname( plugin_basename( __FILE__ ) ).'/lang/' );
 		
@@ -65,6 +64,7 @@ class WordPress_reCaptcha {
 			add_action('login_form',array($this,'print_recaptcha_html'));
 			add_filter('wp_authenticate_user',array(&$this,'deny_login'),99 );
 		}
+
 	}
 	
 	function is_required() {
