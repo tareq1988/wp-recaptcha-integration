@@ -2,8 +2,8 @@
 /*
 Plugin Name: WordPress reCaptcha Integration
 Plugin URI: https://github.com/mcguffin/wp-recaptcha-integration
-Description: Integrate reCaptcha in Your blog. Provides of the box integration for Signup, login and comment forms as well as a plugin API for your own integrations.
-Version: 0.0.5
+Description: Integrate reCaptcha in your blog. Provides of the box integration for signup, login and comment forms as well as a plugin API for your own integrations.
+Version: 0.0.6
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 Text Domain: recaptcha
@@ -34,7 +34,6 @@ class WordPress_reCaptcha {
 
 		if ( get_option('recaptcha_enable_signup') || get_option('recaptcha_enable_login') )
 			add_action( 'login_head' , array(&$this,'recaptcha_script') );
-		
 		
 		if ( function_exists('ninja_forms_register_field') )
 			include_once dirname(__FILE__).'/inc/ninja_forms_field_recaptcha.php';
