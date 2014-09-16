@@ -41,6 +41,10 @@ class WordPress_reCaptcha {
 
 		if ( function_exists('wpcf7_add_tag_generator') )
 			include_once dirname(__FILE__).'/inc/contact_form_7_recaptcha.php';
+
+		register_activation_hook( __FILE__ , array( __CLASS__ , 'activate' ) );
+		register_deactivation_hook( __FILE__ , array( __CLASS__ , 'deactivate' ) );
+		register_uninstall_hook( __FILE__ , array( __CLASS__ , 'uninstall' ) );
 	}
 	function plugins_loaded(){
 		if ( defined('WPCF7_VERSION') )
@@ -163,6 +167,32 @@ class WordPress_reCaptcha {
 			$this->last_error = $response->error;
 		return $response->is_valid;
 	}
+	
+	/**
+	 *	Fired on plugin activation
+	 */
+	public static function activate() {
+	}
+
+	/**
+	 *	Fired on plugin deactivation
+	 */
+	public static function deactivate() {
+	}
+	/**
+	 *
+	 */
+	public static function uninstall(){
+		delete_option( 'recaptcha_publickey' );
+		delete_option( 'recaptcha_privatekey' );
+		delete_option( 'recaptcha_theme' );
+		delete_option( 'recaptcha_enable_comments' );
+		delete_option( 'recaptcha_enable_signup' );
+		delete_option( 'recaptcha_enable_login' );
+		delete_option( 'recaptcha_enable_ninja_forms' );
+		delete_option( 'recaptcha_disable_for_known_users' );
+	}
+
 }
 
 require_once dirname(__FILE__).'/recaptchalib.php';
