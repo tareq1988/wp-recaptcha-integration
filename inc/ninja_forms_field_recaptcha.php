@@ -58,6 +58,8 @@ function ninja_forms_recaptcha_script($id) {
 function ninja_forms_field_recaptcha_display($field_id, $data){
 	if ( WordPress_reCaptcha::instance()->is_required() )
 		WordPress_reCaptcha::instance()->print_recaptcha_html();
+	else 
+		echo apply_filters( 'recaptcha_disabled_html' ,'');
 }
 
 function ninja_forms_field_recaptcha_pre_process( $field_id, $user_value ){

@@ -10,7 +10,7 @@ add_action( 'wpcf7_init', 'wpcf7_add_shortcode_recaptcha' );
 
 function wpcf7_recaptcha_shortcode_handler( $tag ) {
 	if ( ! WordPress_reCaptcha::instance()->is_required() )
-		return '';
+		return apply_filters( 'recaptcha_disabled_html' ,'');
 	$tag = new WPCF7_Shortcode( $tag );
 	if ( empty( $tag->name ) )
 		return '';
