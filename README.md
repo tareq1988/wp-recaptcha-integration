@@ -20,7 +20,8 @@ Limitations
 
 Plugin API
 ----------
-Filter `recaptcha_required`
+
+#### Filter `recaptcha_required`
 
 Returns whether to show a recaptcha or not.
 
@@ -39,7 +40,7 @@ add_filter('recaptcha_required','my_recaptcha_required');
 ```
 
 
-Filter `recaptcha_disabled_html`
+#### Filter `recaptcha_disabled_html`
 
 HTML to be showed when entering a recaptcha is not required.
 
