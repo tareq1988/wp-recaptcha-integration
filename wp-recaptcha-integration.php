@@ -3,7 +3,7 @@
 Plugin Name: WordPress reCaptcha Integration
 Plugin URI: https://github.com/mcguffin/wp-recaptcha-integration
 Description: Integrate reCaptcha in your blog. Provides of the box integration for signup, login and comment forms as well as a plugin API for your own integrations.
-Version: 0.0.6
+Version: 0.0.7
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 Text Domain: recaptcha
