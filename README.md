@@ -51,3 +51,11 @@ function my_recaptcha_disabled_html( $html ) {
 }
 add_filter('recaptcha_disabled_html','my_recaptcha_disabled_html');
 ```
+
+Support
+-------
+You like what you see? Maybe you already make some money with it? 
+Here are two ways to keep me rocking:
+
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=joern.lund&url=https://github.com/mcguffin/wp-recaptcha-integration&title=WP%20Recaptcha%20Integration&language=php&tags=github&category=software)
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=F8NKC6TCASUXE"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" /></a>
