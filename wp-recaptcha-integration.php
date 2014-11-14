@@ -14,7 +14,7 @@ Domain Path: /lang/
 
 
 class WordPress_reCaptcha {
-	private $last_error='';
+	private $last_error = '';
 
 	function __construct( ) {
 		add_option('recaptcha_publickey','');
@@ -35,18 +35,18 @@ class WordPress_reCaptcha {
 		if ( get_option('recaptcha_enable_signup') || get_option('recaptcha_enable_login') )
 			add_action( 'login_head' , array(&$this,'recaptcha_script') );
 		
-		if ( function_exists('ninja_forms_register_field') )
-			include_once dirname(__FILE__).'/inc/ninja_forms_field_recaptcha.php';
-
-		if ( function_exists('wpcf7_add_tag_generator') )
-			include_once dirname(__FILE__).'/inc/contact_form_7_recaptcha.php';
 
 		register_activation_hook( __FILE__ , array( __CLASS__ , 'activate' ) );
 		register_deactivation_hook( __FILE__ , array( __CLASS__ , 'deactivate' ) );
 		register_uninstall_hook( __FILE__ , array( __CLASS__ , 'uninstall' ) );
 	}
 	function plugins_loaded(){
-		if ( defined('WPCF7_VERSION') )
+		// check if ninja forms is present
+		if ( class_exists('Ninja_Forms') || function_exists('ninja_forms_register_field') )
+			include_once dirname(__FILE__).'/inc/ninja_forms_field_recaptcha.php';
+
+		// check if contact form 7 forms is present
+		if ( function_exists('wpcf7') )
 			include_once dirname(__FILE__).'/inc/contact_form_7_recaptcha.php';
 	}
 	function init() {
