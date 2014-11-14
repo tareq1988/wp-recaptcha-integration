@@ -31,7 +31,6 @@ function wpcf7_recaptcha_enqueue_script() {
 add_action('wp_enqueue_scripts','wpcf7_recaptcha_enqueue_script');
 
 function wpcf7_add_tag_generator_recaptcha() {
-	var_dump( function_exists( 'wpcf7_add_tag_generator' ) );
 	if ( ! function_exists( 'wpcf7_add_tag_generator' ) )
 		return;
 	wpcf7_add_tag_generator( 'recaptcha', __( 'reCAPTCHA', 'recaptcha' ),
