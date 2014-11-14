@@ -15,8 +15,14 @@ Domain Path: /lang/
 
 class WordPress_reCaptcha {
 	private $last_error = '';
-
-	function __construct( ) {
+	private static $_instance;
+	
+	static function instance() {
+		if ( is_null( self::$_instance) )
+			self::$_instance = new self;
+		return self::$_instance;
+	}
+	private function __construct( ) {
 		add_option('recaptcha_publickey','');
 		add_option('recaptcha_privatekey','');
 		add_option('recaptcha_theme','white');
@@ -198,4 +204,4 @@ require_once dirname(__FILE__).'/recaptchalib.php';
 require_once dirname(__FILE__).'/inc/recaptcha-options.php';
 
 
-$recaptcha = new WordPress_reCaptcha();
+WordPress_reCaptcha::instance();
