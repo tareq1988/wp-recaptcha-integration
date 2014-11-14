@@ -31,6 +31,7 @@ function wpcf7_recaptcha_enqueue_script() {
 add_action('wp_enqueue_scripts','wpcf7_recaptcha_enqueue_script');
 
 function wpcf7_add_tag_generator_recaptcha() {
+	var_dump( function_exists( 'wpcf7_add_tag_generator' ) );
 	if ( ! function_exists( 'wpcf7_add_tag_generator' ) )
 		return;
 	wpcf7_add_tag_generator( 'recaptcha', __( 'reCAPTCHA', 'recaptcha' ),
@@ -39,17 +40,20 @@ function wpcf7_add_tag_generator_recaptcha() {
 add_action( 'admin_init', 'wpcf7_add_tag_generator_recaptcha', 45 );
 
 
-function wpcf7_recaptcha_settings_callback( &$contact_form ) {
+function wpcf7_recaptcha_settings_callback( $contact_form ) {
 	$type = 'recaptcha';
 	
 	?>
 	<div id="wpcf7-tg-pane-<?php echo $type; ?>" class="hidden">
 		<form action="">
 			<table>
-				<tr><td><input type="checkbox" checked="checked" name="required" onclick="return false" />&nbsp;<?php echo esc_html( __( 'Required field?', 'contact-form-7' ) ); ?></td></tr>
+				<tr><td><input type="checkbox" checked="checked" disabled="disabled" name="required" onclick="return false" />&nbsp;<?php echo esc_html( __( 'Required field?', 'contact-form-7' ) ); ?></td></tr>
 				<tr><td><?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?><br /><input type="text" name="name" class="tg-name oneline" /></td><td></td></tr>
 			</table>
-			<div class="tg-tag"><?php echo esc_html( __( "Copy this code and paste it into the form left.", 'contact-form-7' ) ); ?><br /><input type="text" name="<?php echo $type; ?>" class="tag wp-ui-text-highlight code" readonly="readonly" onfocus="this.select()" /></div>
+			<div class="tg-tag">
+			<?php echo esc_html( __( "Copy this code and paste it into the form left.", 'contact-form-7' ) ); ?><br />
+			<input type="text" name="<?php echo $type; ?>" class="tag wp-ui-text-highlight code" readonly="readonly" onfocus="this.select()" />
+			</div>
 		</form>
 	</div>
 	<?php
