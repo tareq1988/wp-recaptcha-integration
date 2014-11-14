@@ -1,12 +1,12 @@
 <?php
 
-add_action( 'wpcf7_init', 'wpcf7_add_shortcode_recaptcha' );
-
 function wpcf7_add_shortcode_recaptcha() {
 	wpcf7_add_shortcode(
 		array( 'recaptcha','recaptcha*'),
 		'wpcf7_recaptcha_shortcode_handler', true );
 }
+add_action( 'wpcf7_init', 'wpcf7_add_shortcode_recaptcha' );
+
 
 function wpcf7_recaptcha_shortcode_handler( $tag ) {
 	global $recaptcha;
@@ -26,8 +26,10 @@ function wpcf7_recaptcha_shortcode_handler( $tag ) {
 	return $html;
 }
 
-
-add_action( 'admin_init', 'wpcf7_add_tag_generator_recaptcha', 45 );
+function wpcf7_recaptcha_enqueue_script() {
+	wp_enqueue_script('wpcf7-recaptcha-integration',plugins_url('/js/wpcf7.js',dirname(__FILE__)),array('contact-form-7'));
+}
+add_action('wp_enqueue_scripts','wpcf7_recaptcha_enqueue_script');
 
 function wpcf7_add_tag_generator_recaptcha() {
 	if ( ! function_exists( 'wpcf7_add_tag_generator' ) )
@@ -35,6 +37,7 @@ function wpcf7_add_tag_generator_recaptcha() {
 	wpcf7_add_tag_generator( 'recaptcha', __( 'reCAPTCHA', 'recaptcha' ),
 		'wpcf7-tg-pane-recaptcha', 'wpcf7_recaptcha_settings_callback' );
 }
+add_action( 'admin_init', 'wpcf7_add_tag_generator_recaptcha', 45 );
 
 
 function wpcf7_recaptcha_settings_callback( &$contact_form ) {
@@ -55,8 +58,6 @@ function wpcf7_recaptcha_settings_callback( &$contact_form ) {
 
 
 
-add_filter( 'wpcf7_validate_recaptcha', 'wpcf7_recaptcha_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_recaptcha*', 'wpcf7_recaptcha_validation_filter', 10, 2 );
 
 function wpcf7_recaptcha_validation_filter( $result, $tag ) {
 	global $recaptcha;
@@ -70,3 +71,5 @@ function wpcf7_recaptcha_validation_filter( $result, $tag ) {
 	}
 	return $result;
 }
+add_filter( 'wpcf7_validate_recaptcha', 'wpcf7_recaptcha_validation_filter', 10, 2 );
+add_filter( 'wpcf7_validate_recaptcha*', 'wpcf7_recaptcha_validation_filter', 10, 2 );
