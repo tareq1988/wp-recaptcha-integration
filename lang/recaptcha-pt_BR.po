@@ -1,0 +1,198 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WordPress reCaptcha Integration\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2014-11-16 19:55-0300\n"
+"Last-Translator: Vinicius R T Ferraz <contato@viniciusferraz.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: ../\n"
+"X-Textdomain-Support: yes\n"
+"Language: pt_BR\n"
+"X-Poedit-SearchPath-0: .\n"
+
+# @ ninja-forms
+#: inc/ninja_forms_field_recaptcha.php:7
+msgid "reCAPTCHA"
+msgstr ""
+
+# @ recaptcha
+#: inc/ninja_forms_field_recaptcha.php:84 wp-recaptcha-integration.php:75
+#: wp-recaptcha-integration.php:82
+msgid "<strong>Error:</strong> the Captcha didn’t verify."
+msgstr "<strong>Erro:</strong> o Captcha digitado está incorreto."
+
+# @ recaptcha
+#: inc/recaptcha-options.php:27 inc/recaptcha-options.php:97
+msgid "ReCaptcha Settings"
+msgstr "Configurações do ReCaptcha"
+
+# @ recaptcha
+#: inc/recaptcha-options.php:28
+msgid "ReCaptcha Modules"
+msgstr "Módulo ReCaptcha"
+
+# @ recaptcha
+#: inc/recaptcha-options.php:30
+msgid "Public Key"
+msgstr "Chave pública (Public Key)"
+
+# @ recaptcha
+#: inc/recaptcha-options.php:31
+msgid "Private Key"
+msgstr "Chave privada (Private Key)"
+
+# @ recaptcha
+#: inc/recaptcha-options.php:32
+msgid "Theme"
+msgstr "Tema"
+
+# @ recaptcha
+#: inc/recaptcha-options.php:35
+msgid "Protect Comments"
+msgstr "Proteger Comentários"
+
+# @ recaptcha
+#: inc/recaptcha-options.php:37
+msgid "Protect comment forms with recaptcha."
+msgstr "Protege o formulário dos comentários com o reCAPTCHA."
+
+# @ recaptcha
+#: inc/recaptcha-options.php:40
+msgid "Protect Signup"
+msgstr "Proteger Cadastro"
+
+# @ recaptcha
+#: inc/recaptcha-options.php:42
+msgid "Protect signup form with recaptcha."
+msgstr "Protege o formulário de cadastro de usuários com o reCAPTCHA."
+
+# @ recaptcha
+#: inc/recaptcha-options.php:45
+msgid "Protect Login"
+msgstr "Proteger Login"
+
+# @ recaptcha
+#: inc/recaptcha-options.php:47
+msgid "Protect Login form with recaptcha."
+msgstr "Protege o formulário de login com o reCAPTCHA."
+
+# @ recaptcha
+#: inc/recaptcha-options.php:50
+msgid "Disable for known users"
+msgstr "Desabilitar para usuários logados."
+
+# @ recaptcha
+#: inc/recaptcha-options.php:52
+msgid "Disable reCaptcha verification for logged in users."
+msgstr "Se o usuário estiver logado, não exigir o reCAPTCHA nos formulários."
+
+# @ recaptcha
+#: inc/recaptcha-options.php:56
+msgid ""
+"Please configure the public and private key. <a href=\"http://www.google.com/"
+"recaptcha/whyrecaptcha\">What are you trying to tell me?</a>"
+msgstr ""
+"Por favor, configure as chaves pública (Public Key) e privada (Private Key). "
+"<a href=\"http://www.google.com/recaptcha/whyrecaptcha\">O que isso "
+"significa?</a>"
+
+# @ recaptcha
+#: inc/recaptcha-options.php:61
+msgid ""
+"Please enter the public and private key that you got from <a href=\"http://"
+"www.google.com/recaptcha\">Google raCAPTCHA</a>."
+msgstr ""
+"Por favor, entre com as chaves pública (Public Key) e privada (Private Key) "
+"fornecidos pelo <a href=\"http://www.google.com/recaptcha\">Google "
+"raCAPTCHA</a>."
+
+# @ recaptcha
+#: inc/recaptcha-options.php:82
+msgid "Red"
+msgstr "Vermelho"
+
+# @ recaptcha
+#: inc/recaptcha-options.php:83
+msgid "White"
+msgstr "Branco"
+
+# @ recaptcha
+#: inc/recaptcha-options.php:84
+msgid "Black Glass"
+msgstr "Escuro"
+
+# @ recaptcha
+#: inc/recaptcha-options.php:85
+msgid "Clean"
+msgstr "Clean"
+
+# @ recaptcha
+#: inc/recaptcha-options.php:97 inc/recaptcha-options.php:107
+msgid "ReCaptcha"
+msgstr "ReCaptcha"
+
+# @ default
+#: inc/recaptcha-options.php:105
+msgid "Settings"
+msgstr "Configurações"
+
+# @ default
+#: inc/recaptcha-options.php:113
+msgid "Save Changes"
+msgstr "Salvar Configurações"
+
+# @ recaptcha
+#. translators: plugin header field 'Name'
+#: wp-recaptcha-integration.php:0
+msgid "WordPress reCaptcha Integration"
+msgstr ""
+
+# @ recaptcha
+#. translators: plugin header field 'PluginURI'
+#: wp-recaptcha-integration.php:0
+msgid "https://github.com/mcguffin/wp-recaptcha-integration"
+msgstr ""
+
+# @ recaptcha
+#. translators: plugin header field 'Description'
+#: wp-recaptcha-integration.php:0
+msgid ""
+"Integrate reCaptcha in Your blog. Provides of the box integration for "
+"Signup, login and comment forms as well as a plugin API for your own "
+"integrations."
+msgstr ""
+"Integre o reCaptcha com o seu blog. Inclui integração com cadastro, login e "
+"comentários, bem como uma API para você desenvolver suas próprias "
+"integrações."
+
+# @ recaptcha
+#. translators: plugin header field 'Author'
+#: wp-recaptcha-integration.php:0
+msgid "Jörn Lund"
+msgstr ""
+
+# @ recaptcha
+#. translators: plugin header field 'AuthorURI'
+#: wp-recaptcha-integration.php:0
+msgid "https://github.com/mcguffin/"
+msgstr ""
+
+# @ recaptcha
+#. translators: plugin header field 'Version'
+#: wp-recaptcha-integration.php:0
+msgid "0.0.3"
+msgstr ""
+
+# @ recaptcha
+#: wp-recaptcha-integration.php:96
+msgid "Sorry, the Captcha didn’t verify."
+msgstr "Desculpe, o CAPTCHA digitado está incorreto."
