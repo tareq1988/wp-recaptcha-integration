@@ -14,15 +14,35 @@ Domain Path: /lang/
 
 
 class WordPress_reCaptcha {
+
+	private $_has_api_key = false;
+
 	private $last_error = '';
-	private static $_instance;
 	
-	static function instance() {
-		if ( is_null( self::$_instance) )
-			self::$_instance = new self;
+	/**
+	 *	Holding the singleton instance
+	 */
+	private static $_instance = null;
+
+	/**
+	 *	@return WordPress_reCaptcha_Options The options manager instance
+	 */
+	public static function instance(){
+		if ( is_null( self::$_instance ) )
+			self::$_instance = new self();
 		return self::$_instance;
 	}
-	private function __construct( ) {
+
+	/**
+	 *	Prevent from creating more than one instance
+	 */
+	private function __clone() {
+	}
+
+	/**
+	 *	Prevent from creating more than one instance
+	 */
+	private function __construct() {
 		add_option('recaptcha_publickey','');
 		add_option('recaptcha_privatekey','');
 		add_option('recaptcha_theme','white');
@@ -33,27 +53,37 @@ class WordPress_reCaptcha {
 		add_option('recaptcha_enable_ninja_forms' , false);
 		add_option('recaptcha_disable_for_known_users' , true);
 		
-		add_action( 'wp_head' , array($this,'recaptcha_script') );
+		$this->_has_api_key = get_option( 'recaptcha_publickey' ) && get_option( 'recaptcha_privatekey' );
 
-		add_action('init' , array(&$this,'init') );
-		add_action('plugins_loaded' , array(&$this,'plugins_loaded') );
+		if ( $this->_has_api_key ) {
+			add_action( 'wp_head' , array($this,'recaptcha_script') );
 
-		if ( get_option('recaptcha_enable_signup') || get_option('recaptcha_enable_login') )
-			add_action( 'login_head' , array(&$this,'recaptcha_script') );
-		
+			add_action('init' , array(&$this,'init') );
+			add_action('plugins_loaded' , array(&$this,'plugins_loaded') );
+
+			if ( get_option('recaptcha_enable_signup') || get_option('recaptcha_enable_login') )
+				add_action( 'login_head' , array(&$this,'recaptcha_script') );
+		}
 
 		register_activation_hook( __FILE__ , array( __CLASS__ , 'activate' ) );
 		register_deactivation_hook( __FILE__ , array( __CLASS__ , 'deactivate' ) );
 		register_uninstall_hook( __FILE__ , array( __CLASS__ , 'uninstall' ) );
-	}
-	function plugins_loaded(){
-		// check if ninja forms is present
-		if ( class_exists('Ninja_Forms') || function_exists('ninja_forms_register_field') )
-			include_once dirname(__FILE__).'/inc/ninja_forms_field_recaptcha.php';
 
-		// check if contact form 7 forms is present
-		if ( function_exists('wpcf7') )
-			include_once dirname(__FILE__).'/inc/contact_form_7_recaptcha.php';
+	}
+	function has_api_key() {
+		return $this->_has_api_key;
+	}
+	
+	function plugins_loaded() {
+		if ( $this->_has_api_key ) {
+		}
+			// check if ninja forms is present
+			if ( class_exists('Ninja_Forms') || function_exists('ninja_forms_register_field') )
+				include_once dirname(__FILE__).'/inc/ninja_forms_field_recaptcha.php';
+
+			// check if contact form 7 forms is present
+			if ( function_exists('wpcf7') )
+				include_once dirname(__FILE__).'/inc/contact_form_7_recaptcha.php';
 	}
 	function init() {
 		load_plugin_textdomain( 'recaptcha', false , dirname( plugin_basename( __FILE__ ) ).'/lang/' );
@@ -199,9 +229,9 @@ class WordPress_reCaptcha {
 	}
 
 }
-
 require_once dirname(__FILE__).'/recaptchalib.php';
-require_once dirname(__FILE__).'/inc/recaptcha-options.php';
-
 
 WordPress_reCaptcha::instance();
+
+
+require_once dirname(__FILE__).'/inc/recaptcha-options.php';
