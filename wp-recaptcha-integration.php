@@ -45,12 +45,11 @@ class WordPress_reCaptcha {
 	private function __construct() {
 		add_option('recaptcha_publickey','');
 		add_option('recaptcha_privatekey','');
-		add_option('recaptcha_theme','white');
-		
+
+		add_option('recaptcha_theme','light');
 		add_option('recaptcha_enable_comments' , true);
 		add_option('recaptcha_enable_signup' , true);
 		add_option('recaptcha_enable_login' , false);
-		add_option('recaptcha_enable_ninja_forms' , false);
 		add_option('recaptcha_disable_for_known_users' , true);
 		
 		$this->_has_api_key = get_option( 'recaptcha_publickey' ) && get_option( 'recaptcha_privatekey' );
@@ -76,14 +75,14 @@ class WordPress_reCaptcha {
 	
 	function plugins_loaded() {
 		if ( $this->_has_api_key ) {
-		}
 			// check if ninja forms is present
 			if ( class_exists('Ninja_Forms') || function_exists('ninja_forms_register_field') )
-				include_once dirname(__FILE__).'/inc/ninja_forms_field_recaptcha.php';
+				include_once dirname(__FILE__).'/inc/ninja_forms_field_grecaptcha.php';
 
 			// check if contact form 7 forms is present
 			if ( function_exists('wpcf7') )
-				include_once dirname(__FILE__).'/inc/contact_form_7_recaptcha.php';
+				include_once dirname(__FILE__).'/inc/contact_form_7_grecaptcha.php';
+		}
 	}
 	function init() {
 		load_plugin_textdomain( 'recaptcha', false , dirname( plugin_basename( __FILE__ ) ).'/lang/' );
@@ -127,6 +126,7 @@ class WordPress_reCaptcha {
 		
 	function recaptcha_script() {
 		$recaptcha_theme = get_option('recaptcha_theme');
+		?><script src="https://www.google.com/recaptcha/api.js" async defer></script><?php
 		if ( $recaptcha_theme == 'custom' ) {
 			?><script type="text/javascript">
 			var RecaptchaOptions = {
@@ -153,44 +153,40 @@ class WordPress_reCaptcha {
  	
 	function recaptcha_html() {
 		$public_key = get_option( 'recaptcha_publickey' );
-		$recaptcha_theme = get_option('recaptcha_theme');
-
-		if ($recaptcha_theme == 'custom') 
-			$return = $this->get_custom_html( $public_key );
-		else
-			$return = recaptcha_get_html( $public_key, $this->last_error );
+		$theme = get_option('recaptcha_theme');
+		$return = sprintf( '<div class="g-recaptcha" data-sitekey="%s"></div>',$public_key,$theme);
 		return $return;
 	}
 	
-	function get_custom_html( $public_key ) {
-		
-		$return = '<div id="recaptcha_widget" style="display:none">';
-
-			$return .= '<div id="recaptcha_image"></div>';
-			$return .= sprintf('<div class="recaptcha_only_if_incorrect_sol" style="color:red">%s</div>',__('Incorrect please try again','recaptcha'));
-
-			$return .= sprintf('<span class="recaptcha_only_if_image">%s</span>',__('Enter the words above:','recaptcha'));
-			$return .= sprintf('<span class="recaptcha_only_if_audio">%s</span>',__('Enter the numbers you hear:','recaptcha'));
-
-			$return .= '<input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />';
-
-			$return .= sprintf('<div><a href="javascript:Recaptcha.reload()"></a></div>',__('Get another CAPTCHA','recaptcha'));
-			$return .= sprintf('<div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type(\'audio\')">%s</a></div>',__('Get an audio CAPTCHA','recaptcha'));
-			$return .= sprintf('<div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type(\'image\')">%s</a></div>',__('Get an image CAPTCHA','recaptcha'));
-
-			$return .= '<div><a href="javascript:Recaptcha.showhelp()">Help</a></div>';
-		$return .= '</div>';
-
-		$return .= sprintf('<script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k=%s"></script>',$public_key);
-		$return .= '<noscript>';
-			$return .= sprintf('<iframe src="http://www.google.com/recaptcha/api/noscript?k=%s" height="300" width="500" frameborder="0"></iframe><br>',$public_key);
-			$return .= '<textarea name="recaptcha_challenge_field" rows="3" cols="40">';
-			$return .= '</textarea>';
-			$return .= '<input type="hidden" name="recaptcha_response_field" value="manual_challenge">';
-		$return .= '</noscript>';
-		
-		return $return;
- 	}
+// 	function get_custom_html( $public_key ) {
+// 		
+// 		$return = '<div id="recaptcha_widget" style="display:none">';
+// 
+// 			$return .= '<div id="recaptcha_image"></div>';
+// 			$return .= sprintf('<div class="recaptcha_only_if_incorrect_sol" style="color:red">%s</div>',__('Incorrect please try again','recaptcha'));
+// 
+// 			$return .= sprintf('<span class="recaptcha_only_if_image">%s</span>',__('Enter the words above:','recaptcha'));
+// 			$return .= sprintf('<span class="recaptcha_only_if_audio">%s</span>',__('Enter the numbers you hear:','recaptcha'));
+// 
+// 			$return .= '<input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />';
+// 
+// 			$return .= sprintf('<div><a href="javascript:Recaptcha.reload()"></a></div>',__('Get another CAPTCHA','recaptcha'));
+// 			$return .= sprintf('<div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type(\'audio\')">%s</a></div>',__('Get an audio CAPTCHA','recaptcha'));
+// 			$return .= sprintf('<div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type(\'image\')">%s</a></div>',__('Get an image CAPTCHA','recaptcha'));
+// 
+// 			$return .= '<div><a href="javascript:Recaptcha.showhelp()">Help</a></div>';
+// 		$return .= '</div>';
+// 
+// 		$return .= sprintf('<script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k=%s"></script>',$public_key);
+// 		$return .= '<noscript>';
+// 			$return .= sprintf('<iframe src="http://www.google.com/recaptcha/api/noscript?k=%s" height="300" width="500" frameborder="0"></iframe><br>',$public_key);
+// 			$return .= '<textarea name="recaptcha_challenge_field" rows="3" cols="40">';
+// 			$return .= '</textarea>';
+// 			$return .= '<input type="hidden" name="recaptcha_response_field" value="manual_challenge">';
+// 		$return .= '</noscript>';
+// 		
+// 		return $return;
+//  	}
 	
 	function recaptcha_check() {
 		$private_key = get_option( 'recaptcha_privatekey' );
@@ -227,9 +223,8 @@ class WordPress_reCaptcha {
 		delete_option( 'recaptcha_enable_ninja_forms' );
 		delete_option( 'recaptcha_disable_for_known_users' );
 	}
-
 }
-require_once dirname(__FILE__).'/recaptchalib.php';
+// require_once dirname(__FILE__).'/recaptchalib.php';
 
 WordPress_reCaptcha::instance();
 
