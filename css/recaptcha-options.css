@@ -1,5 +1,5 @@
-.recaptcha-select-theme {
-	
+.recaptcha-select-theme .theme-item {
+	display:inline-block;
 }
 .recaptcha-select-theme label {
 	display:inline-block;
@@ -39,4 +39,8 @@
 	text-align:center;
 	border-radius:10px;
 	border:5px dashed #444;
+}
+.recaptcha-select-theme.flavor-grecaptcha .flavor-recaptcha,
+.recaptcha-select-theme.flavor-recaptcha .flavor-grecaptcha {
+	display:none;
 }

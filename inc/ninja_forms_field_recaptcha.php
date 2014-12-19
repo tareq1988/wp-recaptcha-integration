@@ -4,7 +4,7 @@
 
 function ninja_forms_register_field_recaptcha(){
 	$args = array(
-		'name' => __( 'reCAPTCHA', 'ninja-forms' ),
+		'name' => __( 'reCAPTCHA', 'wp-recaptcha-integration' ),
 		'edit_function' => '',
 		'display_function' => 'ninja_forms_field_recaptcha_display',
 		'group' => 'standard_fields',
@@ -64,7 +64,7 @@ function ninja_forms_field_recaptcha_display($field_id, $data){
 
 function ninja_forms_field_recaptcha_pre_process( $field_id, $user_value ){
 	global $ninja_forms_processing;
-	$recaptcha_error = __("<strong>Error:</strong> the Captcha didn’t verify.",'recaptcha');
+	$recaptcha_error = __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration');
 
 	$field_row = ninja_forms_get_field_by_id($field_id);
 	$field_data = $field_row['data'];

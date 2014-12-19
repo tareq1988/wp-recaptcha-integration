@@ -2,12 +2,10 @@
 /*
 Plugin Name: WordPress reCaptcha Integration
 Plugin URI: https://github.com/mcguffin/wp-recaptcha-integration
-Description: Integrate reCaptcha in your blog. Provides of the box integration for signup, login and comment forms as well as a plugin API for your own integrations.
-Version: 0.0.7
+Description: Integrate reCaptcha in your blog. Supports new style recaptcha. Provides of the box integration for signup, login, comment forms, Ninja Forms and contact form 7 as well as a plugin API for your own integrations.
+Version: 0.9.0
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
-Text Domain: recaptcha
-Domain Path: /lang/
 */
 
 
@@ -45,12 +43,12 @@ class WordPress_reCaptcha {
 	private function __construct() {
 		add_option('recaptcha_publickey','');
 		add_option('recaptcha_privatekey','');
-		add_option('recaptcha_theme','white');
-		
+
+		add_option('recaptcha_flavor','grecaptcha');
+		add_option('recaptcha_theme','light');
 		add_option('recaptcha_enable_comments' , true);
 		add_option('recaptcha_enable_signup' , true);
 		add_option('recaptcha_enable_login' , false);
-		add_option('recaptcha_enable_ninja_forms' , false);
 		add_option('recaptcha_disable_for_known_users' , true);
 		
 		$this->_has_api_key = get_option( 'recaptcha_publickey' ) && get_option( 'recaptcha_privatekey' );
@@ -86,7 +84,7 @@ class WordPress_reCaptcha {
 		}
 	}
 	function init() {
-		load_plugin_textdomain( 'recaptcha', false , dirname( plugin_basename( __FILE__ ) ).'/lang/' );
+		load_plugin_textdomain( 'wp-recaptcha-integration', false , dirname( plugin_basename( __FILE__ ) ).'/languages/' );
 		
 		$require_recaptcha = $this->is_required();
 		
@@ -113,20 +111,21 @@ class WordPress_reCaptcha {
 	
 	function deny_login( $user ){
 		if ( isset( $_POST["log"] ) && ! $this->recaptcha_check() ) {
-			return new WP_Error( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'recaptcha') );
+			return new WP_Error( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
 		} else {
 			return $user;
 		}
 	}
 	function login_errors( $errors ) {
 		if ( isset( $_POST["log"] ) && ! $this->recaptcha_check() ) {
-			$errors->add( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'recaptcha') );
+			$errors->add( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
 		}
 		return $errors;
 	}
 		
 	function recaptcha_script() {
 		$recaptcha_theme = get_option('recaptcha_theme');
+		?><script src="https://www.google.com/recaptcha/api.js?hl=en" async defer></script><?php
 		if ( $recaptcha_theme == 'custom' ) {
 			?><script type="text/javascript">
 			var RecaptchaOptions = {
@@ -144,14 +143,24 @@ class WordPress_reCaptcha {
  	}
  	function recaptcha_check_or_die( ) {
  		if ( ! $this->recaptcha_check() )
- 			wp_die( __("Sorry, the Captcha didn’t verify.",'recaptcha') );
+ 			wp_die( __("Sorry, the Captcha didn’t verify.",'wp-recaptcha-integration') );
  	}
  	
  	function print_recaptcha_html(){
  		echo $this->recaptcha_html();
  	}
  	
-	function recaptcha_html() {
+ 	function recaptcha_html() {
+ 		switch ( get_option( 'recaptcha_flavor' ) ) {
+ 			case 'grecaptcha':
+ 				return $this->grecaptcha_html();
+ 			case 'recaptcha':
+ 				return $this->old_recaptcha_html();
+ 		}
+ 	}
+
+ 	function old_recaptcha_html() {
+		require_once dirname(__FILE__).'/recaptchalib.php';
 		$public_key = get_option( 'recaptcha_publickey' );
 		$recaptcha_theme = get_option('recaptcha_theme');
 
@@ -160,6 +169,13 @@ class WordPress_reCaptcha {
 		else
 			$return = recaptcha_get_html( $public_key, $this->last_error );
 		return $return;
+ 	}
+ 	
+	function grecaptcha_html() {
+		$public_key = get_option( 'recaptcha_publickey' );
+		$theme = get_option('recaptcha_theme');
+		$return = sprintf( '<div class="g-recaptcha" data-sitekey="%s" data-theme="%s"></div>',$public_key,$theme);
+		return $return;
 	}
 	
 	function get_custom_html( $public_key ) {
@@ -167,16 +183,16 @@ class WordPress_reCaptcha {
 		$return = '<div id="recaptcha_widget" style="display:none">';
 
 			$return .= '<div id="recaptcha_image"></div>';
-			$return .= sprintf('<div class="recaptcha_only_if_incorrect_sol" style="color:red">%s</div>',__('Incorrect please try again','recaptcha'));
+			$return .= sprintf('<div class="recaptcha_only_if_incorrect_sol" style="color:red">%s</div>',__('Incorrect please try again','wp-recaptcha-integration'));
 
-			$return .= sprintf('<span class="recaptcha_only_if_image">%s</span>',__('Enter the words above:','recaptcha'));
-			$return .= sprintf('<span class="recaptcha_only_if_audio">%s</span>',__('Enter the numbers you hear:','recaptcha'));
+			$return .= sprintf('<span class="recaptcha_only_if_image">%s</span>',__('Enter the words above:','wp-recaptcha-integration'));
+			$return .= sprintf('<span class="recaptcha_only_if_audio">%s</span>',__('Enter the numbers you hear:','wp-recaptcha-integration'));
 
 			$return .= '<input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />';
 
-			$return .= sprintf('<div><a href="javascript:Recaptcha.reload()"></a></div>',__('Get another CAPTCHA','recaptcha'));
-			$return .= sprintf('<div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type(\'audio\')">%s</a></div>',__('Get an audio CAPTCHA','recaptcha'));
-			$return .= sprintf('<div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type(\'image\')">%s</a></div>',__('Get an image CAPTCHA','recaptcha'));
+			$return .= sprintf('<div><a href="javascript:Recaptcha.reload()"></a></div>',__('Get another CAPTCHA','wp-recaptcha-integration'));
+			$return .= sprintf('<div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type(\'audio\')">%s</a></div>',__('Get an audio CAPTCHA','wp-recaptcha-integration'));
+			$return .= sprintf('<div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type(\'image\')">%s</a></div>',__('Get an image CAPTCHA','wp-recaptcha-integration'));
 
 			$return .= '<div><a href="javascript:Recaptcha.showhelp()">Help</a></div>';
 		$return .= '</div>';
@@ -193,16 +209,41 @@ class WordPress_reCaptcha {
  	}
 	
 	function recaptcha_check() {
+ 		switch ( get_option( 'recaptcha_flavor' ) ) {
+ 			case 'grecaptcha':
+ 				return $this->grecaptcha_check();
+ 			case 'recaptcha':
+ 				return $this->old_recaptcha_check();
+ 		}
+	}
+	function grecaptcha_check() {
+		$private_key = get_option( 'recaptcha_privatekey' );
+		$user_response = isset( $_REQUEST['g-recaptcha-response'] ) ? $_REQUEST['g-recaptcha-response'] : false;
+		if ( $user_response ) {
+			$remote_ip = $_SERVER['REMOTE_ADDR'];
+			$url = "https://www.google.com/recaptcha/api/siteverify?secret=$private_key&response=$user_response&remoteip=$remote_ip";
+			$response = wp_remote_get( $url );
+			if ( ! is_wp_error($response) ) {
+				$response_data = wp_remote_retrieve_body( $response );
+				$result = json_decode($response_data);
+				return $result->success;
+			}
+		}
+		return false;
+	}
+	function old_recaptcha_check() {
+		require_once dirname(__FILE__).'/recaptchalib.php';
 		$private_key = get_option( 'recaptcha_privatekey' );
 		$response = recaptcha_check_answer( $private_key,
 			$_SERVER["REMOTE_ADDR"],
 			$_POST["recaptcha_challenge_field"],
 			$_POST["recaptcha_response_field"]);
+
 		if ( ! $response->is_valid )
 			$this->last_error = $response->error;
+
 		return $response->is_valid;
 	}
-	
 	/**
 	 *	Fired on plugin activation
 	 */
@@ -217,21 +258,20 @@ class WordPress_reCaptcha {
 	/**
 	 *
 	 */
-	public static function uninstall(){
+	public static function uninstall() {
 		delete_option( 'recaptcha_publickey' );
 		delete_option( 'recaptcha_privatekey' );
+		
+		delete_option( 'recaptcha_flavor' );
 		delete_option( 'recaptcha_theme' );
 		delete_option( 'recaptcha_enable_comments' );
 		delete_option( 'recaptcha_enable_signup' );
 		delete_option( 'recaptcha_enable_login' );
-		delete_option( 'recaptcha_enable_ninja_forms' );
 		delete_option( 'recaptcha_disable_for_known_users' );
 	}
-
 }
-require_once dirname(__FILE__).'/recaptchalib.php';
+
 
 WordPress_reCaptcha::instance();
-
 
 require_once dirname(__FILE__).'/inc/recaptcha-options.php';

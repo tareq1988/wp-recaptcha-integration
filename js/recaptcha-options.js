@@ -1,0 +1,11 @@
+(function($){
+	$(document).ready(function(){
+		$('[name="recaptcha_flavor"]:checked').trigger('click');
+	});
+	$(document).on('click','[name="recaptcha_flavor"]',function(){
+		$('.recaptcha-select-theme')
+			.removeClass('flavor-recaptcha')
+			.removeClass('flavor-grecaptcha')
+			.addClass('flavor-'+$(this).val());
+	});
+})(jQuery);
