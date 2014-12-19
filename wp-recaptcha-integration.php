@@ -76,7 +76,6 @@ class WordPress_reCaptcha {
 	
 	function plugins_loaded() {
 		if ( $this->_has_api_key ) {
-		}
 			// check if ninja forms is present
 			if ( class_exists('Ninja_Forms') || function_exists('ninja_forms_register_field') )
 				include_once dirname(__FILE__).'/inc/ninja_forms_field_recaptcha.php';
@@ -84,6 +83,7 @@ class WordPress_reCaptcha {
 			// check if contact form 7 forms is present
 			if ( function_exists('wpcf7') )
 				include_once dirname(__FILE__).'/inc/contact_form_7_recaptcha.php';
+		}
 	}
 	function init() {
 		load_plugin_textdomain( 'recaptcha', false , dirname( plugin_basename( __FILE__ ) ).'/lang/' );
