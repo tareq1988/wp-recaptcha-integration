@@ -152,42 +152,54 @@ class WordPress_reCaptcha {
  		echo $this->recaptcha_html();
  	}
  	
-	function recaptcha_html() {
+ 	function recaptcha_html() {
+ 		switch ( get_option( 'recaptcha_flavor' ) ) {
+ 			case 'grecaptcha':
+ 				return $this->grecaptcha_html();
+ 			case 'recaptcha':
+ 				return $this->old_recaptcha_html();
+ 		}
+ 	}
+
+ 	function old_recaptcha_html() {
+ 	}
+ 	
+	function grecaptcha_html() {
 		$public_key = get_option( 'recaptcha_publickey' );
 		$theme = get_option('recaptcha_theme');
 		$return = sprintf( '<div class="g-recaptcha" data-sitekey="%s" data-theme="%s"></div>',$public_key,$theme);
 		return $return;
 	}
 	
-// 	function get_custom_html( $public_key ) {
-// 		
-// 		$return = '<div id="recaptcha_widget" style="display:none">';
-// 
-// 			$return .= '<div id="recaptcha_image"></div>';
-// 			$return .= sprintf('<div class="recaptcha_only_if_incorrect_sol" style="color:red">%s</div>',__('Incorrect please try again','recaptcha'));
-// 
-// 			$return .= sprintf('<span class="recaptcha_only_if_image">%s</span>',__('Enter the words above:','recaptcha'));
-// 			$return .= sprintf('<span class="recaptcha_only_if_audio">%s</span>',__('Enter the numbers you hear:','recaptcha'));
-// 
-// 			$return .= '<input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />';
-// 
-// 			$return .= sprintf('<div><a href="javascript:Recaptcha.reload()"></a></div>',__('Get another CAPTCHA','recaptcha'));
-// 			$return .= sprintf('<div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type(\'audio\')">%s</a></div>',__('Get an audio CAPTCHA','recaptcha'));
-// 			$return .= sprintf('<div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type(\'image\')">%s</a></div>',__('Get an image CAPTCHA','recaptcha'));
-// 
-// 			$return .= '<div><a href="javascript:Recaptcha.showhelp()">Help</a></div>';
-// 		$return .= '</div>';
-// 
-// 		$return .= sprintf('<script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k=%s"></script>',$public_key);
-// 		$return .= '<noscript>';
-// 			$return .= sprintf('<iframe src="http://www.google.com/recaptcha/api/noscript?k=%s" height="300" width="500" frameborder="0"></iframe><br>',$public_key);
-// 			$return .= '<textarea name="recaptcha_challenge_field" rows="3" cols="40">';
-// 			$return .= '</textarea>';
-// 			$return .= '<input type="hidden" name="recaptcha_response_field" value="manual_challenge">';
-// 		$return .= '</noscript>';
-// 		
-// 		return $return;
-//  	}
+	function get_custom_html( $public_key ) {
+		
+		$return = '<div id="recaptcha_widget" style="display:none">';
+
+			$return .= '<div id="recaptcha_image"></div>';
+			$return .= sprintf('<div class="recaptcha_only_if_incorrect_sol" style="color:red">%s</div>',__('Incorrect please try again','recaptcha'));
+
+			$return .= sprintf('<span class="recaptcha_only_if_image">%s</span>',__('Enter the words above:','recaptcha'));
+			$return .= sprintf('<span class="recaptcha_only_if_audio">%s</span>',__('Enter the numbers you hear:','recaptcha'));
+
+			$return .= '<input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />';
+
+			$return .= sprintf('<div><a href="javascript:Recaptcha.reload()"></a></div>',__('Get another CAPTCHA','recaptcha'));
+			$return .= sprintf('<div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type(\'audio\')">%s</a></div>',__('Get an audio CAPTCHA','recaptcha'));
+			$return .= sprintf('<div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type(\'image\')">%s</a></div>',__('Get an image CAPTCHA','recaptcha'));
+
+			$return .= '<div><a href="javascript:Recaptcha.showhelp()">Help</a></div>';
+		$return .= '</div>';
+
+		$return .= sprintf('<script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k=%s"></script>',$public_key);
+		$return .= '<noscript>';
+			$return .= sprintf('<iframe src="http://www.google.com/recaptcha/api/noscript?k=%s" height="300" width="500" frameborder="0"></iframe><br>',$public_key);
+			$return .= '<textarea name="recaptcha_challenge_field" rows="3" cols="40">';
+			$return .= '</textarea>';
+			$return .= '<input type="hidden" name="recaptcha_response_field" value="manual_challenge">';
+		$return .= '</noscript>';
+		
+		return $return;
+ 	}
 	
 	function recaptcha_check() {
 		$private_key = get_option( 'recaptcha_privatekey' );

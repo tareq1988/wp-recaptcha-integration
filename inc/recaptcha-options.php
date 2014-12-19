@@ -29,7 +29,6 @@ class WordPress_reCaptcha_Options {
 	private function __construct() {
 		add_action('admin_init', array(&$this,'admin_init') );
 		add_action('admin_menu', array(&$this,'add_options_page') );
-
 	}
 	function api_key_notice() {
 		?><div class="notice error above-h1"><p><?php 
@@ -63,7 +62,6 @@ class WordPress_reCaptcha_Options {
 		}
 		
 		if ( $has_api_key ) {
-
 			register_setting( 'recaptcha_options', 'recaptcha_flavor' );
 			register_setting( 'recaptcha_options', 'recaptcha_theme' );
 			register_setting( 'recaptcha_options', 'recaptcha_enable_comments' , 'intval');
@@ -156,7 +154,7 @@ class WordPress_reCaptcha_Options {
 		foreach ( $items as $item ) {
 			extract( $item ); // value, label
 			?><label for="<?php echo "$name-$value" ?>"><?php
-				?><input id="<?php echo $name ?>" type="radio" name="<?php echo $name ?>" value="<?php echo $value ?>" <?php checked($value,$option,true) ?> />
+				?><input id="<?php echo "$name-$value" ?>" type="radio" name="<?php echo $name ?>" value="<?php echo $value ?>" <?php checked($value,$option,true) ?> />
 				<?php
 				echo $label;
 			?></label><br /><?php
@@ -181,30 +179,61 @@ class WordPress_reCaptcha_Options {
 	public function select_theme() {
 		$option_name = 'recaptcha_theme';
 		
-		?><div class="grecaptcha-themes"><?php
 			$themes = array(
-				'light' => __('Light','recaptcha'),
-				'dark' => __('Dark','recaptcha'),
+				'light' => array(
+					'label' => __('Light','recaptcha') ,
+					'flavor' => 'grecaptcha',
+				),
+				'dark' => array(
+					'label' => __('Dark','recaptcha') ,
+					'flavor' => 'grecaptcha',
+				),
+
+				'red' => array(
+					'label' => __('Red','recaptcha') ,
+					'flavor' => 'recaptcha',
+				),
+				'white' => array(
+					'label' => __('White','recaptcha') ,
+					'flavor' => 'recaptcha',
+				),
+				'blackglass' => array(
+					'label' => __('Black Glass','recaptcha') ,
+					'flavor' => 'recaptcha',
+				),
+				'clean' => array(
+					'label' => __('Clean','recaptcha') ,
+					'flavor' => 'recaptcha',
+				),
+				'custom' => array(
+					'label' => __('Custom','recaptcha') ,
+					'flavor' => 'recaptcha',
+				),
 			);
-			$theme = get_option($option_name);
+
+			$option_theme = get_option($option_name);
+			$option_flavor = get_option( 'recaptcha_flavor' );
 		
-			?><div class="recaptcha-select-theme grecaptcha"><?php
+			?><div class="recaptcha-select-theme flavor-<?php echo $option_flavor ?>"><?php
 		
-			foreach ( $themes as $value => $label ) {
-				?><input <?php checked($value,$theme,true); ?> id="<?php echo "$option_name-$value" ?>" type="radio" name="<?php echo $option_name ?>" value="<?php echo $value ?>" /><?php
-				?><label for="<?php echo "$option_name-$value" ?>"><?php
-					?><span class="title"><?php 
-						echo $label;
-					?></span><?php
-					if ( $value == 'custom' ) {
-						?><span class="visual"><?php
-							_e( 'Unstyled HTML so you can apply the Stylesheets yourself.' );
+			foreach ( $themes as $value => $theme ) {
+				extract( $theme ); // label, flavor
+				?><div class="theme-item flavor-<?php echo $flavor ?>"><?php
+					?><input <?php checked($value,$option_theme,true); ?> id="<?php echo "$option_name-$value" ?>" type="radio" name="<?php echo $option_name ?>" value="<?php echo $value ?>" /><?php
+					?><label for="<?php echo "$option_name-$value" ?>"><?php
+						?><span class="title"><?php 
+							echo $label;
 						?></span><?php
-					} else {
-						$src = plugins_url( "images/grecaptcha-theme-{$value}.png" , dirname(__FILE__));
-						printf( '<img src="%s" alt="%s" />' , $src , $label );
-					}
-				?></label><?php
+						if ( $value == 'custom' ) {
+							?><span class="visual"><?php
+								_e( 'Unstyled HTML so you can apply the Stylesheets yourself.' );
+							?></span><?php
+						} else {
+							$src = plugins_url( "images/{$flavor}-theme-{$value}.png" , dirname(__FILE__));
+							printf( '<img src="%s" alt="%s" />' , $src , $label );
+						}
+					?></label><?php
+				?></div><?php
 			
 			}
 			?></div><?php
