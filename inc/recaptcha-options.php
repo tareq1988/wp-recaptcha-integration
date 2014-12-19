@@ -55,7 +55,7 @@ class WordPress_reCaptcha_Options {
 			if ( $has_api_key ) {
 				add_settings_field('cancel', '' , array(&$this,'cancel_enter_api_key'), 'recaptcha', 'recaptcha_apikey' );
 			}
-		} else if ( $nonce_valid === false) {
+		} else if ( @$nonce_valid === false) {
 			wp_die('Security Check');
 		} else {
 			add_settings_section('recaptcha_apikey', __( 'Connecting' , 'wp-recaptcha-integration' ), array(&$this,'explain_apikey'), 'recaptcha');
