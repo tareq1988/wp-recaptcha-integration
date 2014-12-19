@@ -46,6 +46,7 @@ class WordPress_reCaptcha {
 		add_option('recaptcha_publickey','');
 		add_option('recaptcha_privatekey','');
 
+		add_option('recaptcha_flavor','grecaptcha');
 		add_option('recaptcha_theme','light');
 		add_option('recaptcha_enable_comments' , true);
 		add_option('recaptcha_enable_signup' , true);
@@ -126,7 +127,7 @@ class WordPress_reCaptcha {
 		
 	function recaptcha_script() {
 		$recaptcha_theme = get_option('recaptcha_theme');
-		?><script src="https://www.google.com/recaptcha/api.js" async defer></script><?php
+		?><script src="https://www.google.com/recaptcha/api.js?hl=en" async defer></script><?php
 		if ( $recaptcha_theme == 'custom' ) {
 			?><script type="text/javascript">
 			var RecaptchaOptions = {
@@ -154,7 +155,7 @@ class WordPress_reCaptcha {
 	function recaptcha_html() {
 		$public_key = get_option( 'recaptcha_publickey' );
 		$theme = get_option('recaptcha_theme');
-		$return = sprintf( '<div class="g-recaptcha" data-sitekey="%s"></div>',$public_key,$theme);
+		$return = sprintf( '<div class="g-recaptcha" data-sitekey="%s" data-theme="%s"></div>',$public_key,$theme);
 		return $return;
 	}
 	
@@ -190,13 +191,18 @@ class WordPress_reCaptcha {
 	
 	function recaptcha_check() {
 		$private_key = get_option( 'recaptcha_privatekey' );
-		$response = recaptcha_check_answer( $private_key,
-			$_SERVER["REMOTE_ADDR"],
-			$_POST["recaptcha_challenge_field"],
-			$_POST["recaptcha_response_field"]);
-		if ( ! $response->is_valid )
-			$this->last_error = $response->error;
-		return $response->is_valid;
+		$user_response = isset( $_REQUEST['g-recaptcha-response'] ) ? $_REQUEST['g-recaptcha-response'] : false;
+		if ( $user_response ) {
+			$remote_ip = $_SERVER['REMOTE_ADDR'];
+			$url = "https://www.google.com/recaptcha/api/siteverify?secret=$private_key&response=$user_response&remoteip=$remote_ip";
+			$response = wp_remote_get( $url );
+			if ( ! is_wp_error($response) ) {
+				$response_data = wp_remote_retrieve_body( $response );
+				$result = json_decode($response_data);
+				return $result->success;
+			}
+		}
+		return false;
 	}
 	
 	/**
