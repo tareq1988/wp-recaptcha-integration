@@ -62,8 +62,8 @@ class WordPress_reCaptcha_Options {
 		}
 		
 		if ( $has_api_key ) {
-			register_setting( 'recaptcha_options', 'recaptcha_flavor' );
-			register_setting( 'recaptcha_options', 'recaptcha_theme' );
+			register_setting( 'recaptcha_options', 'recaptcha_flavor' , array( &$this , 'sanitize_flavor' ) );
+			register_setting( 'recaptcha_options', 'recaptcha_theme'  , array( &$this , 'sanitize_theme' ) );
 			register_setting( 'recaptcha_options', 'recaptcha_enable_comments' , 'intval');
 			register_setting( 'recaptcha_options', 'recaptcha_enable_signup', 'intval' );
 			register_setting( 'recaptcha_options', 'recaptcha_enable_login' , 'intval');
@@ -221,7 +221,7 @@ class WordPress_reCaptcha_Options {
 						?></span><?php
 						if ( $value == 'custom' ) {
 							?><span class="visual"><?php
-								_e( 'Unstyled HTML so you can apply the Stylesheets yourself.' , 'wp-recaptcha-integration' );
+								_e( 'Unstyled HTML to apply your own Stylesheets.' , 'wp-recaptcha-integration' );
 							?></span><?php
 						} else {
 							$src = plugins_url( "images/{$flavor}-theme-{$value}.png" , dirname(__FILE__));
@@ -262,7 +262,24 @@ class WordPress_reCaptcha_Options {
 			?></form><?php
 		?></div><?php
 	}
-	
+	public function sanitize_flavor( $flavor ) {
+		if ( in_array($flavor,array('recaptcha','grecaptcha')) )
+			return $flavor;
+		return 'grecaptcha';
+	}
+	public function sanitize_theme( $theme ) {
+		$themes_available = array(
+			'recaptcha' => array( 'white','red','blackglass','clean','custom' ),
+			'grecaptcha' => array( 'light','dark' ),
+		);
+		$flavor = get_option('recaptcha_flavor');
+		
+		if ( isset($themes_available[$flavor] ) && in_array($theme,$themes_available[$flavor]) )
+			return $theme;
+		else if ( isset($themes_available[$flavor] ) )
+			return $themes_available[$flavor][0];
+		return 'light';
+	}
 	
 }
 

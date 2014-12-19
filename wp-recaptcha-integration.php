@@ -76,11 +76,11 @@ class WordPress_reCaptcha {
 		if ( $this->_has_api_key ) {
 			// check if ninja forms is present
 			if ( class_exists('Ninja_Forms') || function_exists('ninja_forms_register_field') )
-				include_once dirname(__FILE__).'/inc/ninja_forms_field_grecaptcha.php';
+				include_once dirname(__FILE__).'/inc/ninja_forms_field_recaptcha.php';
 
 			// check if contact form 7 forms is present
 			if ( function_exists('wpcf7') )
-				include_once dirname(__FILE__).'/inc/contact_form_7_grecaptcha.php';
+				include_once dirname(__FILE__).'/inc/contact_form_7_recaptcha.php';
 		}
 	}
 	function init() {
