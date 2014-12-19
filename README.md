@@ -4,14 +4,18 @@ WordPress reCaptcha Integration
 Features
 --------
 - Secures login, signup and comments with a recaptcha.
+- Supports old as well as new reCaptcha.
 - [Ninja Forms](http://ninjaforms.com/) integration
 - [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) integration
-- Tested with up to WP 4.1-alpha, Ninja Forms 2.8.7, Contact Form 7 4.0.1
+- Tested with up to WP 4.2-alpha, Ninja Forms 2.8.7, Contact Form 7 4.0.1
 
 Limitations
 -----------
-- You can't have more than one reCaptcha on a page. This may affect you for example when 
-  you have a contact page with a comment form. This is a limitation of reCaptcha itself.
+- Currently you can't have more than one reCaptcha on a page. 
+  This may affect you for example when you have a contact page with a comment form. 
+  With old style recaptcha reCaptcha this cant be fixed. For the new Style reCaptchas 
+  this is due to be implemented in the near future.
+
 - On a Contact Form 7 when the reCaptcha is disabled (e.g. for logged in users) the field
   label will be still visible. This is due to CF7 Shortcode architecture, and can't be fixed.
 
