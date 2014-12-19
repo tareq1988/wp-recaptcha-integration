@@ -2,8 +2,8 @@
 /*
 Plugin Name: WordPress reCaptcha Integration
 Plugin URI: https://github.com/mcguffin/wp-recaptcha-integration
-Description: Integrate reCaptcha in your blog. Provides of the box integration for signup, login and comment forms as well as a plugin API for your own integrations.
-Version: 0.0.7
+Description: Integrate reCaptcha in your blog. Supports new style recaptcha. Provides of the box integration for signup, login, comment forms, Ninja Forms and contact form 7 as well as a plugin API for your own integrations.
+Version: 0.9.0
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 Text Domain: recaptcha
@@ -235,7 +235,16 @@ class WordPress_reCaptcha {
 	}
 	function old_recaptcha_check() {
 		require_once dirname(__FILE__).'/recaptchalib.php';
-		// ...
+		$private_key = get_option( 'recaptcha_privatekey' );
+		$response = recaptcha_check_answer( $private_key,
+			$_SERVER["REMOTE_ADDR"],
+			$_POST["recaptcha_challenge_field"],
+			$_POST["recaptcha_response_field"]);
+
+		if ( ! $response->is_valid )
+			$this->last_error = $response->error;
+
+		return $response->is_valid;
 	}
 	/**
 	 *	Fired on plugin activation
@@ -251,20 +260,20 @@ class WordPress_reCaptcha {
 	/**
 	 *
 	 */
-	public static function uninstall(){
+	public static function uninstall() {
 		delete_option( 'recaptcha_publickey' );
 		delete_option( 'recaptcha_privatekey' );
+		
+		delete_option( 'recaptcha_flavor' );
 		delete_option( 'recaptcha_theme' );
 		delete_option( 'recaptcha_enable_comments' );
 		delete_option( 'recaptcha_enable_signup' );
 		delete_option( 'recaptcha_enable_login' );
-		delete_option( 'recaptcha_enable_ninja_forms' );
 		delete_option( 'recaptcha_disable_for_known_users' );
 	}
 }
 
 
 WordPress_reCaptcha::instance();
-
 
 require_once dirname(__FILE__).'/inc/recaptcha-options.php';
