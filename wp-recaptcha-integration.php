@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: WordPress reCaptcha Integration
+Plugin Name: WP reCaptcha Integration
 Plugin URI: https://github.com/mcguffin/wp-recaptcha-integration
-Description: Integrate reCaptcha in your blog. Supports new style recaptcha. Provides of the box integration for signup, login, comment forms, Ninja Forms and contact form 7 as well as a plugin API for your own integrations.
+Description: Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha) as well as the old stle reCaptcha. Provides of the box integration for signup, login, comment forms, lost password, Ninja Forms and contact form 7.
 Version: 0.9.0
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
