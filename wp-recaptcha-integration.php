@@ -84,7 +84,7 @@ class WordPress_reCaptcha {
 		}
 	}
 	function init() {
-		load_plugin_textdomain( 'recaptcha', false , dirname( plugin_basename( __FILE__ ) ).'/lang/' );
+		load_plugin_textdomain( 'wp-recaptcha-integration', false , dirname( plugin_basename( __FILE__ ) ).'/languages/' );
 		
 		$require_recaptcha = $this->is_required();
 		
