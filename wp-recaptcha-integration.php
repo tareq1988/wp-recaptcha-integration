@@ -162,6 +162,15 @@ class WordPress_reCaptcha {
  	}
 
  	function old_recaptcha_html() {
+		require_once dirname(__FILE__).'/recaptchalib.php';
+		$public_key = get_option( 'recaptcha_publickey' );
+		$recaptcha_theme = get_option('recaptcha_theme');
+
+		if ($recaptcha_theme == 'custom') 
+			$return = $this->get_custom_html( $public_key );
+		else
+			$return = recaptcha_get_html( $public_key, $this->last_error );
+		return $return;
  	}
  	
 	function grecaptcha_html() {
@@ -202,6 +211,14 @@ class WordPress_reCaptcha {
  	}
 	
 	function recaptcha_check() {
+ 		switch ( get_option( 'recaptcha_flavor' ) ) {
+ 			case 'grecaptcha':
+ 				return $this->grecaptcha_check();
+ 			case 'recaptcha':
+ 				return $this->old_recaptcha_check();
+ 		}
+	}
+	function grecaptcha_check() {
 		$private_key = get_option( 'recaptcha_privatekey' );
 		$user_response = isset( $_REQUEST['g-recaptcha-response'] ) ? $_REQUEST['g-recaptcha-response'] : false;
 		if ( $user_response ) {
@@ -216,7 +233,10 @@ class WordPress_reCaptcha {
 		}
 		return false;
 	}
-	
+	function old_recaptcha_check() {
+		require_once dirname(__FILE__).'/recaptchalib.php';
+		// ...
+	}
 	/**
 	 *	Fired on plugin activation
 	 */
@@ -242,7 +262,7 @@ class WordPress_reCaptcha {
 		delete_option( 'recaptcha_disable_for_known_users' );
 	}
 }
-// require_once dirname(__FILE__).'/recaptchalib.php';
+
 
 WordPress_reCaptcha::instance();
 
