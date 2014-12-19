@@ -33,7 +33,7 @@ add_action('wp_enqueue_scripts','wpcf7_recaptcha_enqueue_script');
 function wpcf7_add_tag_generator_recaptcha() {
 	if ( ! function_exists( 'wpcf7_add_tag_generator' ) )
 		return;
-	wpcf7_add_tag_generator( 'recaptcha', __( 'reCAPTCHA', 'recaptcha' ),
+	wpcf7_add_tag_generator( 'recaptcha', __( 'reCAPTCHA', 'wp-recaptcha-integration' ),
 		'wpcf7-tg-pane-recaptcha', 'wpcf7_recaptcha_settings_callback' );
 }
 add_action( 'admin_init', 'wpcf7_add_tag_generator_recaptcha', 45 );
@@ -70,7 +70,7 @@ function wpcf7_recaptcha_validation_filter( $result, $tag ) {
 
 	if ( ! WordPress_reCaptcha::instance()->recaptcha_check() ) {
 		$result['valid'] = false;
-		$result['reason'][$name] = __("The Captcha didn’t verify.",'recaptcha');
+		$result['reason'][$name] = __("The Captcha didn’t verify.",'wp-recaptcha-integration');
 	}
 	return $result;
 }

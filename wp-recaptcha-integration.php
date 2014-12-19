@@ -6,8 +6,6 @@ Description: Integrate reCaptcha in your blog. Supports new style recaptcha. Pro
 Version: 0.9.0
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
-Text Domain: recaptcha
-Domain Path: /lang/
 */
 
 
@@ -113,14 +111,14 @@ class WordPress_reCaptcha {
 	
 	function deny_login( $user ){
 		if ( isset( $_POST["log"] ) && ! $this->recaptcha_check() ) {
-			return new WP_Error( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'recaptcha') );
+			return new WP_Error( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
 		} else {
 			return $user;
 		}
 	}
 	function login_errors( $errors ) {
 		if ( isset( $_POST["log"] ) && ! $this->recaptcha_check() ) {
-			$errors->add( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'recaptcha') );
+			$errors->add( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
 		}
 		return $errors;
 	}
@@ -145,7 +143,7 @@ class WordPress_reCaptcha {
  	}
  	function recaptcha_check_or_die( ) {
  		if ( ! $this->recaptcha_check() )
- 			wp_die( __("Sorry, the Captcha didn’t verify.",'recaptcha') );
+ 			wp_die( __("Sorry, the Captcha didn’t verify.",'wp-recaptcha-integration') );
  	}
  	
  	function print_recaptcha_html(){
@@ -185,16 +183,16 @@ class WordPress_reCaptcha {
 		$return = '<div id="recaptcha_widget" style="display:none">';
 
 			$return .= '<div id="recaptcha_image"></div>';
-			$return .= sprintf('<div class="recaptcha_only_if_incorrect_sol" style="color:red">%s</div>',__('Incorrect please try again','recaptcha'));
+			$return .= sprintf('<div class="recaptcha_only_if_incorrect_sol" style="color:red">%s</div>',__('Incorrect please try again','wp-recaptcha-integration'));
 
-			$return .= sprintf('<span class="recaptcha_only_if_image">%s</span>',__('Enter the words above:','recaptcha'));
-			$return .= sprintf('<span class="recaptcha_only_if_audio">%s</span>',__('Enter the numbers you hear:','recaptcha'));
+			$return .= sprintf('<span class="recaptcha_only_if_image">%s</span>',__('Enter the words above:','wp-recaptcha-integration'));
+			$return .= sprintf('<span class="recaptcha_only_if_audio">%s</span>',__('Enter the numbers you hear:','wp-recaptcha-integration'));
 
 			$return .= '<input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />';
 
-			$return .= sprintf('<div><a href="javascript:Recaptcha.reload()"></a></div>',__('Get another CAPTCHA','recaptcha'));
-			$return .= sprintf('<div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type(\'audio\')">%s</a></div>',__('Get an audio CAPTCHA','recaptcha'));
-			$return .= sprintf('<div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type(\'image\')">%s</a></div>',__('Get an image CAPTCHA','recaptcha'));
+			$return .= sprintf('<div><a href="javascript:Recaptcha.reload()"></a></div>',__('Get another CAPTCHA','wp-recaptcha-integration'));
+			$return .= sprintf('<div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type(\'audio\')">%s</a></div>',__('Get an audio CAPTCHA','wp-recaptcha-integration'));
+			$return .= sprintf('<div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type(\'image\')">%s</a></div>',__('Get an image CAPTCHA','wp-recaptcha-integration'));
 
 			$return .= '<div><a href="javascript:Recaptcha.showhelp()">Help</a></div>';
 		$return .= '</div>';

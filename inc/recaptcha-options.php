@@ -33,7 +33,7 @@ class WordPress_reCaptcha_Options {
 	function api_key_notice() {
 		?><div class="notice error above-h1"><p><?php 
 			printf( 
-				__( '<strong>reCaptcha needs your attention:</strong> To make it work You need to enter an api key. <br />You can do so at the <a href="%s">reCaptcha settings page</a>.' , 'recaptcha' ),
+				__( '<strong>reCaptcha needs your attention:</strong> To make it work You need to enter an api key. <br />You can do so at the <a href="%s">reCaptcha settings page</a>.' , 'wp-recaptcha-integration' ),
 				admin_url( add_query_arg( 'page' , 'recaptcha' , 'options-general.php' ) )
 			);
 		?></p></div><?php
@@ -49,16 +49,16 @@ class WordPress_reCaptcha_Options {
 		if ( $this->enter_api_key ) {
 			register_setting( 'recaptcha_options', 'recaptcha_publickey' );
 			register_setting( 'recaptcha_options', 'recaptcha_privatekey' );
-			add_settings_field('recaptcha_publickey', __('Public Key','recaptcha'), array(&$this,'input_text'), 'recaptcha', 'recaptcha_apikey' , array('name'=>'recaptcha_publickey') );
-			add_settings_field('recaptcha_privatekey', __('Private Key','recaptcha'), array(&$this,'input_text'), 'recaptcha', 'recaptcha_apikey', array('name'=>'recaptcha_privatekey'));
-			add_settings_section('recaptcha_apikey', __( 'Connecting' , 'recaptcha' ), array(&$this,'explain_apikey'), 'recaptcha');
+			add_settings_field('recaptcha_publickey', __('Public Key','wp-recaptcha-integration'), array(&$this,'input_text'), 'recaptcha', 'recaptcha_apikey' , array('name'=>'recaptcha_publickey') );
+			add_settings_field('recaptcha_privatekey', __('Private Key','wp-recaptcha-integration'), array(&$this,'input_text'), 'recaptcha', 'recaptcha_apikey', array('name'=>'recaptcha_privatekey'));
+			add_settings_section('recaptcha_apikey', __( 'Connecting' , 'wp-recaptcha-integration' ), array(&$this,'explain_apikey'), 'recaptcha');
 			if ( $has_api_key ) {
 				add_settings_field('cancel', '' , array(&$this,'cancel_enter_api_key'), 'recaptcha', 'recaptcha_apikey' );
 			}
 		} else if ( $nonce_valid === false) {
 			wp_die('Security Check');
 		} else {
-			add_settings_section('recaptcha_apikey', __( 'Connecting' , 'recaptcha' ), array(&$this,'explain_apikey'), 'recaptcha');
+			add_settings_section('recaptcha_apikey', __( 'Connecting' , 'wp-recaptcha-integration' ), array(&$this,'explain_apikey'), 'recaptcha');
 		}
 		
 		if ( $has_api_key ) {
@@ -69,49 +69,49 @@ class WordPress_reCaptcha_Options {
 			register_setting( 'recaptcha_options', 'recaptcha_enable_login' , 'intval');
 			register_setting( 'recaptcha_options', 'recaptcha_disable_for_known_users' , 'intval');
 
-			add_settings_section('recaptcha_options', __( 'Features' , 'recaptcha' ), array(&$this,'explain_options'), 'recaptcha');
+			add_settings_section('recaptcha_options', __( 'Features' , 'wp-recaptcha-integration' ), '__return_false', 'recaptcha');
 
-			add_settings_field('recaptcha_flavor', __('Flavor','recaptcha'), 
+			add_settings_field('recaptcha_flavor', __('Flavor','wp-recaptcha-integration'), 
 				array(&$this,'input_radio'), 'recaptcha', 'recaptcha_options',
 				array( 
 					'name' => 'recaptcha_flavor',
 					'items' => array(
 						array(
 							'value' => 'grecaptcha',
-							'label' => __( 'Modern Style where you just click a checkbox' , 'recaptcha' ),
+							'label' => __( 'Modern Style where you just click a checkbox' , 'wp-recaptcha-integration' ),
 						),
 						array(
 							'value' => 'recaptcha',
-							'label' => __( 'Old style reCAPTCHA where you type some cryptic text' , 'recaptcha' ),
+							'label' => __( 'Old style reCAPTCHA where you type some cryptic text' , 'wp-recaptcha-integration' ),
 						),
 					),
 				 ) );
 
-			add_settings_field('recaptcha_theme', __('Theme','recaptcha'), array(&$this,'select_theme'), 'recaptcha', 'recaptcha_options');
+			add_settings_field('recaptcha_theme', __('Theme','wp-recaptcha-integration'), array(&$this,'select_theme'), 'recaptcha', 'recaptcha_options');
 
 
-			add_settings_field('recaptcha_enable_comments', __('Protect Comments','recaptcha'), 
+			add_settings_field('recaptcha_enable_comments', __('Protect Comments','wp-recaptcha-integration'), 
 				array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' , 
-				array('name'=>'recaptcha_enable_comments','label'=>__( 'Protect comment forms with recaptcha.' ,'recaptcha' ) ) 
+				array('name'=>'recaptcha_enable_comments','label'=>__( 'Protect comment forms with recaptcha.' ,'wp-recaptcha-integration' ) ) 
 			);
 			
-			add_settings_field('recaptcha_enable_signup', __('Protect Signup','recaptcha'), 
+			add_settings_field('recaptcha_enable_signup', __('Protect Signup','wp-recaptcha-integration'), 
 				array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options',      
-				array('name'=>'recaptcha_enable_signup','label'=>__( 'Protect signup form with recaptcha.','recaptcha' ) )
+				array('name'=>'recaptcha_enable_signup','label'=>__( 'Protect signup form with recaptcha.','wp-recaptcha-integration' ) )
 			);
 			
-			add_settings_field('recaptcha_enable_login', __('Protect Login','recaptcha'), 
+			add_settings_field('recaptcha_enable_login', __('Protect Login','wp-recaptcha-integration'), 
 				array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' ,
-				array('name'=>'recaptcha_enable_login','label'=>__( 'Protect Login form with recaptcha.','recaptcha' )) 
+				array('name'=>'recaptcha_enable_login','label'=>__( 'Protect Login form with recaptcha.','wp-recaptcha-integration' )) 
 			);
 
-			add_settings_field('recaptcha_disable_for_known_users', __('Disable for known users','recaptcha'), 
+			add_settings_field('recaptcha_disable_for_known_users', __('Disable for known users','wp-recaptcha-integration'), 
 				array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' ,
-				array('name'=>'recaptcha_disable_for_known_users','label'=>__( 'Disable reCaptcha verification for logged in users.','recaptcha' )) 
+				array('name'=>'recaptcha_disable_for_known_users','label'=>__( 'Disable reCaptcha verification for logged in users.','wp-recaptcha-integration' )) 
 			);
 
 			if ( ! get_option( 'recaptcha_publickey' ) || ! get_option( 'recaptcha_privatekey' ) )
-				add_settings_error('recaptcha',1,__('Please configure the public and private key. <a href="http://www.google.com/recaptcha/whyrecaptcha">What are you trying to tell me?</a>','recaptcha'),'updated');
+				add_settings_error('recaptcha',1,__('Please configure the public and private key. <a href="http://www.google.com/recaptcha/whyrecaptcha">What are you trying to tell me?</a>','wp-recaptcha-integration'),'updated');
 		}
 	}
 
@@ -121,31 +121,26 @@ class WordPress_reCaptcha_Options {
 				$info_url = 'https://developers.google.com/recaptcha/intro';
 				$admin_url = 'https://www.google.com/recaptcha/admin';
 				printf(
-					__( 'Please register your blog through the <a href="%s">Google reCAPTCHA admin page</a> and enter the public and private key in the fields below. <a href="%s">What is this all about</a>', 'recaptcha' ) ,
+					__( 'Please register your blog through the <a href="%s">Google reCAPTCHA admin page</a> and enter the public and private key in the fields below. <a href="%s">What is this all about</a>', 'wp-recaptcha-integration' ) ,
 						$admin_url , $info_url 
 					);
 			?></p><?php
 		} else {
 			?><p class="description"><?php 
-				_e( 'You already entered an API Key. Use the button below to enter it again.','recaptcha');
+				_e( 'You already entered an API Key. Use the button below to enter it again.','wp-recaptcha-integration');
 			?></p><?php
 			$action = 'recaptcha-api-key';
 			$nonce = wp_create_nonce( $action );
 			$url = add_query_arg( array('_wpnonce' => $nonce , 'action' => $action ) );
 			?><p class="submit"><?php 
-				?><a class="button" href="<?php echo $url ?>"><?php _e('New API Key' , 'recaptcha') ?></a><?php
+				?><a class="button" href="<?php echo $url ?>"><?php _e('New API Key' , 'wp-recaptcha-integration') ?></a><?php
 			?></p><?php
 			
 		}
 	}
 	public function cancel_enter_api_key(){
 		$url = remove_query_arg( array('_wpnonce' , 'action' , 'settings-updated' ) );
-		?><a class="button" href="<?php echo $url ?>"><?php _e('Cancel' ) ?></a><?php
-	}
-	public function explain_options( ) {
-		?><p class="description"><?php 
-			_e('','recaptcha');
-		?></p><?php
+		?><a class="button" href="<?php echo $url ?>"><?php _e( 'Cancel' ) ?></a><?php
 	}
 	
 	public function input_radio( $args ) {
@@ -181,32 +176,32 @@ class WordPress_reCaptcha_Options {
 		
 			$themes = array(
 				'light' => array(
-					'label' => __('Light','recaptcha') ,
+					'label' => __('Light','wp-recaptcha-integration') ,
 					'flavor' => 'grecaptcha',
 				),
 				'dark' => array(
-					'label' => __('Dark','recaptcha') ,
+					'label' => __('Dark','wp-recaptcha-integration') ,
 					'flavor' => 'grecaptcha',
 				),
 
 				'red' => array(
-					'label' => __('Red','recaptcha') ,
+					'label' => __('Red','wp-recaptcha-integration') ,
 					'flavor' => 'recaptcha',
 				),
 				'white' => array(
-					'label' => __('White','recaptcha') ,
+					'label' => __('White','wp-recaptcha-integration') ,
 					'flavor' => 'recaptcha',
 				),
 				'blackglass' => array(
-					'label' => __('Black Glass','recaptcha') ,
+					'label' => __('Black Glass','wp-recaptcha-integration') ,
 					'flavor' => 'recaptcha',
 				),
 				'clean' => array(
-					'label' => __('Clean','recaptcha') ,
+					'label' => __('Clean','wp-recaptcha-integration') ,
 					'flavor' => 'recaptcha',
 				),
 				'custom' => array(
-					'label' => __('Custom','recaptcha') ,
+					'label' => __('Custom','wp-recaptcha-integration') ,
 					'flavor' => 'recaptcha',
 				),
 			);
@@ -226,7 +221,7 @@ class WordPress_reCaptcha_Options {
 						?></span><?php
 						if ( $value == 'custom' ) {
 							?><span class="visual"><?php
-								_e( 'Unstyled HTML so you can apply the Stylesheets yourself.' );
+								_e( 'Unstyled HTML so you can apply the Stylesheets yourself.' , 'wp-recaptcha-integration' );
 							?></span><?php
 						} else {
 							$src = plugins_url( "images/{$flavor}-theme-{$value}.png" , dirname(__FILE__));
@@ -241,7 +236,7 @@ class WordPress_reCaptcha_Options {
 	}
 	public function add_options_page() {
 		$page_slug = add_options_page( 
-			__('ReCaptcha','recaptcha'), __('ReCaptcha','recaptcha'), 
+			__('ReCaptcha','wp-recaptcha-integration'), __('ReCaptcha','wp-recaptcha-integration'), 
 			'manage_options', 'recaptcha', 
 			array(&$this,'render_options_page')
 		);
@@ -257,7 +252,7 @@ class WordPress_reCaptcha_Options {
 			?><h2><?php /*icon*/ 
 				_e('Settings');
 				echo ' › '; 
-				_e( 'ReCaptcha' , 'recaptcha' ); 
+				_e( 'ReCaptcha' , 'wp-recaptcha-integration' ); 
 			?></h2><?php
 		/*	?><p><?php _e( '...' , 'googlefont' ); ?></p><?php */
 			?><form action="options.php" method="post"><?php
