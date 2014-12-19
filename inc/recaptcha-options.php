@@ -67,6 +67,7 @@ class WordPress_reCaptcha_Options {
 			register_setting( 'recaptcha_options', 'recaptcha_enable_comments' , 'intval');
 			register_setting( 'recaptcha_options', 'recaptcha_enable_signup', 'intval' );
 			register_setting( 'recaptcha_options', 'recaptcha_enable_login' , 'intval');
+			register_setting( 'recaptcha_options', 'recaptcha_enable_lostpw' , 'intval');
 			register_setting( 'recaptcha_options', 'recaptcha_disable_for_known_users' , 'intval');
 
 			add_settings_section('recaptcha_options', __( 'Features' , 'wp-recaptcha-integration' ), '__return_false', 'recaptcha');
@@ -78,7 +79,7 @@ class WordPress_reCaptcha_Options {
 					'items' => array(
 						array(
 							'value' => 'grecaptcha',
-							'label' => __( 'Modern Style where you just click a checkbox' , 'wp-recaptcha-integration' ),
+							'label' => __( 'No Captcha where you just click a button' , 'wp-recaptcha-integration' ),
 						),
 						array(
 							'value' => 'recaptcha',
@@ -103,6 +104,11 @@ class WordPress_reCaptcha_Options {
 			add_settings_field('recaptcha_enable_login', __('Protect Login','wp-recaptcha-integration'), 
 				array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' ,
 				array('name'=>'recaptcha_enable_login','label'=>__( 'Protect Login form with recaptcha.','wp-recaptcha-integration' )) 
+			);
+
+			add_settings_field('recaptcha_enable_lostpw', __('Protect Lost Password','wp-recaptcha-integration'), 
+				array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' ,
+				array('name'=>'recaptcha_enable_lostpw','label'=>__( 'Protect Lost Password form with recaptcha.','wp-recaptcha-integration' )) 
 			);
 
 			add_settings_field('recaptcha_disable_for_known_users', __('Disable for known users','wp-recaptcha-integration'), 

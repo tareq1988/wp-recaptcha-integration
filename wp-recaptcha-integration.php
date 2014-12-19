@@ -49,6 +49,7 @@ class WordPress_reCaptcha {
 		add_option('recaptcha_enable_comments' , true);
 		add_option('recaptcha_enable_signup' , true);
 		add_option('recaptcha_enable_login' , false);
+		add_option('recaptcha_enable_lostpw' , false);
 		add_option('recaptcha_disable_for_known_users' , true);
 		
 		$this->_has_api_key = get_option( 'recaptcha_publickey' ) && get_option( 'recaptcha_privatekey' );
@@ -59,7 +60,7 @@ class WordPress_reCaptcha {
 			add_action('init' , array(&$this,'init') );
 			add_action('plugins_loaded' , array(&$this,'plugins_loaded') );
 
-			if ( get_option('recaptcha_enable_signup') || get_option('recaptcha_enable_login') )
+			if ( get_option('recaptcha_enable_signup') || get_option('recaptcha_enable_login')  || get_option('recaptcha_enable_lostpw') )
 				add_action( 'login_head' , array(&$this,'recaptcha_script') );
 		}
 
@@ -101,7 +102,10 @@ class WordPress_reCaptcha {
 			add_action('login_form',array($this,'print_recaptcha_html'));
 			add_filter('wp_authenticate_user',array(&$this,'deny_login'),99 );
 		}
-
+		if ( get_option('recaptcha_enable_lostpw') && $require_recaptcha ) {
+			add_action('lostpassword_form' , array($this,'print_recaptcha_html'));
+			add_filter('lostpassword_post' , array(&$this,'recaptcha_check_or_die'),99 );
+		}
 	}
 	
 	function is_required() {
@@ -122,23 +126,33 @@ class WordPress_reCaptcha {
 		}
 		return $errors;
 	}
-		
+
 	function recaptcha_script() {
-		$recaptcha_theme = get_option('recaptcha_theme');
-		?><script src="https://www.google.com/recaptcha/api.js?hl=en" async defer></script><?php
-		if ( $recaptcha_theme == 'custom' ) {
-			?><script type="text/javascript">
-			var RecaptchaOptions = {
-				theme : '<?php echo $recaptcha_theme ?>',
-				custom_theme_widget: 'recaptcha_widget'
-			};
-			</script><?php
-		} else {
-			?><script type="text/javascript">
-			var RecaptchaOptions = {
-				theme : '<?php echo $recaptcha_theme ?>'
-			};
-			</script><?php
+ 		switch ( get_option( 'recaptcha_flavor' ) ) {
+ 			case 'grecaptcha':
+				?><script src="https://www.google.com/recaptcha/api.js?hl=en" async defer></script><?php
+				?><style type="text/css">
+				#login {
+					width:350px !important;
+				}
+				</style><?php
+				break;
+ 			case 'recaptcha':
+				$recaptcha_theme = get_option('recaptcha_theme');
+				if ( $recaptcha_theme == 'custom' ) {
+					?><script type="text/javascript">
+					var RecaptchaOptions = {
+						theme : '<?php echo $recaptcha_theme ?>',
+						custom_theme_widget: 'recaptcha_widget'
+					};
+					</script><?php
+				} else {
+					?><script type="text/javascript">
+					var RecaptchaOptions = {
+						theme : '<?php echo $recaptcha_theme ?>'
+					};
+					</script><?php
+				}
 		}
  	}
  	function recaptcha_check_or_die( ) {
