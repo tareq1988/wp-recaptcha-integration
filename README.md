@@ -68,7 +68,7 @@ Planned Features
 - Multisite support: If network enabled, make options Protect Comment form, Signup, 
   Login, Registration, and Lost Password global
   
-- API Key test tool. (On Network test for every site).
+- API Key test tool: Check verification as well.
 
 Support
 -------
