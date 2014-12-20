@@ -127,8 +127,8 @@ class WordPress_reCaptcha {
 		return $errors;
 	}
 
-	function recaptcha_script( $flavor = null ) {
-		if ( is_null( $flavor ) )
+	function recaptcha_script( $flavor = '' ) {
+		if ( empty( $flavor ) )
 			$flavor = get_option( 'recaptcha_flavor' );
  		switch ( $flavor ) {
  			case 'grecaptcha':

@@ -92,7 +92,10 @@ I will migrate all the translation stuff there.
 
 == Changelog ==
 
-= 1.0.0 =
+= 0.9.1 =
+- Add testing tool for checking the api key.
+
+= 0.9.0 =
 Initial Release
 
 == Plugin API ==
