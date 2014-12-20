@@ -94,6 +94,7 @@ I will migrate all the translation stuff there.
 
 = 0.9.1 =
 - Add testing tool for checking the api key.
+- Fixes
 
 = 0.9.0 =
 Initial Release
