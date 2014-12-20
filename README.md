@@ -16,7 +16,7 @@ Limitations
 -----------
 - Currently you can't have more than one reCaptcha on a page. 
   This may affect you for example when you have a contact page with a comment form. 
-  With old style recaptcha reCaptcha this cant be fixed. For the new Style reCaptchas 
+  For old style reCaptcha this cannot be fixed. For the new Style reCaptchas 
   this is due to be implemented in the near future.
 
 - On a Contact Form 7 when the reCaptcha is disabled (e.g. for logged in users) the field

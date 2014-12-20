@@ -12,9 +12,9 @@ reCaptcha for login, signup, comment forms, Ninja Forms and Contact Form 7.
 
 == Description ==
 
-Integrate reCaptcha in your blog. Supports new style recaptcha. Provides of the box integration 
-for signup, login, comment forms, Ninja Forms and contact form 7 as well as a plugin API for 
-your own integrations.
+Integrate reCaptcha in your blog. Supports no Captcha as well as old style recaptcha. 
+Provides of the box integration for signup, login, comment forms, Ninja Forms and contact 
+form 7 as well as a plugin API for your own integrations.
 
 = Features: =
 - Secures login, signup and comments with a recaptcha.
@@ -24,13 +24,31 @@ your own integrations.
 
 Latest Files on GitHub: [https://github.com/mcguffin/wp-recaptcha-integration](https://github.com/mcguffin/wp-recaptcha-integration)
 
+= Known Limitations =
+- Currently you can't have more than one reCaptcha on a page. 
+  This may affect you for example when you have a contact page with a comment form. 
+  For old style reCaptcha this cannot be fixed. For the new Style reCaptchas 
+  this is due to be implemented in the near future.
+
+- On a Contact Form 7 when the reCaptcha is disabled (e.g. for logged in users) the field
+  label will be still visible. This is due to CF7 Shortcode architecture, and can't be fixed.
+
+  To handle this there is a filter `recaptcha_disabled_html`. You can return a message for your logged-in 
+  users here. Check out the [GitHub Repo](https://github.com/mcguffin/wp-recaptcha-integration) for details.
+
 == Installation ==
 
 First follow the standard [WordPress plugin installation procedere](http://codex.wordpress.org/Managing_Plugins).
 
-Then goto the [Google Recaptcha Site](http://www.google.com/recaptcha), sign up your site and enter your API-Keys on the configuration page.
+Then go to the [Google Recaptcha Site](http://www.google.com/recaptcha), sign up your site and enter your API-Keys on the configuration page.
 
 == Frequently asked questions ==
+
+= The plugin does not show up. What’s wrong? =
+
+On the plugin settings page check out if the option “Disable for known users” is activated (it is by default).
+Then log out (or open your page in a private browser window) and try again. 
+If the problem still persist, Houson really has a problem, and you are welcome to post a support request. 
 
 = I found a bug. Where should I post it? =
 
