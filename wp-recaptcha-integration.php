@@ -127,8 +127,10 @@ class WordPress_reCaptcha {
 		return $errors;
 	}
 
-	function recaptcha_script() {
- 		switch ( get_option( 'recaptcha_flavor' ) ) {
+	function recaptcha_script( $flavor = null ) {
+		if ( is_null( $flavor ) )
+			$flavor = get_option( 'recaptcha_flavor' );
+ 		switch ( $flavor ) {
  			case 'grecaptcha':
 				?><script src="https://www.google.com/recaptcha/api.js?hl=en" async defer></script><?php
 				?><style type="text/css">
@@ -160,12 +162,14 @@ class WordPress_reCaptcha {
  			wp_die( __("Sorry, the Captcha didn’t verify.",'wp-recaptcha-integration') );
  	}
  	
- 	function print_recaptcha_html(){
- 		echo $this->recaptcha_html();
+ 	function print_recaptcha_html( $flavor = null ){
+ 		echo $this->recaptcha_html( $flavor );
  	}
  	
- 	function recaptcha_html() {
- 		switch ( get_option( 'recaptcha_flavor' ) ) {
+ 	function recaptcha_html( $flavor = null ) {
+		if ( is_null( $flavor ) )
+			$flavor = get_option( 'recaptcha_flavor' );
+ 		switch ( $flavor ) {
  			case 'grecaptcha':
  				return $this->grecaptcha_html();
  			case 'recaptcha':

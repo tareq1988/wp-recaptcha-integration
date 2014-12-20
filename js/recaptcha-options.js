@@ -8,4 +8,15 @@
 			.removeClass('flavor-grecaptcha')
 			.addClass('flavor-'+$(this).val());
 	});
+	
+	
+	$(document).on('click','#test-api-key' , function(e){
+		console.log( $(this).prop('href') );
+		if ( ! $('#recaptcha-test-result').length )
+			$(this).closest('div').append('<div id="recaptcha-test-result" />');
+		$('#recaptcha-test-result').load( $(this).prop('href') ,{},function(e){console.log(e);});
+		e.preventDefault();
+		e.stopPropagation();
+	});
+	
 })(jQuery);

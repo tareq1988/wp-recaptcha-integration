@@ -29,7 +29,26 @@ class WordPress_reCaptcha_Options {
 	private function __construct() {
 		add_action('admin_init', array(&$this,'admin_init') );
 		add_action('admin_menu', array(&$this,'add_options_page') );
+		
+		add_action( 'pre_update_option_recaptcha_publickey' , array( &$this , 'update_option_recaptcha_apikey' ) , 10 , 2 );
+		add_action( 'pre_update_option_recaptcha_privatekey' , array( &$this , 'update_option_recaptcha_apikey' ) , 10 , 2 );
+		add_action( 'add_option_recaptcha_publickey' , array( &$this , 'add_option_recaptcha_apikey' ) , 10 , 2 );
+		add_action( 'add_option_recaptcha_privatekey' , array( &$this , 'add_option_recaptcha_apikey' ) , 10 , 2 );
 	}
+	
+	function update_option_recaptcha_apikey( $new , $old ){
+		add_filter( 'wp_redirect' , array( &$this , 'remove_new_apikey_url' ) );
+		return $new;
+	}
+	function add_option_recaptcha_apikey( $option , $value ){
+		if ( in_array( $option , array('recaptcha_publickey','recaptcha_privatekey') ) )
+			add_filter( 'wp_redirect' , array( &$this , 'remove_new_apikey_url' ) );
+	}
+	
+	function remove_new_apikey_url( $url = null ) {
+		return remove_query_arg( array('_wpnonce' , 'recaptcha-action' , 'settings-updated' ) , $url );
+	}
+	
 	function api_key_notice() {
 		?><div class="notice error above-h1"><p><?php 
 			printf( 
@@ -45,8 +64,9 @@ class WordPress_reCaptcha_Options {
 			add_action('admin_notices',array( &$this , 'api_key_notice'));
 		}
 
-		$this->enter_api_key = ! $has_api_key || ( isset($_REQUEST['action']) && $_REQUEST['action'] == 'recaptcha-api-key' && isset($_REQUEST['_wpnonce']) && $nonce_valid = wp_verify_nonce($_REQUEST['_wpnonce'],$_REQUEST['action']) );
+		$this->enter_api_key = ! $has_api_key || ( isset($_REQUEST['recaptcha-action']) && $_REQUEST['recaptcha-action'] == 'recaptcha-set-api-key');
 		if ( $this->enter_api_key ) {
+			// no API Key. Let the user enter it.
 			register_setting( 'recaptcha_options', 'recaptcha_publickey' );
 			register_setting( 'recaptcha_options', 'recaptcha_privatekey' );
 			add_settings_field('recaptcha_publickey', __('Public Key','wp-recaptcha-integration'), array(&$this,'input_text'), 'recaptcha', 'recaptcha_apikey' , array('name'=>'recaptcha_publickey') );
@@ -58,7 +78,9 @@ class WordPress_reCaptcha_Options {
 		} else if ( @$nonce_valid === false) {
 			wp_die('Security Check');
 		} else {
+			// API Key. Add test tool.
 			add_settings_section('recaptcha_apikey', __( 'Connecting' , 'wp-recaptcha-integration' ), array(&$this,'explain_apikey'), 'recaptcha');
+			add_action('wp_ajax_recaptcha-test-api-key' , array( &$this , 'ajax_test_api_key' ) );
 		}
 		
 		if ( $has_api_key ) {
@@ -131,21 +153,40 @@ class WordPress_reCaptcha_Options {
 						$admin_url , $info_url 
 					);
 			?></p><?php
+			?><input type="hidden" name="recaptcha-action" value="recaptcha-set-api-key" /><?php
 		} else {
-			?><p class="description"><?php 
-				_e( 'You already entered an API Key. Use the button below to enter it again.','wp-recaptcha-integration');
-			?></p><?php
-			$action = 'recaptcha-api-key';
-			$nonce = wp_create_nonce( $action );
-			$url = add_query_arg( array('_wpnonce' => $nonce , 'action' => $action ) );
-			?><p class="submit"><?php 
-				?><a class="button" href="<?php echo $url ?>"><?php _e('New API Key' , 'wp-recaptcha-integration') ?></a><?php
-			?></p><?php
+			?><div class="recaptcha-explain"><?php
+				?><p class="description"><?php 
+					_e( 'You already entered an API Key. Use the button below to enter it again.','wp-recaptcha-integration');
+				?></p><?php
+				$action = 'recaptcha-set-api-key';
+				$nonce = wp_create_nonce( $action );
+				$new_url = add_query_arg( array('_wpnonce' => $nonce , 'recaptcha-action' => $action ) );
 			
+				$action = 'recaptcha-test-api-key';
+				$nonce = wp_create_nonce( $action );
+				$test_url = add_query_arg( array('_wpnonce' => $nonce , 'action' => $action ) , admin_url( 'admin-ajax.php' ) );
+			
+				?><p class="submit"><?php 
+					?><a class="button" href="<?php echo $new_url ?>"><?php _e('New API Key' , 'wp-recaptcha-integration') ?></a><?php
+					?><a id="test-api-key" class="button" href="<?php echo $test_url ?>"><?php _e('Test API Key' , 'wp-recaptcha-integration') ?></a><?php
+				?></p><?php
+			?></div><?php
 		}
 	}
+	
+	public function ajax_test_api_key() {
+		if ( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'] , $_REQUEST['action'] ) ) {
+			header('Content-Type: text/html');
+			WordPress_reCaptcha::instance()->recaptcha_script( 'grecaptcha' );
+			WordPress_reCaptcha::instance()->print_recaptcha_html( 'grecaptcha' );
+		}
+		exit(0);
+	}
+	
 	public function cancel_enter_api_key(){
-		$url = remove_query_arg( array('_wpnonce' , 'action' , 'settings-updated' ) );
+		$url = $this->remove_new_apikey_url( );
+//		$url = remove_query_arg( array('_wpnonce' , 'recaptcha-action' , 'settings-updated' ) );
 		?><a class="button" href="<?php echo $url ?>"><?php _e( 'Cancel' ) ?></a><?php
 	}
 	
