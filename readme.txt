@@ -1,7 +1,7 @@
 === WordPress ReCaptcha Integration ===
 Contributors: podpirate
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=F8NKC6TCASUXE
-Tags: security, captcha, recaptcha, 
+Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms
 Requires at least: 3.8
 Tested up to: 4.1
 Stable tag: trunk
