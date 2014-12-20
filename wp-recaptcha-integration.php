@@ -162,12 +162,12 @@ class WordPress_reCaptcha {
  			wp_die( __("Sorry, the Captcha didn’t verify.",'wp-recaptcha-integration') );
  	}
  	
- 	function print_recaptcha_html( $flavor = null ){
+ 	function print_recaptcha_html( $flavor = '' ){
  		echo $this->recaptcha_html( $flavor );
  	}
  	
- 	function recaptcha_html( $flavor = null ) {
-		if ( is_null( $flavor ) )
+ 	function recaptcha_html( $flavor = '' ) {
+		if ( empty( $flavor ) )
 			$flavor = get_option( 'recaptcha_flavor' );
  		switch ( $flavor ) {
  			case 'grecaptcha':
