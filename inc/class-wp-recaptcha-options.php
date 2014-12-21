@@ -204,7 +204,6 @@ class WP_reCaptcha_Options {
 			}
 			add_settings_section('recaptcha_options', __( 'Features' , 'wp-recaptcha-integration' ), '__return_false', 'recaptcha');
 
-
 			if ( ! WP_reCaptcha::instance()->get_option( 'recaptcha_publickey' ) || ! WP_reCaptcha::instance()->get_option( 'recaptcha_privatekey' ) )
 				add_settings_error('recaptcha',1,__('Please configure the public and private key. <a href="http://www.google.com/recaptcha/whyrecaptcha">What are you trying to tell me?</a>','wp-recaptcha-integration'),'updated');
 		}

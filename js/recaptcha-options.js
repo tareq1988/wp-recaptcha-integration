@@ -36,5 +36,4 @@
 		e.stopPropagation();
 		return false;
 	});
-	
 })(jQuery);
