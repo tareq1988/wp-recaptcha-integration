@@ -30,7 +30,7 @@ class WP_reCaptcha_Options {
 		add_action('admin_init', array(&$this,'admin_init') );
 		add_action('admin_menu', array(&$this,'add_options_page') );
 
-		if ( is_recaptcha_integration_active_for_network() ) {
+		if ( WP_reCaptcha::is_network_activated() ) {
 			$page_hook = 'settings_page_racaptcha-settings';
 			add_action( "load-{$page_hook}", array( &$this , 'enqueue_styles' ));
 			add_action( "load-{$page_hook}", array( &$this , 'process_network_settings' ));
@@ -180,7 +180,7 @@ class WP_reCaptcha_Options {
 		}
 
 		if ( $has_api_key ) {
-			if (  ! is_recaptcha_integration_active_for_network() ||  ! is_network_admin()  ) {
+			if (  ! WP_reCaptcha::is_network_activated() ||  ! is_network_admin()  ) {
 				register_setting( 'recaptcha_options', 'recaptcha_flavor' , array( &$this , 'sanitize_flavor' ) );
 				register_setting( 'recaptcha_options', 'recaptcha_theme'  , array( &$this , 'sanitize_theme' ) );
 
@@ -204,7 +204,7 @@ class WP_reCaptcha_Options {
 
 
 			}
-			if ( ! is_recaptcha_integration_active_for_network() || is_network_admin() ) {
+			if ( ! WP_reCaptcha::is_network_activated() || is_network_admin() ) {
 				register_setting( 'recaptcha_options', 'recaptcha_enable_comments' , 'intval');
 				register_setting( 'recaptcha_options', 'recaptcha_enable_signup', 'intval' );
 				register_setting( 'recaptcha_options', 'recaptcha_enable_login' , 'intval');

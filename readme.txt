@@ -92,9 +92,9 @@ I will migrate all the translation stuff there.
 
 == Changelog ==
 
-= 0.9.2 =
-- Test captcha verification process in Settings
-- Add multisite support.
+= 1.0.0 =
+- Test captcha verification in Settings
+- Multisite support.
 
 = 0.9.1 =
 - Add testing tool for checking the api key.

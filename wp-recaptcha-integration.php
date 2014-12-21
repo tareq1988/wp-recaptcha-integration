@@ -3,7 +3,7 @@
 Plugin Name: WP reCaptcha Integration
 Plugin URI: https://wordpress.org/plugins/wp-recaptcha-integration/
 Description: Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha) as well as the old stle reCaptcha. Provides of the box integration for signup, login, comment forms, lost password, Ninja Forms and contact form 7.
-Version: 0.9.2
+Version: 1.0.0
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 */
@@ -12,6 +12,8 @@ Author URI: https://github.com/mcguffin/
 
 
 class WP_reCaptcha {
+
+	private static $_is_network_activated = null;
 
 	private $_has_api_key = false;
 
@@ -46,9 +48,10 @@ class WP_reCaptcha {
 		add_option('recaptcha_publickey',''); // 1st global -> then local
 		add_option('recaptcha_privatekey',''); // 1st global -> then local
 
-		if ( is_recaptcha_integration_active_for_network() ) {
+		if ( WP_reCaptcha::is_network_activated() ) {
 			add_site_option('recaptcha_publickey',''); // 1st global -> then local
 			add_site_option('recaptcha_privatekey',''); // 1st global -> then local
+			
 			add_site_option('recaptcha_enable_comments' , true); // global
 			add_site_option('recaptcha_enable_signup' , true); // global
 			add_site_option('recaptcha_enable_login' , false); // global
@@ -63,7 +66,6 @@ class WP_reCaptcha {
 			add_option('recaptcha_disable_for_known_users' , true); // global
 			$this->_has_api_key = get_option( 'recaptcha_publickey' ) && get_option( 'recaptcha_privatekey' );
 		}
-		
 
 		if ( $this->_has_api_key ) {
 			add_action( 'wp_head' , array($this,'recaptcha_script') );
@@ -101,20 +103,20 @@ class WP_reCaptcha {
 		$require_recaptcha = $this->is_required();
 		
 		if ( $this->get_option('recaptcha_enable_comments') && $require_recaptcha ) {
-			add_action('comment_form',array($this,'print_recaptcha_html'));
+			add_action('comment_form',array($this,'print_recaptcha_html'),10,0);
 			add_action('pre_comment_on_post',array($this,'recaptcha_check_or_die'));
 			// add action @ comment approve
 		}
 		if ( $this->get_option('recaptcha_enable_signup') && $require_recaptcha ) {
-			add_action('register_form',array($this,'print_recaptcha_html'));
+			add_action('register_form',array($this,'print_recaptcha_html'),10,0);
 			add_filter('registration_errors',array(&$this,'login_errors'));
 		}
 		if ( $this->get_option('recaptcha_enable_login') && $require_recaptcha ) {
-			add_action('login_form',array($this,'print_recaptcha_html'));
+			add_action('login_form',array($this,'print_recaptcha_html'),10,0);
 			add_filter('wp_authenticate_user',array(&$this,'deny_login'),99 );
 		}
 		if ( $this->get_option('recaptcha_enable_lostpw') && $require_recaptcha ) {
-			add_action('lostpassword_form' , array($this,'print_recaptcha_html'));
+			add_action('lostpassword_form' , array($this,'print_recaptcha_html'),10,0);
 			add_filter('lostpassword_post' , array(&$this,'recaptcha_check_or_die'),99 );
 		}
 	}
@@ -174,11 +176,12 @@ class WP_reCaptcha {
  			wp_die( __("Sorry, the Captcha didn’t verify.",'wp-recaptcha-integration') );
  	}
  	
- 	function print_recaptcha_html( $flavor = '' ){
+ 	function print_recaptcha_html( $flavor = '' ) {
  		echo $this->recaptcha_html( $flavor );
  	}
  	
  	function recaptcha_html( $flavor = '' ) {
+		
 		if ( empty( $flavor ) )
 			$flavor = $this->get_option( 'recaptcha_flavor' );
  		switch ( $flavor ) {
@@ -289,7 +292,7 @@ class WP_reCaptcha {
 			case 'recaptcha_publickey':
 			case 'recaptcha_privatekey':
 				$option_value = get_option($option_name);
-				if ( ! $option_value && is_recaptcha_integration_active_for_network() )	
+				if ( ! $option_value && WP_reCaptcha::is_network_activated() )	
 					$option_value = get_site_option( $option_name );
 				return $option_value;
 			case 'recaptcha_enable_comments':
@@ -297,7 +300,7 @@ class WP_reCaptcha {
 			case 'recaptcha_enable_login':
 			case 'recaptcha_enable_lostpw':
 			case 'recaptcha_disable_for_known_users':
-				if ( is_recaptcha_integration_active_for_network( ) )
+				if ( WP_reCaptcha::is_network_activated() )
 					return get_site_option($option_name);
 				return get_option( $option_name );
 		}
@@ -315,28 +318,49 @@ class WP_reCaptcha {
 	public static function deactivate() {
 	}
 	/**
-	 *
+	 *	Uninstall
 	 */
 	public static function uninstall() {
-		delete_option( 'recaptcha_publickey' );
-		delete_option( 'recaptcha_privatekey' );
+		if ( is_multisite() ) {
+			delete_site_option( 'recaptcha_publickey' );
+			delete_site_option( 'recaptcha_privatekey' );
+			delete_site_option( 'recaptcha_enable_comments' );
+			delete_site_option( 'recaptcha_enable_signup' );
+			delete_site_option( 'recaptcha_enable_login' );
+			delete_site_option( 'recaptcha_disable_for_known_users' );
+			
+			foreach ( wp_get_sites() as $site) {
+				switch_to_blog( $site["blog_id"] );
+				delete_option( 'recaptcha_publickey' );
+				delete_option( 'recaptcha_privatekey' );
+				delete_option( 'recaptcha_flavor' );
+				delete_option( 'recaptcha_theme' );
+				restore_current_blog();
+			}
+		} else {
+			delete_option( 'recaptcha_publickey' );
+			delete_option( 'recaptcha_privatekey' );
 		
-		delete_option( 'recaptcha_flavor' );
-		delete_option( 'recaptcha_theme' );
-		delete_option( 'recaptcha_enable_comments' );
-		delete_option( 'recaptcha_enable_signup' );
-		delete_option( 'recaptcha_enable_login' );
-		delete_option( 'recaptcha_disable_for_known_users' );
+			delete_option( 'recaptcha_flavor' );
+			delete_option( 'recaptcha_theme' );
+			delete_option( 'recaptcha_enable_comments' );
+			delete_option( 'recaptcha_enable_signup' );
+			delete_option( 'recaptcha_enable_login' );
+			delete_option( 'recaptcha_disable_for_known_users' );
+		}
 	}
-}
+	
+	static function is_network_activated() {
+		if ( is_null(self::$_is_network_activated) ) {
+			if ( ! is_multisite() )
+				return false;
+			if ( ! function_exists( 'is_plugin_active_for_network' ) )
+				require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 
-function is_recaptcha_integration_active_for_network( ) {
-	if ( ! is_multisite() )
-		return false;
-	if ( ! function_exists( 'is_plugin_active_for_network' ) )
-		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
-
-	return is_plugin_active_for_network( basename(dirname(__FILE__)).'/'.basename(__FILE__) );
+			self::$_is_network_activated = is_plugin_active_for_network( basename(dirname(__FILE__)).'/'.basename(__FILE__) );
+		}
+		return self::$_is_network_activated;
+	}
 }
 
 
