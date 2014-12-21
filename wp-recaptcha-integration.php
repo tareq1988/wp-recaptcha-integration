@@ -16,6 +16,7 @@ class WordPress_reCaptcha {
 	private $_has_api_key = false;
 
 	private $last_error = '';
+	private $_last_result;
 	
 	/**
 	 *	Holding the singleton instance
@@ -155,6 +156,7 @@ class WordPress_reCaptcha {
 					};
 					</script><?php
 				}
+				break;
 		}
  	}
  	function recaptcha_check_or_die( ) {
@@ -226,8 +228,14 @@ class WordPress_reCaptcha {
 		return $return;
  	}
 	
-	function recaptcha_check() {
- 		switch ( get_option( 'recaptcha_flavor' ) ) {
+	function get_last_result() {
+		return $this->_last_result;
+	}
+	
+	function recaptcha_check( $flavor = '' ) {
+		if ( empty( $flavor ) )
+			$flavor = get_option( 'recaptcha_flavor' );
+ 		switch ( $flavor ) {
  			case 'grecaptcha':
  				return $this->grecaptcha_check();
  			case 'recaptcha':
@@ -243,8 +251,8 @@ class WordPress_reCaptcha {
 			$response = wp_remote_get( $url );
 			if ( ! is_wp_error($response) ) {
 				$response_data = wp_remote_retrieve_body( $response );
-				$result = json_decode($response_data);
-				return $result->success;
+				$this->_last_result = json_decode($response_data);
+				return $this->_last_result->success;
 			}
 		}
 		return false;
@@ -252,15 +260,15 @@ class WordPress_reCaptcha {
 	function old_recaptcha_check() {
 		require_once dirname(__FILE__).'/recaptchalib.php';
 		$private_key = get_option( 'recaptcha_privatekey' );
-		$response = recaptcha_check_answer( $private_key,
+		$this->_last_result = recaptcha_check_answer( $private_key,
 			$_SERVER["REMOTE_ADDR"],
 			$_POST["recaptcha_challenge_field"],
 			$_POST["recaptcha_response_field"]);
 
-		if ( ! $response->is_valid )
-			$this->last_error = $response->error;
+		if ( ! $this->_last_result->is_valid )
+			$this->last_error = $this->_last_result->error;
 
-		return $response->is_valid;
+		return $this->_last_result->is_valid;
 	}
 	/**
 	 *	Fired on plugin activation

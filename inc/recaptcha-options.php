@@ -67,8 +67,8 @@ class WordPress_reCaptcha_Options {
 		$this->enter_api_key = ! $has_api_key || ( isset($_REQUEST['recaptcha-action']) && $_REQUEST['recaptcha-action'] == 'recaptcha-set-api-key');
 		if ( $this->enter_api_key ) {
 			// no API Key. Let the user enter it.
-			register_setting( 'recaptcha_options', 'recaptcha_publickey' );
-			register_setting( 'recaptcha_options', 'recaptcha_privatekey' );
+			register_setting( 'recaptcha_options', 'recaptcha_publickey' , 'trim' );
+			register_setting( 'recaptcha_options', 'recaptcha_privatekey' , 'trim' );
 			add_settings_field('recaptcha_publickey', __('Public Key','wp-recaptcha-integration'), array(&$this,'input_text'), 'recaptcha', 'recaptcha_apikey' , array('name'=>'recaptcha_publickey') );
 			add_settings_field('recaptcha_privatekey', __('Private Key','wp-recaptcha-integration'), array(&$this,'input_text'), 'recaptcha', 'recaptcha_apikey', array('name'=>'recaptcha_privatekey'));
 			add_settings_section('recaptcha_apikey', __( 'Connecting' , 'wp-recaptcha-integration' ), array(&$this,'explain_apikey'), 'recaptcha');
@@ -180,13 +180,37 @@ class WordPress_reCaptcha_Options {
 			header('Content-Type: text/html');
 			WordPress_reCaptcha::instance()->recaptcha_script( 'grecaptcha' );
 			WordPress_reCaptcha::instance()->print_recaptcha_html( 'grecaptcha' );
+			$action = 'recaptcha-test-verification';
+			$nonce = wp_create_nonce( $action );
+			?><input type="hidden" name="<?php echo $action ?>-nonce" value="<?php echo $nonce ?>" /><?php
+			?><button id="<?php echo $action ?>" name="action" class="button-primary" value="<?php echo $action ?>"><?php _e('Test verfication','wp-recaptcha-integration') ?></button><?php
+		}
+		exit(0);
+	}
+	public function ajax_test_api_key_verification() {
+		if ( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'] , $_REQUEST['action'] ) ) {
+			header('Content-Type: text/html');
+			if ( ! WordPress_reCaptcha::instance()->recaptcha_check( 'grecaptcha' ) ) {
+				$errs = array(
+					'missing-input-secret' => __('The secret Key is missing.','wp-recaptcha-integration'),
+					'invalid-input-secret' => __('The secret Key is invalid. You better enter it','wp-recaptcha-integration'),
+					'missing-input-response' => __('','wp-recaptcha-integration'),
+					'invalid-input-response' => __('','wp-recaptcha-integration'),
+				);
+				$result = WordPress_reCaptcha::instance()->get_last_result();
+				if ( isset( $result['error-codes'] ) ) {
+					foreach ( $result['error-codes'] as $err ) {
+					}
+				}
+			} else {
+				?><p><?php _e('Works! All good!','wp-recaptcha-integration') ?></p><?php
+			}
 		}
 		exit(0);
 	}
 	
 	public function cancel_enter_api_key(){
 		$url = $this->remove_new_apikey_url( );
-//		$url = remove_query_arg( array('_wpnonce' , 'recaptcha-action' , 'settings-updated' ) );
 		?><a class="button" href="<?php echo $url ?>"><?php _e( 'Cancel' ) ?></a><?php
 	}
 	
