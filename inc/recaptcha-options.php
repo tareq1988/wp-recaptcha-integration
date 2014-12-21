@@ -193,9 +193,9 @@ class WordPress_reCaptcha_Options {
 			if ( ! WordPress_reCaptcha::instance()->recaptcha_check( 'grecaptcha' ) ) {
 				$errs = array(
 					'missing-input-secret' => __('The secret Key is missing.','wp-recaptcha-integration'),
-					'invalid-input-secret' => __('The secret Key is invalid. You better enter it','wp-recaptcha-integration'),
-					'missing-input-response' => __('','wp-recaptcha-integration'),
-					'invalid-input-response' => __('','wp-recaptcha-integration'),
+					'invalid-input-secret' => __('The secret Key is invalid. You better check your domain configuration and enter it again.','wp-recaptcha-integration'),
+					'missing-input-response' => __('The user response was missing ','wp-recaptcha-integration'),
+					'invalid-input-response' => __('Invalid user response','wp-recaptcha-integration'),
 				);
 				$result = WordPress_reCaptcha::instance()->get_last_result();
 				if ( isset( $result['error-codes'] ) ) {
