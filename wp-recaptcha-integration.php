@@ -24,7 +24,7 @@ class WordPress_reCaptcha {
 	private static $_instance = null;
 
 	/**
-	 *	@return WordPress_reCaptcha_Options The options manager instance
+	 *	@return WordPress_reCaptcha
 	 */
 	public static function instance(){
 		if ( is_null( self::$_instance ) )
@@ -300,4 +300,5 @@ class WordPress_reCaptcha {
 
 WordPress_reCaptcha::instance();
 
-require_once dirname(__FILE__).'/inc/recaptcha-options.php';
+if ( is_admin() )
+	require_once dirname(__FILE__).'/inc/class-wp-recaptcha-options.php';

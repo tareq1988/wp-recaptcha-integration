@@ -2,7 +2,7 @@
 
 
 
-class WordPress_reCaptcha_Options {
+class WP_reCaptcha_Options {
 	private $enter_api_key;
 	/**
 	 *	Holding the singleton instance
@@ -10,7 +10,7 @@ class WordPress_reCaptcha_Options {
 	private static $_instance = null;
 
 	/**
-	 *	@return WordPress_reCaptcha_Options The options manager instance
+	 *	@return WP_reCaptcha_Options The options manager instance
 	 */
 	public static function instance(){
 		if ( is_null( self::$_instance ) )
@@ -357,5 +357,5 @@ class WordPress_reCaptcha_Options {
 }
 
 
-WordPress_reCaptcha_Options::instance();
+WP_reCaptcha_Options::instance();
 
