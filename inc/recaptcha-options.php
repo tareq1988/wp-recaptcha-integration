@@ -81,6 +81,7 @@ class WordPress_reCaptcha_Options {
 			// API Key. Add test tool.
 			add_settings_section('recaptcha_apikey', __( 'Connecting' , 'wp-recaptcha-integration' ), array(&$this,'explain_apikey'), 'recaptcha');
 			add_action('wp_ajax_recaptcha-test-api-key' , array( &$this , 'ajax_test_api_key' ) );
+			add_action('wp_ajax_recaptcha-test-verification' , array( &$this , 'ajax_test_api_key_verification' ) );
 		}
 
 		if ( $has_api_key ) {
@@ -200,10 +201,11 @@ class WordPress_reCaptcha_Options {
 				$result = WordPress_reCaptcha::instance()->get_last_result();
 				if ( isset( $result['error-codes'] ) ) {
 					foreach ( $result['error-codes'] as $err ) {
+						?><div class="error"><?php echo $errs[$err]; ?></div><?php
 					}
 				}
 			} else {
-				?><p><?php _e('Works! All good!','wp-recaptcha-integration') ?></p><?php
+				?><div class="updated"><?php _e('Works! All good!','wp-recaptcha-integration') ?></div><?php
 			}
 		}
 		exit(0);

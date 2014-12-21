@@ -17,6 +17,24 @@
 		$('#recaptcha-test-result').load( $(this).prop('href') ,{},function(e){console.log(e);});
 		e.preventDefault();
 		e.stopPropagation();
+		$(this).remove();
+		return false;
 	});
-	
+	$(document).on('click','#recaptcha-test-verification' , function(e){
+		var data = {
+			'action' : 'recaptcha-test-verification',
+			'_wpnonce' : $('[name="recaptcha-test-verification-nonce"]').val(),
+			'g-recaptcha-response' : $('#g-recaptcha-response').val()
+		};
+		
+		$.post( ajaxurl , 
+			data , 
+			function(response) {
+				$('#recaptcha-test-result').html(response);
+			});
+		
+		e.preventDefault();
+		e.stopPropagation();
+		return false;
+	});
 })(jQuery);
