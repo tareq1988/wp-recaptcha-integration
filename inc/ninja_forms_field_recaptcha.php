@@ -34,7 +34,7 @@ function ninja_forms_register_field_recaptcha(){
 }
 if ( function_exists('ninja_forms_register_field') ) {
 	add_action('init', 'ninja_forms_register_field_recaptcha');
-	add_action('wp_footer','ninja_forms_recaptcha_script');
+	add_action('wp_footer','ninja_forms_recaptcha_script',9999);
 	add_filter('ninja_forms_field','ninja_forms_recaptcha_field_data',10,2);
 }
 
@@ -47,12 +47,14 @@ function ninja_forms_recaptcha_field_data( $data, $field_id ) {
 
 function ninja_forms_recaptcha_script($id) {
 	// print script
-	$html = '<script type="text/javascript"> 
-		jQuery(document).on("submitResponse.default", function(e, response){
-			Recaptcha.reload();
-		});
-	</script>';
-	echo $html;
+	if ( 'recaptcha' == WP_reCaptcha::instance()->get_option( 'recaptcha_flavor' ) ) {
+		$html = '<script type="text/javascript"> 
+			jQuery(document).on("submitResponse.default", function(e, response){
+				Recaptcha.reload();
+			});
+		</script>';
+		echo $html;
+	}
 }
 
 function ninja_forms_field_recaptcha_display($field_id, $data){

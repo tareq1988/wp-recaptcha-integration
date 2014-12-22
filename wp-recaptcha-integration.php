@@ -194,10 +194,10 @@ class WP_reCaptcha {
  		switch ( $flavor ) {
  			case 'grecaptcha':
 				?><script type="text/javascript">
-				function recaptchaLoadCallback(){
-				var e=document.getElementsByClassName('g-recaptcha');
-				console.log(e);
-				for (var i=0;i<e.length;i++) grecaptcha.render(e[i],{'sitekey':'<?php echo $this->get_option('recaptcha_publickey') ?>'});
+				function recaptchaLoadCallback(){ 
+					var e=document.getElementsByClassName('g-recaptcha');
+					for (var i=0;i<e.length;i++) 
+						grecaptcha.render(e[i],{'sitekey':'<?php echo $this->get_option('recaptcha_publickey') ?>'});
 				}
 				</script><?php
 				?><script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit" async defer></script><?php
