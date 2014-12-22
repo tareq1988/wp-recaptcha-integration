@@ -195,7 +195,7 @@ class WP_reCaptcha {
  			case 'grecaptcha':
 				?><script type="text/javascript">
 				function recaptchaLoadCallback(){
-				var e=document.getElementsByClassName('x-recaptcha');
+				var e=document.getElementsByClassName('g-recaptcha');
 				console.log(e);
 				for (var i=0;i<e.length;i++) grecaptcha.render(e[i],{'sitekey':'<?php echo $this->get_option('recaptcha_publickey') ?>'});
 				}
@@ -242,7 +242,7 @@ class WP_reCaptcha {
 	function grecaptcha_html() {
 		$public_key = $this->get_option( 'recaptcha_publickey' );
 		$theme = $this->get_option('recaptcha_theme');
-		$return = sprintf( '<div class="x-recaptcha" data-sitekey="%s" data-theme="%s"></div>',$public_key,$theme);
+		$return = sprintf( '<div class="g-recaptcha" data-sitekey="%s" data-theme="%s"></div>',$public_key,$theme);
 		return $return;
 	}
 	
