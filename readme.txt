@@ -19,6 +19,7 @@ form 7 as well as a plugin API for your own integrations.
 = Features: =
 - Secures login, signup and comments with a recaptcha.
 - Supports old as well as new reCaptcha.
+- Multisite Support
 - [Ninja Forms](http://ninjaforms.com/) integration
 - [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) integration
 
