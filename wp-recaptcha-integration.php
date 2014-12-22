@@ -41,7 +41,7 @@ class WP_reCaptcha {
 	private static $_instance = null;
 
 	/**
-	 *	@return WordPress_reCaptcha
+	 *	@return WP_reCaptcha
 	 */
 	public static function instance(){
 		if ( is_null( self::$_instance ) )

@@ -9,13 +9,13 @@ add_action( 'wpcf7_init', 'wpcf7_add_shortcode_recaptcha' );
 
 
 function wpcf7_recaptcha_shortcode_handler( $tag ) {
-	if ( ! WordPress_reCaptcha::instance()->is_required() )
+	if ( ! WP_reCaptcha::instance()->is_required() )
 		return apply_filters( 'recaptcha_disabled_html' ,'');
 	$tag = new WPCF7_Shortcode( $tag );
 	if ( empty( $tag->name ) )
 		return '';
 
-	$recaptcha_html = WordPress_reCaptcha::instance()->recaptcha_html();
+	$recaptcha_html = WP_reCaptcha::instance()->recaptcha_html();
 	$validation_error = wpcf7_get_validation_error( $tag->name );
 
 	$html = sprintf(
@@ -62,13 +62,13 @@ function wpcf7_recaptcha_settings_callback( $contact_form ) {
 
 
 function wpcf7_recaptcha_validation_filter( $result, $tag ) {
-	if ( ! WordPress_reCaptcha::instance()->is_required() )
+	if ( ! WP_reCaptcha::instance()->is_required() )
 		return $result;
 	
 	$tag = new WPCF7_Shortcode( $tag );
 	$name = $tag->name;
 
-	if ( ! WordPress_reCaptcha::instance()->recaptcha_check() ) {
+	if ( ! WP_reCaptcha::instance()->recaptcha_check() ) {
 		$result['valid'] = false;
 		$result['reason'][$name] = __("The Captcha didn’t verify.",'wp-recaptcha-integration');
 	}
