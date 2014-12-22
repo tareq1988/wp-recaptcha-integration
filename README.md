@@ -14,10 +14,8 @@ Features
 
 Limitations
 -----------
-- Currently you can't have more than one reCaptcha on a page. 
-  This may affect you for example when you have a contact page with a comment form. 
-  For old style reCaptcha this cannot be fixed. For the new Style reCaptchas 
-  this is due to be implemented in the near future.
+- You can't have more than one old style reCaptcha on a page. This is a limitiation of 
+  reCaptcha itself. If that's an issue for you, you should use the no Captcha Form.
 
 - On a Contact Form 7 when the reCaptcha is disabled (e.g. for logged in users) the field
   label will be still visible. This is due to CF7 Shortcode architecture, and can't be fixed.

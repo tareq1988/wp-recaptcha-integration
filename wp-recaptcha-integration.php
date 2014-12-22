@@ -83,13 +83,16 @@ class WP_reCaptcha {
 		}
 
 		if ( $this->_has_api_key ) {
-			add_action( 'wp_head' , array($this,'recaptcha_script') );
+			add_action( 'wp_head' , array($this,'recaptcha_head') );
+			add_action( 'wp_footer' , array($this,'recaptcha_foot') );
 
 			add_action('init' , array(&$this,'init') );
 			add_action('plugins_loaded' , array(&$this,'plugins_loaded') );
 
-			if ( $this->get_option('recaptcha_enable_signup') || $this->get_option('recaptcha_enable_login')  || $this->get_option('recaptcha_enable_lostpw') )
-				add_action( 'login_head' , array(&$this,'recaptcha_script') );
+			if ( $this->get_option('recaptcha_enable_signup') || $this->get_option('recaptcha_enable_login')  || $this->get_option('recaptcha_enable_lostpw') ) {
+				add_action( 'login_head' , array(&$this,'recaptcha_head') );
+				add_action( 'login_footer' , array(&$this,'recaptcha_foot') );
+			}
 		}
 
 		register_activation_hook( __FILE__ , array( __CLASS__ , 'activate' ) );
@@ -155,12 +158,11 @@ class WP_reCaptcha {
 		return $errors;
 	}
 
-	function recaptcha_script( $flavor = '' ) {
+	function recaptcha_head( $flavor = '' ) {
 		if ( empty( $flavor ) )
 			$flavor = $this->get_option( 'recaptcha_flavor' );
  		switch ( $flavor ) {
  			case 'grecaptcha':
-				?><script src="https://www.google.com/recaptcha/api.js" async defer></script><?php
 				?><style type="text/css">
 				#login {
 					width:350px !important;
@@ -186,6 +188,24 @@ class WP_reCaptcha {
 				break;
 		}
  	}
+	function recaptcha_foot( $flavor = '' ) {
+		if ( empty( $flavor ) )
+			$flavor = $this->get_option( 'recaptcha_flavor' );
+ 		switch ( $flavor ) {
+ 			case 'grecaptcha':
+				?><script type="text/javascript">
+				function recaptchaLoadCallback(){
+				var e=document.getElementsByClassName('x-recaptcha');
+				console.log(e);
+				for (var i=0;i<e.length;i++) grecaptcha.render(e[i],{'sitekey':'<?php echo $this->get_option('recaptcha_publickey') ?>'});
+				}
+				</script><?php
+				?><script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit" async defer></script><?php
+				break;
+ 			case 'recaptcha':
+				break;
+		}
+	}
  	function recaptcha_check_or_die( ) {
  		if ( ! $this->recaptcha_check() )
  			wp_die( __("Sorry, the Captcha didn’t verify.",'wp-recaptcha-integration') );
@@ -222,7 +242,7 @@ class WP_reCaptcha {
 	function grecaptcha_html() {
 		$public_key = $this->get_option( 'recaptcha_publickey' );
 		$theme = $this->get_option('recaptcha_theme');
-		$return = sprintf( '<div class="g-recaptcha" data-sitekey="%s" data-theme="%s"></div>',$public_key,$theme);
+		$return = sprintf( '<div class="x-recaptcha" data-sitekey="%s" data-theme="%s"></div>',$public_key,$theme);
 		return $return;
 	}
 	
