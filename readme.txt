@@ -102,6 +102,10 @@ I will migrate all the translation stuff there.
 
 == Changelog ==
 
+= 1.0.1 =
+- Fix API Key test
+- Fix theme select
+
 = 1.0.0 =
 - Allow more than one no Captcha per page
 - Test captcha verification in Settings
