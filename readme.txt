@@ -25,6 +25,17 @@ form 7 as well as a plugin API for your own integrations.
 
 Latest Files on GitHub: [https://github.com/mcguffin/wp-recaptcha-integration](https://github.com/mcguffin/wp-recaptcha-integration)
 
+= Multisite support =
+
+On a WP Multisite support you can either activate the plugin network wide or on a single site.
+
+Activated on a single site everything works as usual.
+
+With network activation entering the API key and setting up where a recaptcha is required 
+is up to the network admin. A blog admin can only select a theme and override the API key 
+if necessary.
+
+
 = Known Limitations =
 - You can't have more than one old style reCaptcha on a page. This is a limitiation of 
   reCaptcha itself. If that's an issue for you, you should use the no Captcha Form.
