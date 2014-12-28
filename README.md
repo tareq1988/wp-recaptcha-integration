@@ -58,16 +58,6 @@ function my_recaptcha_disabled_html( $html ) {
 add_filter('recaptcha_disabled_html','my_recaptcha_disabled_html');
 ```
 
-Planned Features
-----------------
-
-- Support more than one No Captcha on a single page.
-
-- Multisite support: If network enabled, make options Protect Comment form, Signup, 
-  Login, Registration, and Lost Password global
-  
-- API Key test tool: Check verification as well.
-
 Support
 -------
 You like what you see? Maybe you already make some money with it? 
