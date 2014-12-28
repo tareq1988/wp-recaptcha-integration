@@ -197,7 +197,7 @@ class WP_reCaptcha {
 				function recaptchaLoadCallback(){ 
 					var e=document.getElementsByClassName('g-recaptcha');
 					for (var i=0;i<e.length;i++) 
-						grecaptcha.render(e[i],{'sitekey':'<?php echo $this->get_option('recaptcha_publickey') ?>'});
+						grecaptcha.render(e[i],{'sitekey':'<?php echo $this->get_option('recaptcha_publickey'); ?>','theme':'<?php echo $this->get_option('recaptcha_theme'); ?>'});
 				}
 				</script><?php
 				?><script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit" async defer></script><?php
