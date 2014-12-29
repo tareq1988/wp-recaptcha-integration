@@ -101,10 +101,18 @@ class WP_reCaptcha {
 		register_uninstall_hook( __FILE__ , array( __CLASS__ , 'uninstall' ) );
 
 	}
+
+	/**
+	 *	@return bool return if google api is configured
+	 */
 	function has_api_key() {
 		return $this->_has_api_key;
 	}
 	
+	/**
+	 *	Load ninja/cf7 php files if necessary
+	 *	Hooks into 'plugins_loaded'
+	 */
 	function plugins_loaded() {
 		if ( $this->_has_api_key ) {
 			// check if ninja forms is present
@@ -116,6 +124,10 @@ class WP_reCaptcha {
 				include_once dirname(__FILE__).'/inc/contact_form_7_recaptcha.php';
 		}
 	}
+	/**
+	 *	Init plugin
+	 *	set hooks
+	 */
 	function init() {
 		load_plugin_textdomain( 'wp-recaptcha-integration', false , dirname( plugin_basename( __FILE__ ) ).'/languages/' );
 		
@@ -142,15 +154,29 @@ class WP_reCaptcha {
 			add_filter('lostpassword_post' , array(&$this,'recaptcha_check_or_die'),99 );
 		}
 	}
+	/**
+	 *	Display recaptcha on comments form.
+	 *	filter function for `comment_form_defaults`
+	 *	set hooks
+	 */
 	function comment_form_defaults( $defaults ) {
 		$defaults['comment_notes_after'] .= '<p>' . $this->recaptcha_html() . '</p>';
 		return $defaults;
 	}
+	/**
+	 *	returns if recaptcha is required.
+	 *	@return bool
+	 */
 	function is_required() {
 		$is_required = ! ( $this->get_option('recaptcha_disable_for_known_users') && current_user_can( 'read' ) );
 		return apply_filters( 'recaptcha_required' , $is_required );
 	}
 	
+	/**
+	 *	check recaptcha on login
+	 *	filter function for `wp_authenticate_user`
+	 *	@return object user or wp error
+	 */
 	function deny_login( $user ) {
 		if ( isset( $_POST["log"] ) && ! $this->recaptcha_check() ) {
 			return new WP_Error( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
@@ -158,6 +184,11 @@ class WP_reCaptcha {
 			return $user;
 		}
 	}
+	/**
+	 *	check recaptcha on registration
+	 *	filter function for `registration_errors`
+	 *	@return object errors
+	 */
 	function login_errors( $errors ) {
 		if ( isset( $_POST["log"] ) && ! $this->recaptcha_check() ) {
 			$errors->add( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
@@ -165,6 +196,10 @@ class WP_reCaptcha {
 		return $errors;
 	}
 
+	/**
+	 *	print recaptcha stylesheets
+	 *	hooks into `wp_head`
+	 */
 	function recaptcha_head( $flavor = '' ) {
 		if ( empty( $flavor ) )
 			$flavor = $this->get_option( 'recaptcha_flavor' );
@@ -197,6 +232,10 @@ class WP_reCaptcha {
 		}
 		$this->end_inject( );
  	}
+	/**
+	 *	Print recaptcha scripts
+	 *	hooks into `wp_footer`
+	 */
 	function recaptcha_foot( $flavor = '' ) {
 		if ( empty( $flavor ) )
 			$flavor = $this->get_option( 'recaptcha_flavor' );
@@ -272,15 +311,26 @@ class WP_reCaptcha {
 		}
 		$this->end_inject( );
 	}
+	/**
+	 *	Check recaptcha and wp_die() on fail
+	 *	hooks into `pre_comment_on_post`, `lostpassword_post`
+	 */
  	function recaptcha_check_or_die( ) {
  		if ( ! $this->recaptcha_check() )
  			wp_die( __("Sorry, the Captcha didn’t verify.",'wp-recaptcha-integration') );
  	}
  	
+	/**
+	 *	Print recaptcha HTML. Use inside a form.
+	 */
  	function print_recaptcha_html( $flavor = '' ) {
  		echo $this->recaptcha_html( $flavor );
  	}
  	
+	/**
+	 *	Get recaptcha HTML.
+	 *	@return string recaptcha html
+	 */
  	function recaptcha_html( $flavor = '' ) {
 		
 		if ( empty( $flavor ) )
@@ -299,6 +349,10 @@ class WP_reCaptcha {
 		return $return;
  	}
 
+	/**
+	 *	Get old style recaptcha HTML.
+	 *	@return string recaptcha html
+	 */
  	function old_recaptcha_html() {
 		require_once dirname(__FILE__).'/recaptchalib.php';
 		$public_key = $this->get_option( 'recaptcha_publickey' );
@@ -314,6 +368,10 @@ class WP_reCaptcha {
 		return $return;
  	}
  	
+	/**
+	 *	Get no captcha (new style recaptcha) HTML.
+	 *	@return string recaptcha html
+	 */
 	function grecaptcha_html() {
 		$public_key = $this->get_option( 'recaptcha_publickey' );
 		$theme = $this->get_option('recaptcha_theme');
@@ -321,6 +379,10 @@ class WP_reCaptcha {
 		return $return;
 	}
 	
+	/**
+	 *	Get un-themed old style recaptcha HTML.
+	 *	@return string recaptcha html
+	 */
 	function get_custom_html( $public_key ) {
 		
 		$return = '<div id="recaptcha_widget" style="display:none">';
@@ -351,10 +413,18 @@ class WP_reCaptcha {
 		return $return;
  	}
 	
+	/**
+	 *	Get last result of recaptcha check
+	 *	@return string recaptcha html
+	 */
 	function get_last_result() {
 		return $this->_last_result;
 	}
 	
+	/**
+	 *	Check recaptcha
+	 *	@return bool false if check does not validate
+	 */
 	function recaptcha_check( $flavor = '' ) {
 		if ( empty( $flavor ) )
 			$flavor = $this->get_option( 'recaptcha_flavor' );
@@ -365,6 +435,10 @@ class WP_reCaptcha {
  				return $this->old_recaptcha_check();
  		}
 	}
+	/**
+	 *	Check no captcha
+	 *	@return bool false if check does not validate
+	 */
 	function grecaptcha_check() {
 		$private_key = $this->get_option( 'recaptcha_privatekey' );
 		$user_response = isset( $_REQUEST['g-recaptcha-response'] ) ? $_REQUEST['g-recaptcha-response'] : false;
@@ -380,6 +454,10 @@ class WP_reCaptcha {
 		}
 		return false;
 	}
+	/**
+	 *	Check old style recaptcha
+	 *	@return bool false if check does not validate
+	 */
 	function old_recaptcha_check() {
 		require_once dirname(__FILE__).'/recaptchalib.php';
 		$private_key = $this->get_option( 'recaptcha_privatekey' );
@@ -394,6 +472,12 @@ class WP_reCaptcha {
 		return $this->_last_result->is_valid;
 	}
 	
+	/**
+	 *	Get plugin option by name.
+	 *	
+	 *	@param $option_name string
+	 *	@return bool false if check does not validate
+	 */
 	public function get_option( $option_name ) {
 		switch ( $option_name ) {
 			case 'recaptcha_publickey': // first try local, then global
@@ -459,6 +543,11 @@ class WP_reCaptcha {
 		}
 	}
 	
+	/**
+	 *	Get plugin option by name.
+	 *	
+	 *	@return bool true if plugin is activated on network
+	 */
 	static function is_network_activated() {
 		if ( is_null(self::$_is_network_activated) ) {
 			if ( ! is_multisite() )
@@ -470,11 +559,24 @@ class WP_reCaptcha {
 		}
 		return self::$_is_network_activated;
 	}
+	/**
+	 *	HTML comment with some notes (beginning)
+	 *	
+	 *	@param $return bool Whether to print or to return the comment
+	 *	@param $moretext string Additional information being included in the comment
+	 *	@return null|string HTML-Comment
+	 */
 	function begin_inject($return = false,$moretext='') {
 		$html = "\n<!-- BEGIN recaptcha, injected by plugin wp-recaptcha-integration $moretext -->\n";
 		if ( $return ) return $html;
 		echo $html;
 	}
+	/**
+	 *	HTML comment with some notes (ending)
+	 *	
+	 *	@param $return bool Whether to print or to return the comment
+	 *	@return null|string HTML-Comment
+	 */
 	function end_inject( $return = false ) {
 		$html = "\n<!-- END recaptcha -->\n";
 		if ( $return ) return $html;
