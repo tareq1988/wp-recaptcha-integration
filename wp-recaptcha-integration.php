@@ -290,8 +290,10 @@ class WP_reCaptcha {
  		switch ( $flavor ) {
  			case 'grecaptcha':
  				$return .= $this->grecaptcha_html();
+ 				break;
  			case 'recaptcha':
  				$return .= $this->old_recaptcha_html();
+ 				break;
  		}
 		$return .= $this->end_inject( true );
 		return $return;

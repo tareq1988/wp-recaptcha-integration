@@ -46,14 +46,15 @@ function ninja_forms_recaptcha_field_data( $data, $field_id ) {
 }
 
 function ninja_forms_recaptcha_script($id) {
-	// reload recaptcha after failed ajax form submit
+	
 	if ( 'recaptcha' == WP_reCaptcha::instance()->get_option( 'recaptcha_flavor' ) ) {
 		$html = '<script type="text/javascript"> 
-			jQuery(document).on("submitResponse.default", function(e, response){
-				Recaptcha.reload();
-			});
-		</script>';
-		WP_reCaptcha::instance()->begin_inject(false,'Ninja form integration');
+	// reload recaptcha after failed ajax form submit
+	jQuery(document).on("submitResponse.default", function(e, response){
+		Recaptcha.reload();
+	});
+</script>';
+		WP_reCaptcha::instance()->begin_inject(false,', Ninja form integration');
 		echo $html;
 		WP_reCaptcha::instance()->end_inject();
 	}
