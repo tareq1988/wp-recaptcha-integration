@@ -168,6 +168,7 @@ class WP_reCaptcha {
 	function recaptcha_head( $flavor = '' ) {
 		if ( empty( $flavor ) )
 			$flavor = $this->get_option( 'recaptcha_flavor' );
+		$this->begin_inject( );
  		switch ( $flavor ) {
  			case 'grecaptcha':
 				?><style type="text/css">
@@ -194,11 +195,13 @@ class WP_reCaptcha {
 				}
 				break;
 		}
+		$this->end_inject( );
  	}
 	function recaptcha_foot( $flavor = '' ) {
 		if ( empty( $flavor ) )
 			$flavor = $this->get_option( 'recaptcha_flavor' );
 		
+		$this->begin_inject( );
 		// getting submit buttons of an elements form
 		if ( $this->get_option( 'recaptcha_disable_submit' ) ) { 
 			?><script type="text/javascript">
@@ -267,6 +270,7 @@ class WP_reCaptcha {
  				}
 				break;
 		}
+		$this->end_inject( );
 	}
  	function recaptcha_check_or_die( ) {
  		if ( ! $this->recaptcha_check() )
@@ -313,7 +317,8 @@ class WP_reCaptcha {
 	
 	function get_custom_html( $public_key ) {
 		
-		$return = '<div id="recaptcha_widget" style="display:none">';
+		$return = $this->begin_inject( true );
+		$return .= '<div id="recaptcha_widget" style="display:none">';
 
 			$return .= '<div id="recaptcha_image"></div>';
 			$return .= sprintf('<div class="recaptcha_only_if_incorrect_sol" style="color:red">%s</div>',__('Incorrect please try again','wp-recaptcha-integration'));
@@ -337,6 +342,7 @@ class WP_reCaptcha {
 			$return .= '</textarea>';
 			$return .= '<input type="hidden" name="recaptcha_response_field" value="manual_challenge">';
 		$return .= '</noscript>';
+		$return .= $this->end_inject( true );
 		
 		return $return;
  	}
@@ -459,6 +465,16 @@ class WP_reCaptcha {
 			self::$_is_network_activated = is_plugin_active_for_network( basename(dirname(__FILE__)).'/'.basename(__FILE__) );
 		}
 		return self::$_is_network_activated;
+	}
+	function begin_inject($return = false) {
+		$html = "\n<!-- BEGIN recaptcha, injected by plugin wp-recaptcha-integration -->\n";
+		if ( $return ) return $html;
+		echo $html;
+	}
+	function end_inject( $return = false ) {
+		$html = "\n<!-- END recaptcha -->\n";
+		if ( $return ) return $html;
+		echo $html;
 	}
 }
 
