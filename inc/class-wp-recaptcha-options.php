@@ -2,6 +2,9 @@
 
 
 
+/**
+ *	Class to manage the recaptcha options.
+ */
 class WP_reCaptcha_Options {
 	private $enter_api_key;
 	/**

@@ -26,6 +26,9 @@ Author URI: https://github.com/mcguffin/
 
 
 
+/**
+ *	Plugin base Class
+ */
 class WP_reCaptcha {
 
 	private static $_is_network_activated = null;
@@ -583,7 +586,6 @@ class WP_reCaptcha {
 		echo $html;
 	}
 }
-
 
 WP_reCaptcha::instance();
 
