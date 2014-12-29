@@ -325,8 +325,10 @@ class WP_reCaptcha {
 	 *	hooks into `pre_comment_on_post`, `lostpassword_post`
 	 */
  	function recaptcha_check_or_die( ) {
- 		if ( ! $this->recaptcha_check() )
- 			wp_die( __("Sorry, the Captcha didn’t verify.",'wp-recaptcha-integration') );
+ 		if ( ! $this->recaptcha_check() ) {
+ 			$err = new WP_Error('comment_err', __("Sorry, the Captcha didn’t verify.",'wp-recaptcha-integration') );
+ 			wp_die( $err );
+ 		}
  	}
  	
 	/**
