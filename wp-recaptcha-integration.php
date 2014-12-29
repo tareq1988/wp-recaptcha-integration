@@ -387,6 +387,7 @@ class WP_reCaptcha {
 		$public_key = $this->get_option( 'recaptcha_publickey' );
 		$theme = $this->get_option('recaptcha_theme');
 		$return = sprintf( '<div id="g-recaptcha-%d" class="g-recaptcha" data-sitekey="%s" data-theme="%s"></div>',$this->_counter++,$public_key,$theme);
+		$return .= '<noscript>'.__('Please enable JavaScript to submit this form.','wp-recaptcha-integration').'</noscript>';
 		return $return;
 	}
 	
