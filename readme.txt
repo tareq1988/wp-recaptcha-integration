@@ -54,7 +54,7 @@ Then go to the [Google Recaptcha Site](http://www.google.com/recaptcha), sign up
 
 == Frequently asked questions ==
 
-= The plugin does not show up. What’s wrong? =
+= The captcha does not show up. What’s wrong? =
 
 On the plugin settings page check out if the option “Disable for known users” is activated (it is by default).
 Then log out (or open your page in a private browser window) and try again. 
@@ -74,7 +74,7 @@ Use the GitHub Repo rather than the WordPress Plugin. Do as follows:
 
 3. type `git clone git@github.com:mcguffin/wp-recaptcha-integration.git`
 
-4. If you want to update to the latest files (be careful, might be untested on Your WP-Version) type git pull´.
+4. If you want to update to the latest files (be careful, might be untested with your WP-Version) type `git pull.
 
 Please note that the GitHub repository is more likely to contain unstable and untested code. Urgent fixes 
 concerning stability or security (like crashes, vulnerabilities and alike) are more likely to be fixed in 
