@@ -38,6 +38,8 @@ class WP_reCaptcha {
 	private $last_error = '';
 	private $_last_result;
 	
+	private $_counter = 0;
+	
 	/**
 	 *	Holding the singleton instance
 	 */
@@ -274,21 +276,25 @@ class WP_reCaptcha {
  		switch ( $flavor ) {
  			case 'grecaptcha':
 				?><script type="text/javascript">
+				var recaptcha_widgets={};
 				function recaptchaLoadCallback(){ 
 					var e=document.getElementsByClassName('g-recaptcha'),form_submits;
+					
 					for (var i=0;i<e.length;i++) {
 						(function(el){
 <?php if ( $this->get_option( 'recaptcha_disable_submit' ) ) { ?>
-							var form_submits = get_form_submits(el).setEnabled(false);
+							var form_submits = get_form_submits(el).setEnabled(false),wid;
 <?php } ?>
-							grecaptcha.render(el,{
+							
+							wid = grecaptcha.render(el,{
 								'sitekey':'<?php echo $this->get_option('recaptcha_publickey'); ?>',
 								'theme':'<?php echo $this->get_option('recaptcha_theme'); ?>'
 <?php if ( $this->get_option( 'recaptcha_disable_submit' ) ) { ?>
 								,
-								'callback' : function(r){ form_submits.setEnabled(true); /* enable submit buttons */ }
+								'callback' : function(r){ get_form_submits(el).setEnabled(true); /* enable submit buttons */ }
 <?php } ?>
 							});
+							el.setAttribute('data-widget-id',wid);
 						})(e[i]);
 					}
 				}
@@ -378,7 +384,7 @@ class WP_reCaptcha {
 	function grecaptcha_html() {
 		$public_key = $this->get_option( 'recaptcha_publickey' );
 		$theme = $this->get_option('recaptcha_theme');
-		$return = sprintf( '<div class="g-recaptcha" data-sitekey="%s" data-theme="%s"></div>',$public_key,$theme);
+		$return = sprintf( '<div id="g-recaptcha-%d" class="g-recaptcha" data-sitekey="%s" data-theme="%s"></div>',$this->_counter++,$public_key,$theme);
 		return $return;
 	}
 	
