@@ -468,8 +468,8 @@ class WP_reCaptcha {
 		}
 		return self::$_is_network_activated;
 	}
-	function begin_inject($return = false) {
-		$html = "\n<!-- BEGIN recaptcha, injected by plugin wp-recaptcha-integration -->\n";
+	function begin_inject($return = false,$moretext='') {
+		$html = "\n<!-- BEGIN recaptcha, injected by plugin wp-recaptcha-integration $moretext -->\n";
 		if ( $return ) return $html;
 		echo $html;
 	}
