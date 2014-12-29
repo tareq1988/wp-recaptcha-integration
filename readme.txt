@@ -102,6 +102,10 @@ I will migrate all the translation stuff there.
 
 == Changelog ==
 
+= 1.0.2 =
+- Feature: option disable submit button, until a captcha is entered or solved
+- Rearrange comment form (put captcha above submit button)
+
 = 1.0.1 =
 - Fix API Key test
 - Fix theme select

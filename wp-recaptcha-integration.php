@@ -3,7 +3,7 @@
 Plugin Name: WP reCaptcha Integration
 Plugin URI: https://wordpress.org/plugins/wp-recaptcha-integration/
 Description: Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha) as well as the old stle reCaptcha. Provides of the box integration for signup, login, comment forms, lost password, Ninja Forms and contact form 7.
-Version: 1.0.1
+Version: 1.0.2
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 */
@@ -128,7 +128,6 @@ class WP_reCaptcha {
 			add_filter('comment_form_defaults',array($this,'comment_form_defaults'),10);
 			//*/
 			add_action('pre_comment_on_post',array($this,'recaptcha_check_or_die'));
-			// add action @ comment approve
 		}
 		if ( $this->get_option('recaptcha_enable_signup') && $require_recaptcha ) {
 			add_action('register_form',array($this,'print_recaptcha_html'),10,0);
@@ -152,7 +151,7 @@ class WP_reCaptcha {
 		return apply_filters( 'recaptcha_required' , $is_required );
 	}
 	
-	function deny_login( $user ){
+	function deny_login( $user ) {
 		if ( isset( $_POST["log"] ) && ! $this->recaptcha_check() ) {
 			return new WP_Error( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
 		} else {
@@ -213,6 +212,7 @@ class WP_reCaptcha {
 						if (e) self.submits[s].removeAttribute('disabled');
 						else  self.submits[s].setAttribute('disabled','disabled');
 					}
+					return this;
 				};
 				while ( current && current.nodeName != 'BODY' && current.nodeName != 'FORM' ) {
 					current = current.parentNode;
@@ -234,8 +234,7 @@ class WP_reCaptcha {
 					for (var i=0;i<e.length;i++) {
 						(function(el){
 <?php if ( $this->get_option( 'recaptcha_disable_submit' ) ) { ?>
-							var form_submits = new get_form_submits(el);
-							form_submits.setEnabled(false);
+							var form_submits = get_form_submits(el).setEnabled(false);
 <?php } ?>
 							grecaptcha.render(el,{
 								'sitekey':'<?php echo $this->get_option('recaptcha_publickey'); ?>',
