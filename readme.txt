@@ -105,6 +105,7 @@ I will migrate all the translation stuff there.
 = 1.0.2 =
 - Feature: option to disable submit button, until the captcha is solved
 - Rearrange comment form (put captcha above submit button)
+- Fix: NoCaptcha did not refresh after submitting invalid ninja form via ajax
 
 = 1.0.1 =
 - Fix API Key test
