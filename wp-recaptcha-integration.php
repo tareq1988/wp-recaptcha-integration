@@ -143,7 +143,7 @@ class WP_reCaptcha {
 		}
 	}
 	function comment_form_defaults( $defaults ) {
-		$defaults['comment_notes_after'] .= '<p><button>noop</button><button type="submit">2nd submit</button>' . $this->recaptcha_html() . '</p>';
+		$defaults['comment_notes_after'] .= '<p>' . $this->recaptcha_html() . '</p>';
 		return $defaults;
 	}
 	function is_required() {
@@ -285,12 +285,16 @@ class WP_reCaptcha {
 		
 		if ( empty( $flavor ) )
 			$flavor = $this->get_option( 'recaptcha_flavor' );
+		$return = $this->begin_inject( true );
+			
  		switch ( $flavor ) {
  			case 'grecaptcha':
- 				return $this->grecaptcha_html();
+ 				$return .= $this->grecaptcha_html();
  			case 'recaptcha':
- 				return $this->old_recaptcha_html();
+ 				$return .= $this->old_recaptcha_html();
  		}
+		$return .= $this->end_inject( true );
+		return $return;
  	}
 
  	function old_recaptcha_html() {
@@ -317,8 +321,7 @@ class WP_reCaptcha {
 	
 	function get_custom_html( $public_key ) {
 		
-		$return = $this->begin_inject( true );
-		$return .= '<div id="recaptcha_widget" style="display:none">';
+		$return = '<div id="recaptcha_widget" style="display:none">';
 
 			$return .= '<div id="recaptcha_image"></div>';
 			$return .= sprintf('<div class="recaptcha_only_if_incorrect_sol" style="color:red">%s</div>',__('Incorrect please try again','wp-recaptcha-integration'));
@@ -342,7 +345,6 @@ class WP_reCaptcha {
 			$return .= '</textarea>';
 			$return .= '<input type="hidden" name="recaptcha_response_field" value="manual_challenge">';
 		$return .= '</noscript>';
-		$return .= $this->end_inject( true );
 		
 		return $return;
  	}
