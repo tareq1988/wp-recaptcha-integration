@@ -181,8 +181,10 @@ class WP_reCaptcha_Options {
 
 		if ( $has_api_key ) {
 			if (  ! WP_reCaptcha::is_network_activated() ||  ! is_network_admin()  ) {
+				// local options
 				register_setting( 'recaptcha_options', 'recaptcha_flavor' , array( &$this , 'sanitize_flavor' ) );
 				register_setting( 'recaptcha_options', 'recaptcha_theme'  , array( &$this , 'sanitize_theme' ) );
+				register_setting( 'recaptcha_options', 'recaptcha_disable_submit' , 'intval');
 
 				add_settings_field('recaptcha_flavor', __('Flavor','wp-recaptcha-integration'), 
 					array(&$this,'input_radio'), 'recaptcha', 'recaptcha_options',
@@ -202,9 +204,14 @@ class WP_reCaptcha_Options {
 
 				add_settings_field('recaptcha_theme', __('Theme','wp-recaptcha-integration'), array(&$this,'select_theme'), 'recaptcha', 'recaptcha_options');
 
+				add_settings_field('recaptcha_disable_submit', __('Disable Submit Button','wp-recaptcha-integration'), 
+					array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' , 
+					array('name'=>'recaptcha_disable_submit','label'=>__( 'Disable Form Submit Button until no-captcha is entered.' ,'wp-recaptcha-integration' ) ) 
+				);
 
 			}
 			if ( ! WP_reCaptcha::is_network_activated() || is_network_admin() ) {
+				// network options
 				register_setting( 'recaptcha_options', 'recaptcha_enable_comments' , 'intval');
 				register_setting( 'recaptcha_options', 'recaptcha_enable_signup', 'intval' );
 				register_setting( 'recaptcha_options', 'recaptcha_enable_login' , 'intval');
@@ -505,7 +512,7 @@ class WP_reCaptcha_Options {
 		remove_action('admin_notices',array( &$this , 'api_key_notice'));
 	}
 	/**
-	 *	Enqueue script and css for options page.
+	 *	Rendering the options page
 	 */
 	public function render_options_page() {
 		?><div class="wrap"><?php

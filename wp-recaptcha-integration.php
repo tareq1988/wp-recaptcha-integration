@@ -60,6 +60,7 @@ class WP_reCaptcha {
 	private function __construct() {
 		add_option('recaptcha_flavor','grecaptcha'); // local
 		add_option('recaptcha_theme','light'); // local
+		add_option('recaptcha_disable_submit',false); // local
 		add_option('recaptcha_publickey',''); // 1st global -> then local
 		add_option('recaptcha_privatekey',''); // 1st global -> then local
 
@@ -121,7 +122,11 @@ class WP_reCaptcha {
 		$require_recaptcha = $this->is_required();
 		
 		if ( $this->get_option('recaptcha_enable_comments') && $require_recaptcha ) {
-			add_action('comment_form',array($this,'print_recaptcha_html'),10,0);
+			/*
+			add_action('comment_form_after_fields',array($this,'print_recaptcha_html'),10,0);
+			/*/
+			add_filter('comment_form_defaults',array($this,'comment_form_defaults'),10);
+			//*/
 			add_action('pre_comment_on_post',array($this,'recaptcha_check_or_die'));
 			// add action @ comment approve
 		}
@@ -138,7 +143,10 @@ class WP_reCaptcha {
 			add_filter('lostpassword_post' , array(&$this,'recaptcha_check_or_die'),99 );
 		}
 	}
-	
+	function comment_form_defaults( $defaults ) {
+		$defaults['comment_notes_after'] .= '<p><button>noop</button><button type="submit">2nd submit</button>' . $this->recaptcha_html() . '</p>';
+		return $defaults;
+	}
 	function is_required() {
 		$is_required = ! ( $this->get_option('recaptcha_disable_for_known_users') && current_user_can( 'read' ) );
 		return apply_filters( 'recaptcha_required' , $is_required );
@@ -191,18 +199,73 @@ class WP_reCaptcha {
 	function recaptcha_foot( $flavor = '' ) {
 		if ( empty( $flavor ) )
 			$flavor = $this->get_option( 'recaptcha_flavor' );
+		
+		// getting submit buttons of an elements form
+		if ( $this->get_option( 'recaptcha_disable_submit' ) ) { 
+			?><script type="text/javascript">
+			function get_form_submits(el){
+				var form,current=el,ui,type,slice = Array.prototype.slice,self=this;
+				this.submits=[];
+				this.form=false;
+				
+				this.setEnabled=function(e){
+					for ( var s in self.submits ) {
+						if (e) self.submits[s].removeAttribute('disabled');
+						else  self.submits[s].setAttribute('disabled','disabled');
+					}
+				};
+				while ( current && current.nodeName != 'BODY' && current.nodeName != 'FORM' ) {
+					current = current.parentNode;
+				}
+				if ( !current || current.nodeName != 'FORM' ) 
+					return false;
+				this.form=current;
+				ui=slice.call(this.form.getElementsByTagName('input')).concat(slice.call(this.form.getElementsByTagName('button')));
+				for (var i in ui ) if ( (type=ui[i].getAttribute('TYPE')) && type=='submit' ) this.submits.push(ui[i]);
+				return this;
+			}
+			</script><?php
+		}
  		switch ( $flavor ) {
  			case 'grecaptcha':
 				?><script type="text/javascript">
 				function recaptchaLoadCallback(){ 
-					var e=document.getElementsByClassName('g-recaptcha');
-					for (var i=0;i<e.length;i++) 
-						grecaptcha.render(e[i],{'sitekey':'<?php echo $this->get_option('recaptcha_publickey'); ?>','theme':'<?php echo $this->get_option('recaptcha_theme'); ?>'});
+					var e=document.getElementsByClassName('g-recaptcha'),form_submits;
+					for (var i=0;i<e.length;i++) {
+						(function(el){
+<?php if ( $this->get_option( 'recaptcha_disable_submit' ) ) { ?>
+							var form_submits = new get_form_submits(el);
+							form_submits.setEnabled(false);
+<?php } ?>
+							grecaptcha.render(el,{
+								'sitekey':'<?php echo $this->get_option('recaptcha_publickey'); ?>',
+								'theme':'<?php echo $this->get_option('recaptcha_theme'); ?>'
+<?php if ( $this->get_option( 'recaptcha_disable_submit' ) ) { ?>
+								,
+								'callback' : function(r){ form_submits.setEnabled(true); /* enable submit buttons */ }
+<?php } ?>
+							});
+						})(e[i]);
+					}
 				}
 				</script><?php
 				?><script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit" async defer></script><?php
 				break;
  			case 'recaptcha':
+				if ( $this->get_option( 'recaptcha_disable_submit' ) ) { 
+					?><script type="text/javascript">
+					document.addEventListener('keyup',function(e){
+						if (e.target && typeof e.target.getAttribute=='function' && e.target.getAttribute('ID')=='recaptcha_response_field') {
+							get_form_submits(e.target).setEnabled(!!e.target.value);
+						}
+					});
+					document.addEventListener('DOMContentLoaded',function(e){
+						try {
+							get_form_submits(document.getElementById('wp-recaptcha-integration-marker')).setEnabled(false);
+						} catch(e){};
+					});
+					</script><?php
+ 				}
 				break;
 		}
 	}
@@ -236,6 +299,9 @@ class WP_reCaptcha {
 			$return = $this->get_custom_html( $public_key );
 		else
 			$return = recaptcha_get_html( $public_key, $this->last_error );
+		if ( $this->get_option( 'recaptcha_disable_submit' ) ) {
+			$return .= '<span id="wp-recaptcha-integration-marker"></span>';
+		}
 		return $return;
  	}
  	
@@ -321,16 +387,13 @@ class WP_reCaptcha {
 	
 	public function get_option( $option_name ) {
 		switch ( $option_name ) {
-			case 'recaptcha_flavor':
-			case 'recaptcha_theme':
-				return get_option($option_name);
-			case 'recaptcha_publickey':
+			case 'recaptcha_publickey': // first try local, then global
 			case 'recaptcha_privatekey':
 				$option_value = get_option($option_name);
 				if ( ! $option_value && WP_reCaptcha::is_network_activated() )	
 					$option_value = get_site_option( $option_name );
 				return $option_value;
-			case 'recaptcha_enable_comments':
+			case 'recaptcha_enable_comments': // global on network. else local
 			case 'recaptcha_enable_signup':
 			case 'recaptcha_enable_login':
 			case 'recaptcha_enable_lostpw':
@@ -338,6 +401,8 @@ class WP_reCaptcha {
 				if ( WP_reCaptcha::is_network_activated() )
 					return get_site_option($option_name);
 				return get_option( $option_name );
+			default: // always local
+				return get_option($option_name);
 		}
 	}
 	
