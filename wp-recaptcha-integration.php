@@ -3,7 +3,7 @@
 Plugin Name: WP reCaptcha Integration
 Plugin URI: https://wordpress.org/plugins/wp-recaptcha-integration/
 Description: Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha) as well as the old stle reCaptcha. Provides of the box integration for signup, login, comment forms, lost password, Ninja Forms and contact form 7.
-Version: 1.0.2
+Version: 1.0.3
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 */
@@ -147,8 +147,14 @@ class WP_reCaptcha {
 			add_action('pre_comment_on_post',array($this,'recaptcha_check_or_die'));
 		}
 		if ( $this->get_option('recaptcha_enable_signup') && $require_recaptcha ) {
-			add_action('register_form',array($this,'print_recaptcha_html'),10,0);
-			add_filter('registration_errors',array(&$this,'login_errors'));
+			// buddypress suuport.
+			if ( function_exists('buddypress') ) {
+				add_action('bp_account_details_fields',array($this,'print_recaptcha_html'),10,0);
+				add_filter('bp_signup_pre_validate',array(&$this,'recaptcha_check_or_die'),99 );
+			} else {
+				add_action('register_form',array($this,'print_recaptcha_html'),10,0);
+				add_filter('registration_errors',array(&$this,'login_errors'));
+			}
 		}
 		if ( $this->get_option('recaptcha_enable_login') && $require_recaptcha ) {
 			add_action('login_form',array($this,'print_recaptcha_html'),10,0);
@@ -158,6 +164,7 @@ class WP_reCaptcha {
 			add_action('lostpassword_form' , array($this,'print_recaptcha_html'),10,0);
 			add_filter('lostpassword_post' , array(&$this,'recaptcha_check_or_die'),99 );
 		}
+		
 	}
 	/**
 	 *	Display recaptcha on comments form.
