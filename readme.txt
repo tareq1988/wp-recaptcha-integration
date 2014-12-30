@@ -102,6 +102,10 @@ I will migrate all the translation stuff there.
 
 == Changelog ==
 
+= 1.0.3 =
+- NoCaptcha: add non-js fallback.
+- Code: Comment Captcha Failed: pass `WP_Error` to `wp_die()`.
+
 = 1.0.2 =
 - Feature: option to disable submit button, until the captcha is solved
 - Rearrange comment form (put captcha above submit button)
