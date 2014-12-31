@@ -48,7 +48,7 @@ add_filter('wp_recaptcha_required','my_recaptcha_required');
 ##### Real World Example
 
 Disable captcha if it has been solved once.
-``
+```
 // safely start a session
 function my_session_start( ) {
 	$sid = session_id();
@@ -73,7 +73,7 @@ function my_wp_recaptcha_checked( $success ) {
 		$_SESSION['recaptcha_solved'] = true;
 }
 add_action('wp_recaptcha_checked','my_wp_recaptcha_checked');
-``
+```
 
 
 #### Filter `wp_recaptcha_required`

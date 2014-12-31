@@ -317,7 +317,7 @@ class WP_reCaptcha_Options {
 				$errs = array(
 					'missing-input-secret' => __('The secret Key is missing.','wp-recaptcha-integration'),
 					'invalid-input-secret' => __('The secret Key is invalid. You better check your domain configuration and enter it again.','wp-recaptcha-integration'),
-					'missing-input-response' => __('The user response was missing ','wp-recaptcha-integration'),
+					'missing-input-response' => __('The user response was missing','wp-recaptcha-integration'),
 					'invalid-input-response' => __('Invalid user response','wp-recaptcha-integration'),
 				);
 				$result = WP_reCaptcha::instance()->get_last_result();

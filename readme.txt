@@ -20,6 +20,7 @@ form 7 as well as a plugin API for your own integrations.
 - Secures login, signup and comments with a recaptcha.
 - Supports old as well as new reCaptcha.
 - Multisite Support
+- BuddyPress Support
 - [Ninja Forms](http://ninjaforms.com/) integration
 - [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) integration
 
@@ -104,8 +105,10 @@ I will migrate all the translation stuff there.
 
 = 1.0.3 =
 - Add BuddyPress support
+- Action hook for wp_recaptcha_checked
 - NoCaptcha: add non-js fallback.
-- Code: Comment Captcha Failed: pass `WP_Error` to `wp_die()`.
+- Code: pass `WP_Error` to `wp_die()` when comment captcha fails.
+- Code: Rename filters recaptcha_required &gt; wp_recaptcha_required and recaptcha_disabled_html &gt; wp_recaptcha_disabled_html 
 
 = 1.0.2 =
 - Feature: option to disable submit button, until the captcha is solved
