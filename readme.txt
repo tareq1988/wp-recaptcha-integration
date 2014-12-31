@@ -109,6 +109,7 @@ I will migrate all the translation stuff there.
 - NoCaptcha: add non-js fallback.
 - Code: pass `WP_Error` to `wp_die()` when comment captcha fails.
 - Code: Rename filters recaptcha_required &gt; wp_recaptcha_required and recaptcha_disabled_html &gt; wp_recaptcha_disabled_html 
+- Happy New Year!
 
 = 1.0.2 =
 - Feature: option to disable submit button, until the captcha is solved
