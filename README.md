@@ -26,11 +26,61 @@ Limitations
 Plugin API
 ----------
 
-#### Filter `recaptcha_required`
+#### Action `wp_recaptcha_checked`
+
+Fires after a recaptcha has been checked.
+
+##### Example
+
+```
+// will disable recaptcha for nice spambots
+function my_recaptcha_required( $is_required ) {
+	if ( is_nice_spambot() )
+		return false;
+	else if ( is_ugly_spambot() )
+		return true;
+	else
+		return $is_required;
+}
+add_filter('wp_recaptcha_required','my_recaptcha_required');
+```
+
+##### Real World Example
+
+Disable captcha if it has been solved once.
+``
+// safely start a session
+function my_session_start( ) {
+	$sid = session_id();
+	if ( empty( $sid ) ) {
+		session_start();
+	}
+}
+add_action('init','my_session_start');
+
+// don't requiere captcha, if session says so
+function my_wp_recaptcha_required( $is_required ) {
+	if ( isset( $_SESSION['recaptcha_solved'] ) && $_SESSION['recaptcha_solved'] )
+		return false;
+	return $is_required;
+}
+add_filter('wp_recaptcha_required' , 'my_wp_recaptcha_required');
+
+// store in session if captcha solved
+function my_wp_recaptcha_checked( $success ) {
+	vaR_dump($success);
+	if ( $success )
+		$_SESSION['recaptcha_solved'] = true;
+}
+add_action('wp_recaptcha_checked','my_wp_recaptcha_checked');
+``
+
+
+#### Filter `wp_recaptcha_required`
 
 Returns whether to show a recaptcha or not.
 
-Example:
+##### Example
 ```
 // will disable recaptcha for nice spambots
 function my_recaptcha_required( $is_required ) {
@@ -45,17 +95,17 @@ add_filter('wp_recaptcha_required','my_recaptcha_required');
 ```
 
 
-#### Filter `recaptcha_disabled_html`
+#### Filter `wp_recaptcha_disabled_html`
 
 HTML to be showed when entering a recaptcha is not required.
 
-Example:
+##### Example
 ```
 // will disable recaptcha for nice spambots
 function my_recaptcha_disabled_html( $html ) {
 	return 'Not four you, my friend!';
 }
-add_filter('recaptcha_disabled_html','my_recaptcha_disabled_html');
+add_filter('wp_recaptcha_disabled_html','my_recaptcha_disabled_html');
 ```
 
 Support
