@@ -89,16 +89,10 @@ class WP_reCaptcha {
 		}
 
 		if ( $this->_has_api_key ) {
-			add_action( 'wp_head' , array($this,'recaptcha_head') );
-			add_action( 'wp_footer' , array($this,'recaptcha_foot') );
 
 			add_action('init' , array(&$this,'init') );
 			add_action('plugins_loaded' , array(&$this,'plugins_loaded') );
 
-			if ( $this->get_option('recaptcha_enable_signup') || $this->get_option('recaptcha_enable_login')  || $this->get_option('recaptcha_enable_lostpw') ) {
-				add_action( 'login_head' , array(&$this,'recaptcha_head') );
-				add_action( 'login_footer' , array(&$this,'recaptcha_foot') );
-			}
 		}
 
 		register_activation_hook( __FILE__ , array( __CLASS__ , 'activate' ) );
@@ -138,33 +132,41 @@ class WP_reCaptcha {
 		
 		$require_recaptcha = $this->is_required();
 		
-		if ( $this->get_option('recaptcha_enable_comments') && $require_recaptcha ) {
-			/*
-			add_action('comment_form_after_fields',array($this,'print_recaptcha_html'),10,0);
-			/*/
-			add_filter('comment_form_defaults',array($this,'comment_form_defaults'),10);
-			//*/
-			add_action('pre_comment_on_post',array($this,'recaptcha_check_or_die'));
-		}
-		if ( $this->get_option('recaptcha_enable_signup') && $require_recaptcha ) {
-			// buddypress suuport.
-			if ( function_exists('buddypress') ) {
-				add_action('bp_account_details_fields',array($this,'print_recaptcha_html'),10,0);
-				add_filter('bp_signup_pre_validate',array(&$this,'recaptcha_check_or_die'),99 );
-			} else {
-				add_action('register_form',array($this,'print_recaptcha_html'),10,0);
-				add_filter('registration_errors',array(&$this,'login_errors'));
+		if ( $require_recaptcha ) {
+			add_action( 'wp_head' , array($this,'recaptcha_head') );
+			add_action( 'wp_footer' , array($this,'recaptcha_foot') );
+			
+			if ( $this->get_option('recaptcha_enable_signup') || $this->get_option('recaptcha_enable_login')  || $this->get_option('recaptcha_enable_lostpw') ) {
+				add_action( 'login_head' , array(&$this,'recaptcha_head') );
+				add_action( 'login_footer' , array(&$this,'recaptcha_foot') );
+			}
+			if ( $this->get_option('recaptcha_enable_comments') ) {
+				/*
+				add_action('comment_form_after_fields',array($this,'print_recaptcha_html'),10,0);
+				/*/
+				add_filter('comment_form_defaults',array($this,'comment_form_defaults'),10);
+				//*/
+				add_action('pre_comment_on_post',array($this,'recaptcha_check_or_die'));
+			}
+			if ( $this->get_option('recaptcha_enable_signup') ) {
+				// buddypress suuport.
+				if ( function_exists('buddypress') ) {
+					add_action('bp_account_details_fields',array($this,'print_recaptcha_html'),10,0);
+					add_filter('bp_signup_pre_validate',array(&$this,'recaptcha_check_or_die'),99 );
+				} else {
+					add_action('register_form',array($this,'print_recaptcha_html'),10,0);
+					add_filter('registration_errors',array(&$this,'login_errors'));
+				}
+			}
+			if ( $this->get_option('recaptcha_enable_login') ) {
+				add_action('login_form',array($this,'print_recaptcha_html'),10,0);
+				add_filter('wp_authenticate_user',array(&$this,'deny_login'),99 );
+			}
+			if ( $this->get_option('recaptcha_enable_lostpw') ) {
+				add_action('lostpassword_form' , array($this,'print_recaptcha_html'),10,0);
+				add_filter('lostpassword_post' , array(&$this,'recaptcha_check_or_die'),99 );
 			}
 		}
-		if ( $this->get_option('recaptcha_enable_login') && $require_recaptcha ) {
-			add_action('login_form',array($this,'print_recaptcha_html'),10,0);
-			add_filter('wp_authenticate_user',array(&$this,'deny_login'),99 );
-		}
-		if ( $this->get_option('recaptcha_enable_lostpw') && $require_recaptcha ) {
-			add_action('lostpassword_form' , array($this,'print_recaptcha_html'),10,0);
-			add_filter('lostpassword_post' , array(&$this,'recaptcha_check_or_die'),99 );
-		}
-		
 	}
 	/**
 	 *	Display recaptcha on comments form.
@@ -181,7 +183,7 @@ class WP_reCaptcha {
 	 */
 	function is_required() {
 		$is_required = ! ( $this->get_option('recaptcha_disable_for_known_users') && current_user_can( 'read' ) );
-		return apply_filters( 'recaptcha_required' , $is_required );
+		return apply_filters( 'wp_recaptcha_required' , $is_required );
 	}
 	
 	/**

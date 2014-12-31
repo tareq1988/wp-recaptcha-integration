@@ -41,7 +41,7 @@ function my_recaptcha_required( $is_required ) {
 	else
 		return $is_required;
 }
-add_filter('recaptcha_required','my_recaptcha_required');
+add_filter('wp_recaptcha_required','my_recaptcha_required');
 ```
 
 
