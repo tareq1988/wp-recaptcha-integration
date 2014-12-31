@@ -445,14 +445,18 @@ class WP_reCaptcha {
 	 *	@return bool false if check does not validate
 	 */
 	function recaptcha_check( $flavor = '' ) {
+		$result = false;
 		if ( empty( $flavor ) )
 			$flavor = $this->get_option( 'recaptcha_flavor' );
  		switch ( $flavor ) {
  			case 'grecaptcha':
- 				return $this->grecaptcha_check();
+ 				$result = $this->grecaptcha_check();
+ 				break;
  			case 'recaptcha':
- 				return $this->old_recaptcha_check();
+ 				$result = $this->old_recaptcha_check();
+ 				break;
  		}
+ 		return $result;
 	}
 	/**
 	 *	Check no captcha
@@ -468,6 +472,7 @@ class WP_reCaptcha {
 			if ( ! is_wp_error($response) ) {
 				$response_data = wp_remote_retrieve_body( $response );
 				$this->_last_result = json_decode($response_data);
+		 		do_action( 'wp_recaptcha_check' , $this->_last_result->success );
 				return $this->_last_result->success;
 			}
 		}
@@ -488,6 +493,7 @@ class WP_reCaptcha {
 		if ( ! $this->_last_result->is_valid )
 			$this->last_error = $this->_last_result->error;
 
+		do_action( 'wp_recaptcha_check' , $this->_last_result->is_valid );
 		return $this->_last_result->is_valid;
 	}
 	
