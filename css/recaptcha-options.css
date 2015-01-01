@@ -44,3 +44,6 @@
 .recaptcha-select-theme.flavor-recaptcha .flavor-grecaptcha {
 	display:none;
 }
+.warning {
+	color:red;
+}

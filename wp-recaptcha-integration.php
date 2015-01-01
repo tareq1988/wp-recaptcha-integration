@@ -90,7 +90,7 @@ class WP_reCaptcha {
 
 		if ( $this->_has_api_key ) {
 
-			add_action('init' , array(&$this,'init') );
+			add_action('init' , array(&$this,'init') , 9 );
 			add_action('plugins_loaded' , array(&$this,'plugins_loaded') );
 
 		}
@@ -114,13 +114,21 @@ class WP_reCaptcha {
 	 */
 	function plugins_loaded() {
 		if ( $this->_has_api_key ) {
+			// NinjaForms support
 			// check if ninja forms is present
 			if ( class_exists('Ninja_Forms') || function_exists('ninja_forms_register_field') )
 				include_once dirname(__FILE__).'/inc/ninja_forms_field_recaptcha.php';
 
+			// CF7 support
 			// check if contact form 7 forms is present
 			if ( function_exists('wpcf7') )
 				include_once dirname(__FILE__).'/inc/contact_form_7_recaptcha.php';
+
+			// WooCommerce support
+			// check if contact form 7 forms is present
+			if ( function_exists('WC') || class_exists('WooCommerce') )
+				include_once dirname(__FILE__).'/inc/class-wp-recaptcha-woocommerce.php';
+
 		}
 	}
 	/**
@@ -164,10 +172,15 @@ class WP_reCaptcha {
 			}
 			if ( $this->get_option('recaptcha_enable_lostpw') ) {
 				add_action('lostpassword_form' , array($this,'print_recaptcha_html'),10,0);
-				add_filter('lostpassword_post' , array(&$this,'recaptcha_check_or_die'),99 );
+//*
+				add_filter('lostpassword_post' , array(&$this,'recaptcha_check_or_die') , 99 );
+/*/ // switch this when pull request accepted and included in official WC release.
+				add_filter('allow_password_reset' , array(&$this,'wp_error') );
+//*/
 			}
 		}
 	}
+	
 	/**
 	 *	Display recaptcha on comments form.
 	 *	filter function for `comment_form_defaults`
@@ -192,12 +205,19 @@ class WP_reCaptcha {
 	 *	@return object user or wp error
 	 */
 	function deny_login( $user ) {
-		if ( isset( $_POST["log"] ) && ! $this->recaptcha_check() ) {
+		if ( isset( $_POST["log"]) )
+			$user = $this->wp_error( $user );
+		return $user;
+	}
+	
+	function wp_error( $param ) {
+		if ( ! $this->recaptcha_check() ) {
 			return new WP_Error( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
 		} else {
-			return $user;
+			return $param;
 		}
 	}
+	
 	/**
 	 *	check recaptcha on registration
 	 *	filter function for `registration_errors`
@@ -287,8 +307,13 @@ class WP_reCaptcha {
 				?><script type="text/javascript">
 				var recaptcha_widgets={};
 				function recaptchaLoadCallback(){ 
+					try {
+						grecaptcha;
+					} catch(err){
+						return;
+					}
 					var e=document.getElementsByClassName('g-recaptcha'),form_submits;
-					
+
 					for (var i=0;i<e.length;i++) {
 						(function(el){
 <?php if ( $this->get_option( 'recaptcha_disable_submit' ) ) { ?>
@@ -528,6 +553,7 @@ class WP_reCaptcha {
 			case 'recaptcha_enable_login':
 			case 'recaptcha_enable_lostpw':
 			case 'recaptcha_disable_for_known_users':
+			case 'recaptcha_enable_wc_order':
 				if ( WP_reCaptcha::is_network_activated() )
 					return get_site_option($option_name);
 				return get_option( $option_name );
@@ -557,6 +583,7 @@ class WP_reCaptcha {
 			delete_site_option( 'recaptcha_enable_comments' );
 			delete_site_option( 'recaptcha_enable_signup' );
 			delete_site_option( 'recaptcha_enable_login' );
+			delete_site_option( 'recaptcha_enable_wc_checkout' );
 			delete_site_option( 'recaptcha_disable_for_known_users' );
 			
 			foreach ( wp_get_sites() as $site) {
@@ -576,6 +603,7 @@ class WP_reCaptcha {
 			delete_option( 'recaptcha_enable_comments' );
 			delete_option( 'recaptcha_enable_signup' );
 			delete_option( 'recaptcha_enable_login' );
+			delete_option( 'recaptcha_enable_wc_checkout' );
 			delete_option( 'recaptcha_disable_for_known_users' );
 		}
 	}

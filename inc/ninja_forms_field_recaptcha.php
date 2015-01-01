@@ -61,8 +61,10 @@ function ninja_forms_recaptcha_script($id) {
 	// reload recaptcha after failed ajax form submit
 	(function($){
 	$(document).on("submitResponse.default", function(e, response){
-		var wid = $(\'#ninja_forms_form_\'+response.form_id).find(\'.g-recaptcha\').data(\'widget-id\');
-		grecaptcha.reset(wid);
+		if ( grecaptcha ) {
+			var wid = $(\'#ninja_forms_form_\'+response.form_id).find(\'.g-recaptcha\').data(\'widget-id\');
+			grecaptcha.reset(wid);
+		}
 	});
 	})(jQuery);
 </script>';

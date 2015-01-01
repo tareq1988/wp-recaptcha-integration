@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,7 @@ form 7 as well as a plugin API for your own integrations.
 - Supports old as well as new reCaptcha.
 - Multisite Support
 - BuddyPress Support
+- WooCommerce Support (Checkout, Registration and Login only. Not Password reset.)
 - [Ninja Forms](http://ninjaforms.com/) integration
 - [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) integration
 
@@ -41,11 +42,17 @@ if necessary.
 - You can't have more than one old style reCaptcha on a page. This is a limitiation of 
   reCaptcha itself. If that's an issue for you, you should use the no Captcha Form.
 
-- On a Contact Form 7 when the reCaptcha is disabled (e.g. for logged in users) the field
+- On a **Contact Form 7** when the reCaptcha is disabled (e.g. for logged in users) the field
   label will be still visible. This is due to CF7 Shortcode architecture, and can't be fixed.
 
   To handle this there is a filter `recaptcha_disabled_html`. You can return a message for your logged-in 
   users here. Check out the [GitHub Repo](https://github.com/mcguffin/wp-recaptcha-integration) for details.
+
+- Old style reCaptchas do not work together with **WooCommerce**. 
+
+- In **WooCommerce** the reset password form can not be protected by a captcha. To 
+  overcome this restriction I requested a little change in the official WC repository, so there 
+  is hope for a future version. See: (https://github.com/woothemes/woocommerce/pull/7029)
 
 == Installation ==
 
@@ -115,6 +122,7 @@ I will migrate all the translation stuff there.
 == Changelog ==
 
 = 1.0.4 =
+- Add WooCommerce Support (checkout page)
 - Reset noCaptcha after ajax calls
 
 = 1.0.3 =

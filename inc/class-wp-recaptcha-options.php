@@ -59,6 +59,7 @@ class WP_reCaptcha_Options {
 				'recaptcha_enable_signup' => 'intval',
 				'recaptcha_enable_login' => 'intval',
 				'recaptcha_enable_lostpw' => 'intval',
+				'recaptcha_enable_wc_order' => 'intval',
 				'recaptcha_disable_for_known_users' => 'intval',
 			);
 			if ( array_intersect( array_keys( $_POST ) , array_keys( $opts ) ) )
@@ -219,6 +220,10 @@ class WP_reCaptcha_Options {
 				register_setting( 'recaptcha_options', 'recaptcha_enable_signup', 'intval' );
 				register_setting( 'recaptcha_options', 'recaptcha_enable_login' , 'intval');
 				register_setting( 'recaptcha_options', 'recaptcha_enable_lostpw' , 'intval');
+
+				if ( function_exists('WC') )
+					register_setting( 'recaptcha_options', 'recaptcha_enable_wc_order' , 'intval');
+
 				register_setting( 'recaptcha_options', 'recaptcha_disable_for_known_users' , 'intval');
 
 				add_settings_field('recaptcha_enable_comments', __('Protect Comments','wp-recaptcha-integration'), 
@@ -240,7 +245,22 @@ class WP_reCaptcha_Options {
 					array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' ,
 					array('name'=>'recaptcha_enable_lostpw','label'=>__( 'Protect Lost Password form with recaptcha.','wp-recaptcha-integration' )) 
 				);
-
+				// woocommerce integration
+				if ( function_exists('WC') ) {
+					$wc_warn =  WP_reCaptcha::instance()->get_option('recaptcha_enable_wc_order') && WP_reCaptcha::instance()->get_option('recaptcha_flavor') !== 'grecaptcha';
+					add_settings_field('recaptcha_enable_wc_order', __('Protect WooCommerce Checkout','wp-recaptcha-integration'), 
+						array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' ,
+						array(
+							'name'=>'recaptcha_enable_wc_order',
+							'label'=>__( 'Protect wooCommerce Checkout with a recaptcha.','wp-recaptcha-integration' ),
+							'description' => __( 'This will only work with No Captcha flavor.','wp-recaptcha-integration' ),
+							'class'	=> $wc_warn ? 'warning dashicons-before dashicons-no' : '',
+						) 
+					);
+					if ( $wc_warn ) {
+						add_settings_error('recaptcha',2,__( 'The Old Style recaptcha doesn‘t work together with the WooCommerce checkout form. The Captcha will not be displayed,' ,'wp-recaptcha-integration' ) );
+					}
+				}
 				add_settings_field('recaptcha_disable_for_known_users', __('Disable for known users','wp-recaptcha-integration'), 
 					array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' ,
 					array('name'=>'recaptcha_disable_for_known_users','label'=>__( 'Disable reCaptcha verification for logged in users.','wp-recaptcha-integration' )) 
@@ -378,14 +398,24 @@ class WP_reCaptcha_Options {
 	 *				)
 	 */
 	public function input_checkbox($args) {
+		$args = wp_parse_args($args,array(
+			'name' => '',
+			'label' => '',
+			'description' => '',
+			'class' => '',
+		));
 		extract($args);
 		$value = WP_reCaptcha::instance()->get_option( $name );
-		?><label for="<?php echo $name ?>"><?php
+		$class_attr = $class ? "class=\"{$class}\"" : '';
+		?><label <?php echo $class_attr ?> for="<?php echo $name ?>"><?php
 			?><input type="hidden" name="<?php echo $name ?>" value="0" /><?php
 			?><input id="<?php echo $name ?>" type="checkbox" name="<?php echo $name ?>" value="1" <?php checked($value,1,true) ?> />
 			<?php
 			echo $label;
 		?></label><?php
+		if ( $description ) {
+			?><p class="description"><?php echo $description ?></p><?php
+		}
 	}
 	/**
 	 *	A Text field. 
