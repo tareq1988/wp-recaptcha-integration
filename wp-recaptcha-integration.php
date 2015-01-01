@@ -166,10 +166,8 @@ class WP_reCaptcha {
 					add_filter('registration_errors',array(&$this,'registration_errors'));
 				}
 				if ( is_multisite() ) {
-					add_action( 'signup_hidden_fields' , array($this,'print_recaptcha_html'),10,0);
+					add_action( 'signup_extra_fields' , array($this,'print_recaptcha_html'),10,0);
 					add_filter('wpmu_validate_user_signup',array(&$this,'wpmu_validate_user_signup'));
-				// signup_hidden_fields
-				// wpmu_validate_user_signup
 				}
 				
 			}
@@ -243,7 +241,8 @@ class WP_reCaptcha {
 	 *	@see filter hook `wpmu_validate_user_signup`
 	 */
 	function wpmu_validate_user_signup( $result ) {
-		$result['errors'] = $this->wp_error_add( $result['errors'] );
+		if ( isset( $_POST['stage'] ) && $_POST['stage'] == 'validate-user-signup' )
+			$result['errors'] = $this->wp_error_add( $result['errors'] , 'generic' );
 		return $result;
 	}
 	
@@ -255,9 +254,9 @@ class WP_reCaptcha {
 	 *	@param $param mixed return value of funtion when captcha validates
 	 *	@return mixed will return argument $param an success, else WP_Error
 	 */
-	function wp_error( $param ) {
+	function wp_error( $param , $error_code = 'captcha_error' ) {
 		if ( ! $this->recaptcha_check() ) {
-			return new WP_Error( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
+			return new WP_Error( $error_code ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
 		} else {
 			return $param;
 		}
@@ -269,9 +268,9 @@ class WP_reCaptcha {
 	 *	@param $param mixed return value of funtion when captcha validates
 	 *	@return mixed will return argument $param an success, else WP_Error
 	 */
-	function wp_error_add( $param ) {
+	function wp_error_add( $param , $error_code = 'captcha_error' ) {
 		if ( ! $this->recaptcha_check() ) {
-			return new WP_Error( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
+			return new WP_Error( $error_code ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
 		} else {
 			return $param;
 		}

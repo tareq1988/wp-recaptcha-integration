@@ -76,7 +76,8 @@ class WP_reCaptcha_Options {
 				}
 			}
 			if ( $updated ) {
-				wp_redirect(add_query_arg('updated','true'));
+				$redirect = $this->remove_new_apikey_url(add_query_arg(array('updated'=>'true') ) );
+				wp_redirect( $redirect );
 			}
 		} else {
 			wp_die('Cheating, uh?');
