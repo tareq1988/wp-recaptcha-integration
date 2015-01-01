@@ -70,7 +70,7 @@ look different than a functional one. This how you can overcome that issue:
 - Click the "Download Gist" button
 - Unpack the `.tar.gz` file.
 - Create a zip Archive out of the included file `grey-out-disabled.php` and name it `grey-out-disabled.zip`.
-- Install and activate the zip like any other WordPress plugin
+- Install and activate it like any other WordPress plugin
 
 = I found a bug. Where should I post it? =
 
