@@ -27,9 +27,9 @@ form 7 as well as a plugin API for your own integrations.
 
 Latest Files on GitHub: [https://github.com/mcguffin/wp-recaptcha-integration](https://github.com/mcguffin/wp-recaptcha-integration)
 
-= Multisite support =
+= Compatibility =
 
-On a WP Multisite support you can either activate the plugin network wide or on a single site.
+On a **WP Multisite** you can either activate the plugin network wide or on a single site.
 
 Activated on a single site everything works as usual.
 
@@ -78,6 +78,12 @@ look different than a functional one. This how you can overcome that issue:
 - Unpack the `.tar.gz` file.
 - Create a zip Archive out of the included file `grey-out-disabled.php` and name it `grey-out-disabled.zip`.
 - Install and activate it like any other WordPress plugin
+
+= I want my visitors to solve only one Captcha and then never again. Is that possible? =
+
+Yes. You can store in a session if a captcha was solved, and use the `wp_recaptcha_required` 
+filter to supress further captchas. See (https://github.com/mcguffin/wp-recaptcha-integration#real-world-example) 
+for a code example.
 
 = I found a bug. Where should I post it? =
 
