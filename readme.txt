@@ -61,6 +61,17 @@ On the plugin settings page check out if the option â€œDisable for known usersâ€
 Then log out (or open your page in a private browser window) and try again. 
 If the problem still persist, Houson really has a problem, and you are welcome to post a support request. 
 
+= Disabled submit buttons should be grey! Why aren't they? =
+
+Very likely the Author of your Theme didn't care that a non functinal form element should 
+look different than a functional one. This how you can overcome that issue: 
+
+- Go to (https://gist.github.com/mcguffin/7cbfb0dab73eb32cb4a2)
+- Click the "Download Gist" button
+- Unpack the `.tar.gz` file.
+- Create a zip Archive out of the included file `grey-out-disabled.php` and name it `grey-out-disabled.zip`.
+- Install and activate the zip like any other WordPress plugin
+
 = I found a bug. Where should I post it? =
 
 I personally prefer GitHub but you can post it in the forum as well. The plugin code is here: [GitHub](https://github.com/mcguffin/wp-recaptcha-integration)
