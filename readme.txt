@@ -21,7 +21,7 @@ form 7 as well as a plugin API for your own integrations.
 - Supports old as well as new reCaptcha.
 - Multisite Support
 - BuddyPress Support
-- WooCommerce Support (Checkout, Registration and Login only. Not Password reset.)
+- WooCommerce Support (Only checkout, registration and login form. Not password reset)
 - [Ninja Forms](http://ninjaforms.com/) integration
 - [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) integration
 
