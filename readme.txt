@@ -129,7 +129,9 @@ I will migrate all the translation stuff there.
 
 = 1.0.4 =
 - Add WooCommerce Support (checkout page)
-- Reset noCaptcha after ajax calls
+- Multisite: protect signup form as well.
+- Reset noCaptcha after ajax calls (enhance compatibility with Comment Form Ajax plugin)
+- Fix: incorrect redirect after saving Network settings
 
 = 1.0.3 =
 - Add BuddyPress support
