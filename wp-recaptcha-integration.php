@@ -184,7 +184,8 @@ class WP_reCaptcha {
 	/**
 	 *	Display recaptcha on comments form.
 	 *	filter function for `comment_form_defaults`
-	 *	set hooks
+	 *
+	 *	@see filter doc `comment_form_defaults`
 	 */
 	function comment_form_defaults( $defaults ) {
 		$defaults['comment_notes_after'] .= '<p>' . $this->recaptcha_html() . '</p>';
@@ -192,6 +193,7 @@ class WP_reCaptcha {
 	}
 	/**
 	 *	returns if recaptcha is required.
+	 *
 	 *	@return bool
 	 */
 	function is_required() {
@@ -199,10 +201,14 @@ class WP_reCaptcha {
 		return apply_filters( 'wp_recaptcha_required' , $is_required );
 	}
 	
+	
+	
 	/**
 	 *	check recaptcha on login
 	 *	filter function for `wp_authenticate_user`
-	 *	@return object user or wp error
+	 *
+	 *	@param $user WP_User
+	 *	@return object user or wp_error
 	 */
 	function deny_login( $user ) {
 		if ( isset( $_POST["log"]) )
@@ -210,7 +216,42 @@ class WP_reCaptcha {
 		return $user;
 	}
 	
+	/**
+	 *	check recaptcha on registration
+	 *	filter function for `registration_errors`
+	 *
+	 *	@param $errors WP_Error
+	 *	@return WP_Error with captcha error added if test fails.
+	 */
+	function login_errors( $errors ) {
+		if ( isset( $_POST["log"]) )
+			$errors = $this->wp_error_add( $errors );
+		return $errors;
+	}
+	
+	
+	/**
+	 *	check recaptcha and return WP_Error on failure.
+	 *	filter function for `allow_password_reset`
+	 *
+	 *	@param $param mixed return value of funtion when captcha validates
+	 *	@return mixed will return argument $param an success, else WP_Error
+	 */
 	function wp_error( $param ) {
+		if ( ! $this->recaptcha_check() ) {
+			return new WP_Error( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
+		} else {
+			return $param;
+		}
+	}
+	/**
+	 *	check recaptcha and return WP_Error on failure.
+	 *	filter function for `allow_password_reset`
+	 *
+	 *	@param $param mixed return value of funtion when captcha validates
+	 *	@return mixed will return argument $param an success, else WP_Error
+	 */
+	function wp_error_add( $param ) {
 		if ( ! $this->recaptcha_check() ) {
 			return new WP_Error( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
 		} else {
@@ -219,16 +260,16 @@ class WP_reCaptcha {
 	}
 	
 	/**
-	 *	check recaptcha on registration
-	 *	filter function for `registration_errors`
-	 *	@return object errors
+	 *	Check recaptcha and wp_die() on fail
+	 *	hooks into `pre_comment_on_post`, `lostpassword_post`
 	 */
-	function login_errors( $errors ) {
-		if ( isset( $_POST["log"] ) && ! $this->recaptcha_check() ) {
-			$errors->add( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
-		}
-		return $errors;
-	}
+ 	function recaptcha_check_or_die( ) {
+ 		if ( ! $this->recaptcha_check() ) {
+ 			$err = new WP_Error('comment_err',  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
+ 			wp_die( $err );
+ 		}
+ 	}
+ 	
 
 	/**
 	 *	print recaptcha stylesheets
@@ -266,9 +307,12 @@ class WP_reCaptcha {
 		}
 		$this->end_inject( );
  	}
+ 	
 	/**
 	 *	Print recaptcha scripts
 	 *	hooks into `wp_footer`
+	 *
+	 *	@param $flavor string force recaptcha | greaptcha flavor. falls back to `get_option( 'recaptcha_flavor' )`.
 	 */
 	function recaptcha_foot( $flavor = '' ) {
 		if ( empty( $flavor ) )
@@ -365,18 +409,9 @@ class WP_reCaptcha {
 		$this->end_inject( );
 	}
 	/**
-	 *	Check recaptcha and wp_die() on fail
-	 *	hooks into `pre_comment_on_post`, `lostpassword_post`
-	 */
- 	function recaptcha_check_or_die( ) {
- 		if ( ! $this->recaptcha_check() ) {
- 			$err = new WP_Error('comment_err', __("Sorry, the Captcha didn’t verify.",'wp-recaptcha-integration') );
- 			wp_die( $err );
- 		}
- 	}
- 	
-	/**
 	 *	Print recaptcha HTML. Use inside a form.
+	 *
+	 *	@param $flavor string force recaptcha | greaptcha flavor. falls back to `get_option( 'recaptcha_flavor' )`.
 	 */
  	function print_recaptcha_html( $flavor = '' ) {
  		echo $this->recaptcha_html( $flavor );
@@ -384,6 +419,8 @@ class WP_reCaptcha {
  	
 	/**
 	 *	Get recaptcha HTML.
+	 *
+	 *	@param $flavor string force recaptcha | greaptcha flavor. falls back to `get_option( 'recaptcha_flavor' )`.
 	 *	@return string recaptcha html
 	 */
  	function recaptcha_html( $flavor = '' ) {
@@ -479,6 +516,8 @@ class WP_reCaptcha {
 	
 	/**
 	 *	Check recaptcha
+	 *
+	 *	@param $flavor string force recaptcha | greaptcha flavor. falls back to `get_option( 'recaptcha_flavor' )`.
 	 *	@return bool false if check does not validate
 	 */
 	function recaptcha_check( $flavor = '' ) {
@@ -497,6 +536,7 @@ class WP_reCaptcha {
 	}
 	/**
 	 *	Check no captcha
+	 *	
 	 *	@return bool false if check does not validate
 	 */
 	function grecaptcha_check() {
@@ -517,6 +557,7 @@ class WP_reCaptcha {
 	}
 	/**
 	 *	Check old style recaptcha
+	 *	
 	 *	@return bool false if check does not validate
 	 */
 	function old_recaptcha_check() {

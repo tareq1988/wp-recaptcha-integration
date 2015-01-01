@@ -51,16 +51,14 @@ class WP_reCaptcha_WooCommerce {
 					add_action('woocommerce_login_form' , array($wp_recaptcha,'print_recaptcha_html'),10,0);
 					add_filter('woocommerce_process_login_errors', array( &$this , 'login_errors' ) , 10 , 3 );
 					
-					/*
-					SIGNUP: woocommerce_registration_errors
-					
-					LOSTPW: not possible!
-					*/
 				}
 				if ( $wp_recaptcha->get_option('recaptcha_enable_signup') ) {
 					// displaying the captcha at hook 'registration_form' already done by core plugin
 					add_filter('woocommerce_registration_errors', array( &$this , 'login_errors' ) , 10 , 3 );
 				}
+				/*
+				LOSTPW: Not possible yet. Needs https://github.com/woothemes/woocommerce/pull/7029 being applied.
+				*/
 			}
 		}
 	}
