@@ -114,6 +114,9 @@ I will migrate all the translation stuff there.
 
 == Changelog ==
 
+= 1.0.4 =
+- Reset noCaptcha after ajax calls
+
 = 1.0.3 =
 - Add BuddyPress support
 - Action hook for wp_recaptcha_checked
