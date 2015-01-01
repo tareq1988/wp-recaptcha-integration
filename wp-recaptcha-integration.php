@@ -294,19 +294,26 @@ class WP_reCaptcha {
 <?php if ( $this->get_option( 'recaptcha_disable_submit' ) ) { ?>
 							var form_submits = get_form_submits(el).setEnabled(false),wid;
 <?php } ?>
-							
-							wid = grecaptcha.render(el,{
-								'sitekey':'<?php echo $this->get_option('recaptcha_publickey'); ?>',
-								'theme':'<?php echo $this->get_option('recaptcha_theme'); ?>'
+							// check if captcha element is unrendered
+							if ( ! el.childNodes.length) {
+								wid = grecaptcha.render(el,{
+									'sitekey':'<?php echo $this->get_option('recaptcha_publickey'); ?>',
+									'theme':'<?php echo $this->get_option('recaptcha_theme'); ?>'
 <?php if ( $this->get_option( 'recaptcha_disable_submit' ) ) { ?>
-								,
-								'callback' : function(r){ get_form_submits(el).setEnabled(true); /* enable submit buttons */ }
+									,
+									'callback' : function(r){ get_form_submits(el).setEnabled(true); /* enable submit buttons */ }
 <?php } ?>
-							});
-							el.setAttribute('data-widget-id',wid);
+								});
+								el.setAttribute('data-widget-id',wid);
+							}
 						})(e[i]);
 					}
 				}
+				
+				// if jquery present re-render jquery/ajax loaded captcha elements 
+				if ( !!jQuery )
+					jQuery(document).ajaxSuccess( recaptchaLoadCallback );
+				
 				</script><?php
 				?><script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit" async defer></script><?php
 				break;
