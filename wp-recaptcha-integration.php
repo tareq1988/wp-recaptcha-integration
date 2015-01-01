@@ -305,6 +305,9 @@ class WP_reCaptcha {
 <?php } ?>
 								});
 								el.setAttribute('data-widget-id',wid);
+							} else {
+								wid = el.getAttribute('data-widget-id');
+								grecaptcha.reset(wid);
 							}
 						})(e[i]);
 					}
@@ -312,7 +315,7 @@ class WP_reCaptcha {
 				
 				// if jquery present re-render jquery/ajax loaded captcha elements 
 				if ( !!jQuery )
-					jQuery(document).ajaxSuccess( recaptchaLoadCallback );
+					jQuery(document).ajaxComplete( recaptchaLoadCallback );
 				
 				</script><?php
 				?><script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit" async defer></script><?php
