@@ -163,8 +163,15 @@ class WP_reCaptcha {
 					add_filter('bp_signup_pre_validate',array(&$this,'recaptcha_check_or_die'),99 );
 				} else {
 					add_action('register_form',array($this,'print_recaptcha_html'),10,0);
-					add_filter('registration_errors',array(&$this,'login_errors'));
+					add_filter('registration_errors',array(&$this,'registration_errors'));
 				}
+				if ( is_multisite() ) {
+					add_action( 'signup_hidden_fields' , array($this,'print_recaptcha_html'),10,0);
+					add_filter('wpmu_validate_user_signup',array(&$this,'wpmu_validate_user_signup'));
+				// signup_hidden_fields
+				// wpmu_validate_user_signup
+				}
+				
 			}
 			if ( $this->get_option('recaptcha_enable_login') ) {
 				add_action('login_form',array($this,'print_recaptcha_html'),10,0);
@@ -223,10 +230,21 @@ class WP_reCaptcha {
 	 *	@param $errors WP_Error
 	 *	@return WP_Error with captcha error added if test fails.
 	 */
-	function login_errors( $errors ) {
-		if ( isset( $_POST["log"]) )
+	function registration_errors( $errors ) {
+		if ( isset( $_POST["user_login"]) )
 			$errors = $this->wp_error_add( $errors );
 		return $errors;
+	}
+	
+	/**
+	 *	check recaptcha WPMU signup
+	 *	filter function for `wpmu_validate_user_signup`
+	 *
+	 *	@see filter hook `wpmu_validate_user_signup`
+	 */
+	function wpmu_validate_user_signup( $result ) {
+		$result['errors'] = $this->wp_error_add( $result['errors'] );
+		return $result;
 	}
 	
 	
