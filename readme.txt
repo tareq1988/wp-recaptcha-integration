@@ -66,7 +66,20 @@ Then go to the [Google Recaptcha Site](http://www.google.com/recaptcha), sign up
 
 On the plugin settings page check out if the option “Disable for known users” is activated (it is by default).
 Then log out (or open your page in a private browser window) and try again. 
-If the problem still persist, Houson really has a problem, and you are welcome to post a support request. 
+
+If only the comment form is affected, it is very likely that your Theme does not use the 
+`comment_form_defaults` filter. (That‘s where I add the captcha HTML, to make it appear 
+right before the submit button.) You will have to use another hook, e.g. `comment_form_after_fields`.
+
+Here is some code that will fix it:
+
+- Go to (https://gist.github.com/mcguffin/97d7f442ee3e92b7412e)
+- Click the "Download Gist" button
+- Unpack the `.tar.gz` file.
+- Create a zip Archive out of the included file `recaptcha-comment-form-fix.php` and name it `recaptcha-comment-form-fix.zip`.
+- Install and activate it like any other WordPress plugin
+
+If the problem still persist, Houston really has a problem, and you are welcome to post a support request. 
 
 = Disabled submit buttons should be grey! Why aren't they? =
 
