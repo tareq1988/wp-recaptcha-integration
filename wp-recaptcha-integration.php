@@ -535,7 +535,7 @@ class WP_reCaptcha {
 	 *	@return string recaptcha html
 	 */
  	function old_recaptcha_html() {
-		require_once dirname(__FILE__).'/recaptchalib.php';
+ 		$this->load_recaptchalib();
 		$public_key = $this->get_option( 'recaptcha_publickey' );
 		$recaptcha_theme = $this->get_option('recaptcha_theme');
 
@@ -653,7 +653,7 @@ class WP_reCaptcha {
 	 *	@return bool false if check does not validate
 	 */
 	function old_recaptcha_check() {
-		require_once dirname(__FILE__).'/recaptchalib.php';
+ 		$this->load_recaptchalib();
 		$private_key = $this->get_option( 'recaptcha_privatekey' );
 		$this->_last_result = recaptcha_check_answer( $private_key,
 			$_SERVER["REMOTE_ADDR"],
@@ -841,7 +841,14 @@ class WP_reCaptcha {
 		return array();
 	}
 	
-	
+	/**
+	 *	Load reCaptcha Library (3rd Party) if needed.
+	 *	
+	 */
+	private function load_recaptchalib() {
+		if ( ! defined( 'RECAPTCHA_API_SERVER' ) || ! function_exists( 'recaptcha_get_html' ) )
+			require_once dirname(__FILE__).'/recaptchalib.php';
+	}
 }
 
 WP_reCaptcha::instance();
