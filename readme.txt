@@ -147,6 +147,7 @@ I will migrate all the translation stuff there.
 = 1.0.5 =
 - Add Language option
 - Brasilian Portuguese localization
+- Fix: conditionally load recaptcha lib.
 
 = 1.0.4 =
 - Add WooCommerce Support (checkout page)
