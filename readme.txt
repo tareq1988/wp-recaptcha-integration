@@ -144,6 +144,10 @@ I will migrate all the translation stuff there.
 
 == Changelog ==
 
+= 1.0.5 =
+- Add Language option
+- Brasilian Portuguese localization
+
 = 1.0.4 =
 - Add WooCommerce Support (checkout page)
 - Multisite: protect signup form as well.
