@@ -25,6 +25,10 @@ form 7 as well as a plugin API for your own integrations.
 - [Ninja Forms](http://ninjaforms.com/) integration
 - [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) integration
 
+= Localizations =
+- Brazilian Portuguese (thanks to [Vinícius Ferraz](http://www.viniciusferraz.com))
+- German
+
 Latest Files on GitHub: [https://github.com/mcguffin/wp-recaptcha-integration](https://github.com/mcguffin/wp-recaptcha-integration)
 
 = Compatibility =
