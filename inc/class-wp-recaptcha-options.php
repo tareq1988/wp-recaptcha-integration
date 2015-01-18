@@ -160,7 +160,6 @@ class WP_reCaptcha_Options {
 	 *	admin init hook. Setup settings according.
 	 */
 	function admin_init( ) {
-
 		$has_api_key = WP_reCaptcha::instance()->has_api_key();
 		if ( ! $has_api_key && current_user_can( 'manage_options' ) ) {
 			add_action('admin_notices',array( &$this , 'api_key_notice'));
@@ -187,9 +186,13 @@ class WP_reCaptcha_Options {
 		if ( $has_api_key ) {
 			if (  ! WP_reCaptcha::is_network_activated() ||  ! is_network_admin()  ) {
 				// local options
+				register_setting( 'recaptcha_options', 'recaptcha_language'  , array( &$this , 'sanitize_language' ) );
 				register_setting( 'recaptcha_options', 'recaptcha_flavor' , array( &$this , 'sanitize_flavor' ) );
 				register_setting( 'recaptcha_options', 'recaptcha_theme'  , array( &$this , 'sanitize_theme' ) );
 				register_setting( 'recaptcha_options', 'recaptcha_disable_submit' , 'intval');
+				
+				add_settings_field('recaptcha_language', __( 'Language Settings' ), array(&$this,'select_language'), 'recaptcha', 'recaptcha_options');
+				
 
 				add_settings_field('recaptcha_flavor', __('Flavor','wp-recaptcha-integration'), 
 					array(&$this,'input_radio'), 'recaptcha', 'recaptcha_options',
@@ -431,72 +434,101 @@ class WP_reCaptcha_Options {
 		$value = WP_reCaptcha::instance()->get_option( $name );
 		?><input type="text" class="regular-text ltr" name="<?php echo $name ?>" value="<?php //echo $value ?>" /><?php
 	}
+	/**
+	 *	Selector for recaptcha theme
+	 */
+	public function select_language() {
+		$option_name = 'recaptcha_language';
+		$option_value = WP_reCaptcha::instance()->get_option( $option_name );
 
+		$available_langs = WP_reCaptcha::instance()->get_supported_languages();
+
+		?><div class="recaptcha-select-language flavor-<?php echo $option_flavor ?>"><?php
+			?><select name="<?php echo $option_name ?>"><?php
+				?><option <?php selected($option_value,'',true); ?> value=""><?php _e( 'Automatic','wp-recaptcha-integration' ); ?></option><?php
+				?><option <?php selected($option_value,'WPLANG',true); ?> value="WPLANG"><?php _e( 'Site Language' ); ?></option><?php
+				?><optgroup label="<?php _e('Other') ?>"><?php
+				foreach ( $available_langs as $lang => $lang_name ) {
+					?><option <?php selected($option_value,$lang,true); ?> value="<?php echo $lang; ?>"><?php _e( $lang_name ); ?></option><?php
+				}
+				?></optgroup><?php
+			?></select><?php
+		?></div><?php
+	}
 	/**
 	 *	Selector for recaptcha theme
 	 */
 	public function select_theme() {
 		$option_name = 'recaptcha_theme';
 		
-			$themes = array(
-				'light' => array(
-					'label' => __('Light','wp-recaptcha-integration') ,
-					'flavor' => 'grecaptcha',
-				),
-				'dark' => array(
-					'label' => __('Dark','wp-recaptcha-integration') ,
-					'flavor' => 'grecaptcha',
-				),
+		$themes = array(
+			'light' => array(
+				'label' => __('Light','wp-recaptcha-integration') ,
+				'flavor' => 'grecaptcha',
+			),
+			'dark' => array(
+				'label' => __('Dark','wp-recaptcha-integration') ,
+				'flavor' => 'grecaptcha',
+			),
 
-				'red' => array(
-					'label' => __('Red','wp-recaptcha-integration') ,
-					'flavor' => 'recaptcha',
-				),
-				'white' => array(
-					'label' => __('White','wp-recaptcha-integration') ,
-					'flavor' => 'recaptcha',
-				),
-				'blackglass' => array(
-					'label' => __('Black Glass','wp-recaptcha-integration') ,
-					'flavor' => 'recaptcha',
-				),
-				'clean' => array(
-					'label' => __('Clean','wp-recaptcha-integration') ,
-					'flavor' => 'recaptcha',
-				),
-				'custom' => array(
-					'label' => __('Custom','wp-recaptcha-integration') ,
-					'flavor' => 'recaptcha',
-				),
-			);
+			'red' => array(
+				'label' => __('Red','wp-recaptcha-integration') ,
+				'flavor' => 'recaptcha',
+			),
+			'white' => array(
+				'label' => __('White','wp-recaptcha-integration') ,
+				'flavor' => 'recaptcha',
+			),
+			'blackglass' => array(
+				'label' => __('Black Glass','wp-recaptcha-integration') ,
+				'flavor' => 'recaptcha',
+			),
+			'clean' => array(
+				'label' => __('Clean','wp-recaptcha-integration') ,
+				'flavor' => 'recaptcha',
+			),
+			'custom' => array(
+				'label' => __('Custom','wp-recaptcha-integration') ,
+				'flavor' => 'recaptcha',
+			),
+		);
 
-			$option_theme = WP_reCaptcha::instance()->get_option($option_name);
-			$option_flavor = WP_reCaptcha::instance()->get_option( 'recaptcha_flavor' );
-		
-			?><div class="recaptcha-select-theme flavor-<?php echo $option_flavor ?>"><?php
-		
-			foreach ( $themes as $value => $theme ) {
-				extract( $theme ); // label, flavor
-				?><div class="theme-item flavor-<?php echo $flavor ?>"><?php
-					?><input <?php checked($value,$option_theme,true); ?> id="<?php echo "$option_name-$value" ?>" type="radio" name="<?php echo $option_name ?>" value="<?php echo $value ?>" /><?php
-					?><label for="<?php echo "$option_name-$value" ?>"><?php
-						?><span class="title"><?php 
-							echo $label;
+		$option_theme = WP_reCaptcha::instance()->get_option($option_name);
+		$option_flavor = WP_reCaptcha::instance()->get_option( 'recaptcha_flavor' );
+	
+		?><div class="recaptcha-select-theme flavor-<?php echo $option_flavor ?>"><?php
+	
+		foreach ( $themes as $value => $theme ) {
+			extract( $theme ); // label, flavor
+			?><div class="theme-item flavor-<?php echo $flavor ?>"><?php
+				?><input <?php checked($value,$option_theme,true); ?> id="<?php echo "$option_name-$value" ?>" type="radio" name="<?php echo $option_name ?>" value="<?php echo $value ?>" /><?php
+				?><label for="<?php echo "$option_name-$value" ?>"><?php
+					?><span class="title"><?php 
+						echo $label;
+					?></span><?php
+					if ( $value == 'custom' ) {
+						?><span class="visual"><?php
+							_e( 'Unstyled HTML to apply your own Stylesheets.' , 'wp-recaptcha-integration' );
 						?></span><?php
-						if ( $value == 'custom' ) {
-							?><span class="visual"><?php
-								_e( 'Unstyled HTML to apply your own Stylesheets.' , 'wp-recaptcha-integration' );
-							?></span><?php
-						} else {
-							$src = plugins_url( "images/{$flavor}-theme-{$value}.png" , dirname(__FILE__));
-							printf( '<img src="%s" alt="%s" />' , $src , $label );
-						}
-					?></label><?php
-				?></div><?php
+					} else {
+						$src = plugins_url( "images/{$flavor}-theme-{$value}.png" , dirname(__FILE__));
+						printf( '<img src="%s" alt="%s" />' , $src , $label );
+					}
+				?></label><?php
+			?></div><?php
 			
 			}
 			?></div><?php
 		?></div><?php
+	}
+	
+	/**
+	 *	Check valid recaptcha theme, check if theme fits to flavor
+	 */
+	public function sanitize_language( $language ) {
+		if ( $language != 'WPLANG' )
+			$language = WP_reCaptcha::instance()->recaptcha_language( $language );
+		return $language;
 	}
 	/**
 	 *	Check valid recaptcha theme, check if theme fits to flavor

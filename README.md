@@ -108,6 +108,8 @@ function my_recaptcha_disabled_html( $html ) {
 add_filter('wp_recaptcha_disabled_html','my_recaptcha_disabled_html');
 ```
 
+#### Filter `wp_recaptcha_language`
+
 Support
 -------
 You like what you see? Maybe you already make some money with it? 

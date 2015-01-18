@@ -40,6 +40,64 @@ class WP_reCaptcha {
 	
 	private $_counter = 0;
 	
+	private $grecaptcha_languages = array(
+		'ar' =>	'Arabic',
+		'bg' =>	'Bulgarian',
+		'ca' =>	'Catalan',
+		'zh-CN' =>	'Chinese (Simplified)',
+		'zh-TW' =>	'Chinese (Traditional)',
+		'hr' =>	'Croatian',
+		'cs' =>	'Czech',
+		'da' =>	'Danish',
+		'nl' =>	'Dutch',
+		'en-GB' =>	'English (UK)',
+		'en' =>	'English (US)',
+		'fil' =>	'Filipino',
+		'fi' =>	'Finnish',
+		'fr' =>	'French',
+		'fr-CA' =>	'French (Canadian)',
+		'de' =>	'German',
+		'de-AT' =>	'German (Austria)',
+		'de-CH' =>	'German (Switzerland)',
+		'el' =>	'Greek',
+		'iw' =>	'Hebrew',
+		'hi' =>	'Hindi',
+		'hu' =>	'Hungarain',
+		'id' =>	'Indonesian',
+		'it' =>	'Italian',
+		'ja' =>	'Japanese',
+		'ko' =>	'Korean',
+		'lv' =>	'Latvian',
+		'lt' =>	'Lithuanian',
+		'no' =>	'Norwegian',
+		'fa' =>	'Persian',
+		'pl' =>	'Polish',
+		'pt' =>	'Portuguese',
+		'pt-BR' =>	'Portuguese (Brazil)',
+		'pt-PT' =>	'Portuguese (Portugal)',
+		'ro' =>	'Romanian',
+		'ru' =>	'Russian',
+		'sr' =>	'Serbian',
+		'sk' =>	'Slovak',
+		'sl' =>	'Slovenian',
+		'es' =>	'Spanish',
+		'es-419' =>	'Spanish (Latin America)',
+		'sv' =>	'Swedish',
+		'th' =>	'Thai',
+		'tr' =>	'Turkish',
+		'uk' =>	'Ukrainian',
+		'vi' =>	'Vietnamese',
+	);
+	private $recaptcha_languages = array(
+		'en' =>	'English',
+		'nl' =>	'Dutch',
+		'fr' =>	'French',
+		'de' =>	'German',
+		'pt' =>	'Portuguese',
+		'ru' =>	'Russian',
+		'es' =>	'Spanish',
+		'tr' =>	'Turkish',
+	);
 	/**
 	 *	Holding the singleton instance
 	 */
@@ -68,6 +126,7 @@ class WP_reCaptcha {
 		add_option('recaptcha_disable_submit',false); // local
 		add_option('recaptcha_publickey',''); // 1st global -> then local
 		add_option('recaptcha_privatekey',''); // 1st global -> then local
+		add_option('recaptcha_language',''); // 1st global -> then local
 
 		if ( WP_reCaptcha::is_network_activated() ) {
 			add_site_option('recaptcha_publickey',''); // 1st global -> then local
@@ -137,7 +196,6 @@ class WP_reCaptcha {
 	 */
 	function init() {
 		load_plugin_textdomain( 'wp-recaptcha-integration', false , dirname( plugin_basename( __FILE__ ) ).'/languages/' );
-		
 		$require_recaptcha = $this->is_required();
 		
 		if ( $require_recaptcha ) {
@@ -172,7 +230,7 @@ class WP_reCaptcha {
 				
 			}
 			if ( $this->get_option('recaptcha_enable_login') ) {
-				add_action('login_form',array($this,'print_recaptcha_html'),10,0);
+				add_action('login_form',array(&$this,'print_recaptcha_html'),10,0);
 				add_filter('wp_authenticate_user',array(&$this,'deny_login'),99 );
 			}
 			if ( $this->get_option('recaptcha_enable_lostpw') ) {
@@ -183,6 +241,8 @@ class WP_reCaptcha {
 				add_filter('allow_password_reset' , array(&$this,'wp_error') );
 //*/
 			}
+			if ( 'WPLANG' === $this->get_option( 'recaptcha_language' ) ) 
+				add_filter( 'wp_recaptcha_language' , array( &$this,'recaptcha_wplang' ) );
 		}
 	}
 	
@@ -287,6 +347,7 @@ class WP_reCaptcha {
  		}
  	}
  	
+ 	
 
 	/**
 	 *	print recaptcha stylesheets
@@ -316,7 +377,13 @@ class WP_reCaptcha {
 				} else {
 					?><script type="text/javascript">
 					var RecaptchaOptions = {
+<?php
+					$language_code = apply_filters( 'wp_recaptcha_language' , $this->get_option( 'recaptcha_language' ) );
+					if ( $language_code ) { ?>
+						lang : '<?php echo $language_code ?>',
+<?php				} ?>
 						theme : '<?php echo $recaptcha_theme ?>'
+						
 					};
 					</script><?php
 				}
@@ -365,6 +432,11 @@ class WP_reCaptcha {
 		}
  		switch ( $flavor ) {
  			case 'grecaptcha':
+				
+				$language_param = '';
+				if ( $language_code = apply_filters( 'wp_recaptcha_language' , $this->get_option( 'recaptcha_language' ) ) )
+					$language_param = "&hl=$language_code";
+				
 				?><script type="text/javascript">
 				var recaptcha_widgets={};
 				function recaptchaLoadCallback(){ 
@@ -404,7 +476,7 @@ class WP_reCaptcha {
 					jQuery(document).ajaxComplete( recaptchaLoadCallback );
 				
 				</script><?php
-				?><script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit" async defer></script><?php
+				?><script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit<?php echo $language_param ?>" async defer></script><?php
 				break;
  			case 'recaptcha':
 				if ( $this->get_option( 'recaptcha_disable_submit' ) ) { 
@@ -484,7 +556,7 @@ class WP_reCaptcha {
 	function grecaptcha_html() {
 		$public_key = $this->get_option( 'recaptcha_publickey' );
 		$theme = $this->get_option('recaptcha_theme');
-		$return = sprintf( '<div id="g-recaptcha-%d" class="g-recaptcha" data-sitekey="%s" data-theme="%s"></div>',$this->_counter++,$public_key,$theme);
+		$return = sprintf( '<div id="g-recaptcha-%d" class="g-recaptcha" data-sitekey="%s" data-theme="%s"></div>' , $this->_counter++ , $public_key , $theme );
 		$return .= '<noscript>'.__('Please enable JavaScript to submit this form.','wp-recaptcha-integration').'</noscript>';
 		return $return;
 	}
@@ -522,6 +594,9 @@ class WP_reCaptcha {
 		
 		return $return;
  	}
+	
+	
+	
 	
 	/**
 	 *	Get last result of recaptcha check
@@ -650,6 +725,7 @@ class WP_reCaptcha {
 				delete_option( 'recaptcha_privatekey' );
 				delete_option( 'recaptcha_flavor' );
 				delete_option( 'recaptcha_theme' );
+				delete_option( 'recaptcha_language' );
 				restore_current_blog();
 			}
 		} else {
@@ -658,6 +734,7 @@ class WP_reCaptcha {
 		
 			delete_option( 'recaptcha_flavor' );
 			delete_option( 'recaptcha_theme' );
+			delete_option( 'recaptcha_language' );
 			delete_option( 'recaptcha_enable_comments' );
 			delete_option( 'recaptcha_enable_signup' );
 			delete_option( 'recaptcha_enable_login' );
@@ -705,6 +782,66 @@ class WP_reCaptcha {
 		if ( $return ) return $html;
 		echo $html;
 	}
+	
+	
+	/**
+	 *	Rewrite WP get_locale() to recaptcha lang param.
+	 *
+	 *	@return string recaptcha language
+	 */
+	function recaptcha_wplang( ) {
+		$locale = get_locale();
+		/* Sometimes WP uses different locales the the ones supported by nocaptcha. */
+		$mapping = array(
+			'es_MX' => 'es-419',
+			'es_PE' => 'es-419',
+			'es_CL' => 'es-419',
+			'he_IL' => 'iw',
+		);
+		if ( isset( $mapping[$locale] ) )
+			$locale = $mapping[$locale];
+		return $this->recaptcha_language( $locale );
+	}
+	/**
+	 *	Rewrite WP get_locale() to recaptcha lang param.
+	 *
+	 *	@return string recaptcha language
+	 */
+	function recaptcha_language( $lang ) {
+		$lang = str_replace( '_' , '-' , $lang );
+		
+		$langs = $this->get_supported_languages();
+		// direct hit: return it.
+		if ( isset($langs[$lang]) )
+			return $lang;
+		
+		// remove countrycode
+		$lang = preg_replace('/-(.*)$/','',$lang);
+		if ( isset($langs[$lang]) )
+			return $lang;
+		
+		// lang does not exist.
+		return '';
+	}
+
+	/**
+	 *	Get languages supported by current recaptcha flavor.
+	 *
+	 *	@return array languages supported by recaptcha.
+	 */
+	function get_supported_languages( $flavor = null ) {
+		if ( is_null( $flavor ) )
+			$flavor = $this->get_option( 'recaptcha_flavor' );
+		switch( $flavor ) {
+			case 'recaptcha':
+				return $this->recaptcha_languages;
+			case 'grecaptcha':
+				return $this->grecaptcha_languages;
+		}
+		return array();
+	}
+	
+	
 }
 
 WP_reCaptcha::instance();
