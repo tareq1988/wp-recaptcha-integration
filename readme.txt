@@ -148,6 +148,7 @@ I will migrate all the translation stuff there.
 - Add Language option
 - Brasilian Portuguese localization
 - Fix: conditionally load recaptcha lib.
+- Fix: js error after cf7 validation error.
 
 = 1.0.4 =
 - Add WooCommerce Support (checkout page)
