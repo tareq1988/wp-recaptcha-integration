@@ -437,7 +437,8 @@ class WP_reCaptcha {
 				if ( $language_code = apply_filters( 'wp_recaptcha_language' , $this->get_option( 'recaptcha_language' ) ) )
 					$language_param = "&hl=$language_code";
 				
-				?><script type="text/javascript">
+				?><!--  BEGIN recaptcha, injected by plugin wp-recaptcha-integration -->
+				<script type="text/javascript">
 				var recaptcha_widgets={};
 				function recaptchaLoadCallback(){ 
 					try {
@@ -476,7 +477,9 @@ class WP_reCaptcha {
 					jQuery(document).ajaxComplete( recaptchaLoadCallback );
 				
 				</script><?php
-				?><script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit<?php echo $language_param ?>" async defer></script><?php
+				?><script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit<?php echo $language_param ?>" async defer></script>
+				?><!--  END recaptcha -->
+				<?php
 				break;
  			case 'recaptcha':
 				if ( $this->get_option( 'recaptcha_disable_submit' ) ) { 
