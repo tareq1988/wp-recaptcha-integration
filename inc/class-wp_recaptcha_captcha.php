@@ -1,0 +1,37 @@
+<?php
+
+
+
+/**
+ *	Class to manage the recaptcha options.
+ */
+abstract class WP_reCaptcha_Captcha {
+
+	abstract function print_head();
+	abstract function print_foot();
+	abstract function get_html();
+	abstract function check();
+
+	/**
+	 *	Get languages supported by current recaptcha flavor.
+	 *
+	 *	@return array languages supported by recaptcha.
+	 */
+	public function get_supported_languages() {
+		return $this->supported_languages;
+	}
+
+	/**
+	 *	Get last result of recaptcha check
+	 *	@return string recaptcha html
+	 */
+	function get_last_result() {
+		return $this->_last_result;
+	}
+	
+
+}
+
+
+WP_reCaptcha_Options::instance();
+

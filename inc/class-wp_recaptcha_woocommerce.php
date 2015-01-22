@@ -82,4 +82,4 @@ class WP_reCaptcha_WooCommerce {
 	}
 }
 
-WP_reCaptcha_WooCommerce::instance();
+

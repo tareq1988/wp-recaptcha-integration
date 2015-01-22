@@ -599,5 +599,3 @@ class WP_reCaptcha_Options {
 }
 
 
-WP_reCaptcha_Options::instance();
-
