@@ -18,7 +18,6 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 		'tr' =>	'Turkish',
 	);
 
-	private $_last_result = null;
 
 	/**
 	 *	Holding the singleton instance
@@ -101,15 +100,16 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 		return $return;
 	}
 	public function check() {
-		$private_key = $this->get_option( 'recaptcha_privatekey' );
-		$this->_last_result = recaptcha_check_answer( $private_key,
-			$_SERVER["REMOTE_ADDR"],
-			$_POST["recaptcha_challenge_field"],
-			$_POST["recaptcha_response_field"]);
+		if ( ! $this->_last_result ) {
+			$private_key = $this->get_option( 'recaptcha_privatekey' );
+			$this->_last_result = recaptcha_check_answer( $private_key,
+				$_SERVER["REMOTE_ADDR"],
+				$_POST["recaptcha_challenge_field"],
+				$_POST["recaptcha_response_field"]);
 
-		if ( ! $this->_last_result->is_valid )
-			$this->last_error = $this->_last_result->error;
-
+			if ( ! $this->_last_result->is_valid )
+				$this->last_error = $this->_last_result->error;
+		}
 		do_action( 'wp_recaptcha_checked' , $this->_last_result->is_valid );
 		return $this->_last_result->is_valid;
 	}

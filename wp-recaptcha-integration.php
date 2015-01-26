@@ -105,13 +105,6 @@ class WP_reCaptcha {
 	}
 	
 	/**
-	 *	@return bool return if google api is configured
-	 */
-	function has_api_key() {
-		return $this->_has_api_key;
-	}
-	
-	/**
 	 *	Load ninja/cf7 php files if necessary
 	 *	Hooks into 'plugins_loaded'
 	 */
@@ -206,16 +199,6 @@ class WP_reCaptcha {
 	}
 	
 	/**
-	 *	Display recaptcha on comments form.
-	 *	filter function for `comment_form_defaults`
-	 *
-	 *	@see filter doc `comment_form_defaults`
-	 */
-	function comment_form_defaults( $defaults ) {
-		$defaults['comment_notes_after'] .= '<p>' . $this->recaptcha_html() . '</p>';
-		return $defaults;
-	}
-	/**
 	 *	returns if recaptcha is required.
 	 *
 	 *	@return bool
@@ -226,6 +209,136 @@ class WP_reCaptcha {
 	}
 	
 	
+	
+ 	
+	//////////////////////////////////
+	// 	Displaying
+	// 
+
+	/**
+	 *	print recaptcha stylesheets
+	 *	hooks into `wp_head`
+	 */
+	function recaptcha_head( ) {
+		$this->begin_inject( );
+		$this->captcha_instance()->print_head();
+		$this->end_inject( );
+ 	}
+ 	
+	/**
+	 *	Print recaptcha scripts
+	 *	hooks into `wp_footer`
+	 *
+	 */
+	function recaptcha_foot( ) {
+		$this->begin_inject( );
+		
+		// getting submit buttons of an elements form
+		if ( $this->get_option( 'recaptcha_disable_submit' ) ) { 
+			?><script type="text/javascript">
+			function get_form_submits(el){
+				var form,current=el,ui,type,slice = Array.prototype.slice,self=this;
+				this.submits=[];
+				this.form=false;
+				
+				this.setEnabled=function(e){
+					for ( var s in self.submits ) {
+						if (e) self.submits[s].removeAttribute('disabled');
+						else  self.submits[s].setAttribute('disabled','disabled');
+					}
+					return this;
+				};
+				while ( current && current.nodeName != 'BODY' && current.nodeName != 'FORM' ) {
+					current = current.parentNode;
+				}
+				if ( !current || current.nodeName != 'FORM' ) 
+					return false;
+				this.form=current;
+				ui=slice.call(this.form.getElementsByTagName('input')).concat(slice.call(this.form.getElementsByTagName('button')));
+				for (var i in ui ) if ( (type=ui[i].getAttribute('TYPE')) && type=='submit' ) this.submits.push(ui[i]);
+				return this;
+			}
+			</script><?php
+		}
+		$this->captcha_instance()->print_foot();
+		
+		$this->end_inject( );
+	}
+	
+	/**
+	 *	Print recaptcha HTML. Use inside a form.
+	 *
+	 */
+ 	function print_recaptcha_html() {
+		echo $this->begin_inject( );
+ 		echo $this->recaptcha_html( );
+		echo $this->end_inject( );
+ 	}
+ 	
+	/**
+	 *	Get recaptcha HTML.
+	 *
+	 *	@return string recaptcha html
+	 */
+ 	function recaptcha_html( ) {
+		return $this->captcha_instance()->get_html();
+ 	}
+
+	/**
+	 *	HTML comment with some notes (beginning)
+	 *	
+	 *	@param $return bool Whether to print or to return the comment
+	 *	@param $moretext string Additional information being included in the comment
+	 *	@return null|string HTML-Comment
+	 */
+	function begin_inject($return = false,$moretext='') {
+		$html = "\n<!-- BEGIN recaptcha, injected by plugin wp-recaptcha-integration $moretext -->\n";
+		if ( $return ) return $html;
+		echo $html;
+	}
+	/**
+	 *	HTML comment with some notes (ending)
+	 *	
+	 *	@param $return bool Whether to print or to return the comment
+	 *	@return null|string HTML-Comment
+	 */
+	function end_inject( $return = false ) {
+		$html = "\n<!-- END recaptcha -->\n";
+		if ( $return ) return $html;
+		echo $html;
+	}
+	
+	/**
+	 *	Display recaptcha on comments form.
+	 *	filter function for `comment_form_defaults`
+	 *
+	 *	@see filter doc `comment_form_defaults`
+	 */
+	function comment_form_defaults( $defaults ) {
+		$defaults['comment_notes_after'] .= '<p>' . $this->recaptcha_html() . '</p>';
+		return $defaults;
+	}
+
+	//////////////////////////////////
+	// 	Verification
+	// 
+
+	/**
+	 *	Get last result of recaptcha check
+	 *	@return string recaptcha html
+	 */
+	function get_last_result() {
+		return $this->captcha_instance()->get_last_result();
+	}
+	
+	/**
+	 *	Check recaptcha
+	 *
+	 *	@return bool false if check does not validate
+	 */
+	function recaptcha_check( ) {
+		return $this->captcha_instance()->check();
+	}
 	
 	/**
 	 *	check recaptcha on login
@@ -306,95 +419,11 @@ class WP_reCaptcha {
  		}
  	}
  	
- 	
-
-	/**
-	 *	print recaptcha stylesheets
-	 *	hooks into `wp_head`
-	 */
-	function recaptcha_head( ) {
-		$this->begin_inject( );
-		$this->captcha_instance()->print_head();
-		$this->end_inject( );
- 	}
- 	
-	/**
-	 *	Print recaptcha scripts
-	 *	hooks into `wp_footer`
-	 *
-	 */
-	function recaptcha_foot( ) {
-		$this->begin_inject( );
-		
-		// getting submit buttons of an elements form
-		if ( $this->get_option( 'recaptcha_disable_submit' ) ) { 
-			?><script type="text/javascript">
-			function get_form_submits(el){
-				var form,current=el,ui,type,slice = Array.prototype.slice,self=this;
-				this.submits=[];
-				this.form=false;
-				
-				this.setEnabled=function(e){
-					for ( var s in self.submits ) {
-						if (e) self.submits[s].removeAttribute('disabled');
-						else  self.submits[s].setAttribute('disabled','disabled');
-					}
-					return this;
-				};
-				while ( current && current.nodeName != 'BODY' && current.nodeName != 'FORM' ) {
-					current = current.parentNode;
-				}
-				if ( !current || current.nodeName != 'FORM' ) 
-					return false;
-				this.form=current;
-				ui=slice.call(this.form.getElementsByTagName('input')).concat(slice.call(this.form.getElementsByTagName('button')));
-				for (var i in ui ) if ( (type=ui[i].getAttribute('TYPE')) && type=='submit' ) this.submits.push(ui[i]);
-				return this;
-			}
-			</script><?php
-		}
-		$this->captcha_instance()->print_foot();
-		
-		$this->end_inject( );
-	}
 	
-	/**
-	 *	Print recaptcha HTML. Use inside a form.
-	 *
-	 */
- 	function print_recaptcha_html() {
-		echo $this->begin_inject( );
- 		echo $this->recaptcha_html( );
-		echo $this->end_inject( );
- 	}
- 	
-	/**
-	 *	Get recaptcha HTML.
-	 *
-	 *	@return string recaptcha html
-	 */
- 	function recaptcha_html( ) {
-		return $this->captcha_instance()->get_html();
- 	}
+	//////////////////////////////////
+	// 	Options
+	// 
 
-
-	/**
-	 *	Get last result of recaptcha check
-	 *	@return string recaptcha html
-	 */
-	function get_last_result() {
-		return $this->captcha_instance()->get_last_result();
-	}
-	
-	/**
-	 *	Check recaptcha
-	 *
-	 *	@return bool false if check does not validate
-	 */
-	function recaptcha_check( ) {
-		return $this->captcha_instance()->check();
-	}
-	
 	/**
 	 *	Get plugin option by name.
 	 *	
@@ -423,6 +452,18 @@ class WP_reCaptcha {
 		}
 	}
 	
+	/**
+	 *	@return bool return if google api is configured
+	 */
+	function has_api_key() {
+		return $this->_has_api_key;
+	}
+	
+
+	//////////////////////////////////
+	// 	Activation
+	// 
+
 	/**
 	 *	Fired on plugin activation
 	 */
@@ -487,30 +528,13 @@ class WP_reCaptcha {
 		}
 		return self::$_is_network_activated;
 	}
-	/**
-	 *	HTML comment with some notes (beginning)
-	 *	
-	 *	@param $return bool Whether to print or to return the comment
-	 *	@param $moretext string Additional information being included in the comment
-	 *	@return null|string HTML-Comment
-	 */
-	function begin_inject($return = false,$moretext='') {
-		$html = "\n<!-- BEGIN recaptcha, injected by plugin wp-recaptcha-integration $moretext -->\n";
-		if ( $return ) return $html;
-		echo $html;
-	}
-	/**
-	 *	HTML comment with some notes (ending)
-	 *	
-	 *	@param $return bool Whether to print or to return the comment
-	 *	@return null|string HTML-Comment
-	 */
-	function end_inject( $return = false ) {
-		$html = "\n<!-- END recaptcha -->\n";
-		if ( $return ) return $html;
-		echo $html;
-	}
 	
+	
+	
+
+	//////////////////////////////////
+	// 	Language
+	// 
 	
 	/**
 	 *	Rewrite WP get_locale() to recaptcha lang param.

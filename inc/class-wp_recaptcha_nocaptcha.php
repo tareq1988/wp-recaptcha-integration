@@ -57,7 +57,6 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	);
 
 	private $_counter = 0;
-	private $_last_result = null;
 	/**
 	 *	Holding the singleton instance
 	 */
@@ -156,15 +155,19 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		$private_key = WP_reCaptcha::instance()->get_option( 'recaptcha_privatekey' );
 		$user_response = isset( $_REQUEST['g-recaptcha-response'] ) ? $_REQUEST['g-recaptcha-response'] : false;
 		if ( $user_response ) {
-			$remote_ip = $_SERVER['REMOTE_ADDR'];
-			$url = "https://www.google.com/recaptcha/api/siteverify?secret=$private_key&response=$user_response&remoteip=$remote_ip";
-			$response = wp_remote_get( $url );
-			if ( ! is_wp_error($response) ) {
-				$response_data = wp_remote_retrieve_body( $response );
-				$this->_last_result = json_decode($response_data);
-		 		do_action( 'wp_recaptcha_checked' , $this->_last_result->success );
-				return $this->_last_result->success;
+			if ( ! $this->_last_result->success ) {
+				$remote_ip = $_SERVER['REMOTE_ADDR'];
+				$url = "https://www.google.com/recaptcha/api/siteverify?secret=$private_key&response=$user_response&remoteip=$remote_ip";
+				$response = wp_remote_get( $url );
+				if ( ! is_wp_error($response) ) {
+					$response_data = wp_remote_retrieve_body( $response );
+					$this->_last_result = json_decode($response_data);
+				} else {
+					$this->_last_result = (object) array( 'success' => false );
+				}
 			}
+			do_action( 'wp_recaptcha_checked' , $this->_last_result->success );
+			return $this->_last_result->success;
 		}
 		return false;
 	}
