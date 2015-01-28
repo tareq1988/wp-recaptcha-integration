@@ -121,7 +121,7 @@ class WP_reCaptcha {
 				include_once dirname(__FILE__).'/inc/contact_form_7_recaptcha.php';
 
 			// WooCommerce support
-			// check if contact form 7 forms is present
+			// check if woocommerce is present
 			if ( function_exists('WC') || class_exists('WooCommerce') )
 				WP_reCaptcha_WooCommerce::instance();
 
