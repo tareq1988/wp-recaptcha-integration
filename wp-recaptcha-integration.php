@@ -113,12 +113,12 @@ class WP_reCaptcha {
 			// NinjaForms support
 			// check if ninja forms is present
 			if ( class_exists('Ninja_Forms') || function_exists('ninja_forms_register_field') )
-				include_once dirname(__FILE__).'/inc/ninja_forms_field_recaptcha.php';
+				WP_reCaptcha_NinjaForms::instance();
 
 			// CF7 support
 			// check if contact form 7 forms is present
 			if ( function_exists('wpcf7') )
-				include_once dirname(__FILE__).'/inc/contact_form_7_recaptcha.php';
+				WP_reCaptcha_ContactForm7::instance();
 
 			// WooCommerce support
 			// check if woocommerce is present

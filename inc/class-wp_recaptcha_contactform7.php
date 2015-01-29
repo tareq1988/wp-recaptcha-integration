@@ -1,0 +1,122 @@
+<?php
+
+
+
+/**
+ *	Class to manage ContactForm 7 Support
+ */
+class WP_reCaptcha_ContactForm7 {
+	/**
+	 *	Holding the singleton instance
+	 */
+	private static $_instance = null;
+
+	/**
+	 *	@return WP_reCaptcha
+	 */
+	public static function instance(){
+		if ( is_null( self::$_instance ) )
+			self::$_instance = new self();
+		return self::$_instance;
+	}
+
+	/**
+	 *	Prevent from creating more instances
+	 */
+	private function __clone() { }
+
+	/**
+	 *	Prevent from creating more than one instance
+	 */
+	private function __construct() {
+		add_action( 'wpcf7_init', array( &$this , 'add_shortcode_recaptcha' ) );
+		add_action( 'wp_enqueue_scripts' , array( &$this , 'recaptcha_enqueue_script') );
+		add_action( 'admin_init', array( &$this , 'add_tag_generator_recaptcha' ), 45 );
+		add_filter( 'wpcf7_validate_recaptcha', array( &$this , 'recaptcha_validation_filter' ) , 10, 2 );
+		add_filter( 'wpcf7_validate_recaptcha*', array( &$this , 'recaptcha_validation_filter' ) , 10, 2 );
+	}
+
+
+	function add_shortcode_recaptcha() {
+		wpcf7_add_shortcode(
+			array( 'recaptcha','recaptcha*'),
+			array(&$this,'recaptcha_shortcode_handler'), true );
+	}
+
+
+
+	function recaptcha_shortcode_handler( $tag ) {
+		if ( ! WP_reCaptcha::instance()->is_required() )
+			return apply_filters( 'wp_recaptcha_disabled_html' ,'');
+		$tag = new WPCF7_Shortcode( $tag );
+		if ( empty( $tag->name ) )
+			return '';
+
+		$recaptcha_html = WP_reCaptcha::instance()->recaptcha_html();
+		$validation_error = wpcf7_get_validation_error( $tag->name );
+
+		$html = sprintf(
+			'<span class="wpcf7-form-control-wrap %1$s">%2$s %3$s</span>',
+			$tag->name, $recaptcha_html, $validation_error );
+	
+		return $html;
+	}
+
+	function recaptcha_enqueue_script() {
+		wp_enqueue_script('wpcf7-recaptcha-integration',plugins_url('/js/wpcf7.js',dirname(__FILE__)),array('contact-form-7'));
+	}
+
+
+
+	function add_tag_generator_recaptcha() {
+		if ( ! function_exists( 'wpcf7_add_tag_generator' ) )
+			return;
+		wpcf7_add_tag_generator( 'recaptcha', __( 'reCAPTCHA', 'wp-recaptcha-integration' ),
+			'wpcf7-tg-pane-recaptcha', array(&$this,'recaptcha_settings_callback') );
+	}
+
+
+
+	function recaptcha_settings_callback( $contact_form ) {
+		$type = 'recaptcha';
+	
+		?>
+		<div id="wpcf7-tg-pane-<?php echo $type; ?>" class="hidden">
+			<form action="">
+				<table>
+					<tr><td><input type="checkbox" checked="checked" disabled="disabled" name="required" onclick="return false" />&nbsp;<?php echo esc_html( __( 'Required field?', 'contact-form-7' ) ); ?></td></tr>
+					<tr><td><?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?><br /><input type="text" name="name" class="tg-name oneline" /></td><td></td></tr>
+				</table>
+				<div class="tg-tag">
+				<?php echo esc_html( __( "Copy this code and paste it into the form left.", 'contact-form-7' ) ); ?><br />
+				<input type="text" name="<?php echo $type; ?>" class="tag wp-ui-text-highlight code" readonly="readonly" onfocus="this.select()" />
+				</div>
+			</form>
+		</div>
+		<?php
+	}
+
+
+
+	function recaptcha_validation_filter( $result, $tag ) {
+		if ( ! WP_reCaptcha::instance()->is_required() )
+			return $result;
+	
+		$tag = new WPCF7_Shortcode( $tag );
+		$name = $tag->name;
+
+		if ( ! WP_reCaptcha::instance()->recaptcha_check() ) {
+			$message = __("The Captcha didn’t verify.",'wp-recaptcha-integration');
+			if ( method_exists($result, 'invalidate' ) ) { // since CF7 4.1
+				$result->invalidate( $tag , $message );
+			} else {
+				$result['valid'] = false;
+				$result['reason'][$name] = $message;
+			}
+		}
+		return $result;
+	}
+	
+
+}
+
