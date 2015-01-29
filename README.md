@@ -10,7 +10,7 @@ Features
 - Supports old as well as new reCaptcha.
 - [Ninja Forms](http://ninjaforms.com/) integration
 - [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) integration
-- Tested with up to WP 4.2-alpha, Ninja Forms 2.8.7, Contact Form 7 4.0.1
+- Tested with up to WP 4.2-alpha, Ninja Forms 2.8.7, Contact Form 7 4.1
 
 Limitations
 -----------
