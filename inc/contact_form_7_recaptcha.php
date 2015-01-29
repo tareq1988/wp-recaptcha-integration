@@ -69,8 +69,13 @@ function wpcf7_recaptcha_validation_filter( $result, $tag ) {
 	$name = $tag->name;
 
 	if ( ! WP_reCaptcha::instance()->recaptcha_check() ) {
-		$result['valid'] = false;
-		$result['reason'][$name] = __("The Captcha didn’t verify.",'wp-recaptcha-integration');
+		$message = __("The Captcha didn’t verify.",'wp-recaptcha-integration');
+		if ( method_exists($result, 'invalidate' ) ) {
+			$result->invalidate( $tag , $message );
+		} else {
+			$result['valid'] = false;
+			$result['reason'][$name] = $message;
+		}
 	}
 	return $result;
 }
