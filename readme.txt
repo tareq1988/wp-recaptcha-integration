@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -143,6 +143,12 @@ I will migrate all the translation stuff there.
 3. Contact Form 7 Integration
 
 == Changelog ==
+
+= 1.0.6 =
+- Code: separate classes for recaptcha / nocaptcha
+- Code: Class autoloader
+- Fix: avoid double verification
+- Fix: CF7 4.1 validation
 
 = 1.0.5 =
 - Add Language option
