@@ -144,6 +144,9 @@ I will migrate all the translation stuff there.
 
 == Changelog ==
 
+= 1.0.7 =
+- Code: Put NinjaForms + CF7 handling into singletons
+
 = 1.0.6 =
 - Code: separate classes for recaptcha / nocaptcha
 - Code: Class autoloader
