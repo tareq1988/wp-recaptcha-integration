@@ -7,7 +7,7 @@
  */
 class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 
-	private $supported_languages = array(
+	protected $supported_languages = array(
 		'en' =>	'English',
 		'nl' =>	'Dutch',
 		'fr' =>	'French',

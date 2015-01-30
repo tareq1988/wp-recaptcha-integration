@@ -7,7 +7,7 @@
  */
 class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	
-	private $supported_languages = array(
+	protected $supported_languages = array(
 		'ar' =>	'Arabic',
 		'bg' =>	'Bulgarian',
 		'ca' =>	'Catalan',
