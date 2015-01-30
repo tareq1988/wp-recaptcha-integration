@@ -96,9 +96,8 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		$language_param = '';
 		if ( $language_code = apply_filters( 'wp_recaptcha_language' , WP_reCaptcha::instance()->get_option( 'recaptcha_language' ) ) )
 			$language_param = "&hl=$language_code";
-		
-		?><!--  BEGIN recaptcha, injected by plugin wp-recaptcha-integration -->
-		<script type="text/javascript">
+
+		?><script type="text/javascript">
 		var recaptcha_widgets={};
 		function recaptchaLoadCallback(){ 
 			try {
@@ -137,9 +136,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 			jQuery(document).ajaxComplete( recaptchaLoadCallback );
 		
 		</script><?php
-		?><script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit<?php echo $language_param ?>" async defer></script>
-		?><!--  END recaptcha -->
-		<?php
+		?><script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit<?php echo $language_param ?>" async defer></script><?php
 	}
 	
 	

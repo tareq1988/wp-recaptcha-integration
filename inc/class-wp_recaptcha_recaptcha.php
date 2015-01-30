@@ -71,6 +71,7 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 	}
 	public function print_foot() {
 		if ( WP_reCaptcha::instance()->get_option( 'recaptcha_disable_submit' ) ) { 
+
 			?><script type="text/javascript">
 			document.addEventListener('keyup',function(e){
 				if (e.target && typeof e.target.getAttribute=='function' && e.target.getAttribute('ID')=='recaptcha_response_field') {
