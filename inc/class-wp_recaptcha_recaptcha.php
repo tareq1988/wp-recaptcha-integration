@@ -85,7 +85,6 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 			});
 			</script><?php
 		}
-		break;
 	}
 	public function get_html() {
 		$public_key = WP_reCaptcha::instance()->get_option( 'recaptcha_publickey' );
