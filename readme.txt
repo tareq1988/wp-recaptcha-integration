@@ -27,6 +27,7 @@ form 7 as well as a plugin API for your own integrations.
 
 = Localizations =
 - Brazilian Portuguese (thanks to [Vinícius Ferraz](http://www.viniciusferraz.com))
+- Spanish (thanks to [Ivan Yivoff](https://github.com/yivi))
 - German
 
 Latest Files on GitHub: [https://github.com/mcguffin/wp-recaptcha-integration](https://github.com/mcguffin/wp-recaptcha-integration)
@@ -143,6 +144,9 @@ I will migrate all the translation stuff there.
 3. Contact Form 7 Integration
 
 == Changelog ==
+
+= 1.0.8 =
+- L10n: add Spanish
 
 = 1.0.7 =
 - Fix: Fatal error in settings
