@@ -1,0 +1,320 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP reCaptcha Integration\n"
+"POT-Creation-Date: 2015-02-01 17:51+0100\n"
+"PO-Revision-Date: 2015-02-01 18:11+0100\n"
+"Last-Translator: Ivan <ivan@yivoff.com>\n"
+"Language-Team: Ivan <ivan@yivoff.com>\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: inc/class-wp_recaptcha_contactform7.php:74
+#: inc/class-wp_recaptcha_ninjaforms.php:36
+msgid "reCAPTCHA"
+msgstr "reCAPTCHA"
+
+#: inc/class-wp_recaptcha_contactform7.php:87
+msgid "Required field?"
+msgstr "Campo Requerido?"
+
+#: inc/class-wp_recaptcha_contactform7.php:88
+msgid "Name"
+msgstr "Nombre"
+
+#: inc/class-wp_recaptcha_contactform7.php:91
+msgid "Copy this code and paste it into the form left."
+msgstr "Copia este código y pégalo en el formulario de la izquierda"
+
+#: inc/class-wp_recaptcha_contactform7.php:109
+msgid "The Captcha didn’t verify."
+msgstr "El Captcha no se ha podido verificar"
+
+#: inc/class-wp_recaptcha_ninjaforms.php:114
+#: inc/class-wp_recaptcha_woocommerce.php:71
+#: inc/class-wp_recaptcha_woocommerce.php:80 wp-recaptcha-integration.php:391
+#: wp-recaptcha-integration.php:405 wp-recaptcha-integration.php:417
+msgid "<strong>Error:</strong> the Captcha didn’t verify."
+msgstr "<strong>Error:</strong> verificación Captcha incorrecta."
+
+#: inc/class-wp_recaptcha_nocaptcha.php:148
+msgid "Please enable JavaScript to submit this form."
+msgstr "Por favor activa Javascript para enviar este formulario"
+
+#: inc/class-wp_recaptcha_options.php:94
+#: inc/class-wp_recaptcha_options.php:106
+msgid "reCaptcha Settings"
+msgstr "Ajustes reCAPTCHA"
+
+#: inc/class-wp_recaptcha_options.php:95
+msgid "reCaptcha"
+msgstr "reCaptcha"
+
+#: inc/class-wp_recaptcha_options.php:153
+#, php-format
+msgid ""
+"<strong>reCaptcha needs your attention:</strong> To make it work You need to "
+"enter an api key. <br />You can do so at the <a href=\"%s\">reCaptcha "
+"settings page</a>."
+msgstr ""
+"<strong>reCaptcha necesita tu atención</strong> Para que funcione, necesitas "
+"introducir una llave API <br />Puedes hacerlo en los <a href=\"%s\">ajustes "
+"de reCaptcha</a>."
+
+#: inc/class-wp_recaptcha_options.php:173
+msgid "Public Key"
+msgstr "Llave pública"
+
+#: inc/class-wp_recaptcha_options.php:174
+msgid "Private Key"
+msgstr "Llave Privada"
+
+#: inc/class-wp_recaptcha_options.php:175
+#: inc/class-wp_recaptcha_options.php:181
+msgid "Connecting"
+msgstr "Conectándose"
+
+#: inc/class-wp_recaptcha_options.php:194
+msgid "Language Settings"
+msgstr "Ajustes de lenguaje"
+
+#: inc/class-wp_recaptcha_options.php:197
+msgid "Flavor"
+msgstr "Sabor"
+
+#: inc/class-wp_recaptcha_options.php:204
+msgid "No Captcha where you just click a button"
+msgstr "Sin Captcha, dónde sólo hace falta pulsar un botón"
+
+#: inc/class-wp_recaptcha_options.php:208
+msgid "Old style reCAPTCHA where you type some cryptic text"
+msgstr "reCaptcha clásico, dónde descifras un texto críptico"
+
+#: inc/class-wp_recaptcha_options.php:213
+msgid "Theme"
+msgstr "Tema"
+
+#: inc/class-wp_recaptcha_options.php:215
+msgid "Disable Submit Button"
+msgstr "Desactiva Botón de Enviar"
+
+#: inc/class-wp_recaptcha_options.php:217
+msgid "Disable Form Submit Button until no-captcha is entered."
+msgstr "Desactivar botón de enviar hasta que el reCaptcha haya sido resuelto"
+
+#: inc/class-wp_recaptcha_options.php:233
+msgid "Protect Comments"
+msgstr "Proteger Comentarios"
+
+#: inc/class-wp_recaptcha_options.php:235
+msgid "Protect comment forms with recaptcha."
+msgstr "Proteger formulario de comentario con recaptcha"
+
+#: inc/class-wp_recaptcha_options.php:238
+msgid "Protect Signup"
+msgstr "Proteger Registro"
+
+#: inc/class-wp_recaptcha_options.php:240
+msgid "Protect signup form with recaptcha."
+msgstr "Proteger formulario de registro de usuario con recaptcha"
+
+#: inc/class-wp_recaptcha_options.php:243
+msgid "Protect Login"
+msgstr "Proteger login"
+
+#: inc/class-wp_recaptcha_options.php:245
+msgid "Protect Login form with recaptcha."
+msgstr "Proteger Login con recaptcha"
+
+#: inc/class-wp_recaptcha_options.php:248
+msgid "Protect Lost Password"
+msgstr "Projeger Recuperación de Contraseña"
+
+#: inc/class-wp_recaptcha_options.php:250
+msgid "Protect Lost Password form with recaptcha."
+msgstr "Proteger formulario de contraseña perdida con recaptcha"
+
+#: inc/class-wp_recaptcha_options.php:255
+msgid "Protect WooCommerce Checkout"
+msgstr "Proteger compra en wooCommerce"
+
+#: inc/class-wp_recaptcha_options.php:259
+msgid "Protect wooCommerce Checkout with a recaptcha."
+msgstr "Proteger el formulario de compra de wooCommerce con recaptcha."
+
+#: inc/class-wp_recaptcha_options.php:260
+msgid "This will only work with No Captcha flavor."
+msgstr "Esto sólo funcionará con el sabor \"No Captcha\"."
+
+#: inc/class-wp_recaptcha_options.php:265
+msgid ""
+"The Old Style recaptcha doesn‘t work together with the WooCommerce checkout "
+"form. The Captcha will not be displayed,"
+msgstr ""
+"ReCaptcha \"clásico\" no funciona con el formulario de pago de WooCommerce. "
+"El Captcha no se mostrará."
+
+#: inc/class-wp_recaptcha_options.php:268
+msgid "Disable for known users"
+msgstr "Desactivar para usuarios conocidos"
+
+#: inc/class-wp_recaptcha_options.php:270
+msgid "Disable reCaptcha verification for logged in users."
+msgstr "Desactiva la verificación reCaptcha para usuarios conectados"
+
+#: inc/class-wp_recaptcha_options.php:273
+msgid "Features"
+msgstr "Características"
+
+#: inc/class-wp_recaptcha_options.php:276
+msgid ""
+"Please configure the public and private key. <a href=\"http://www.google.com/"
+"recaptcha/whyrecaptcha\">What are you trying to tell me?</a>"
+msgstr ""
+"Por favor configura las llaves pública y privada. <a href=\"http://www."
+"google.com/recaptcha/whyrecaptcha\">¿De qué me estás hablando?</a>"
+
+#: inc/class-wp_recaptcha_options.php:289
+#, php-format
+msgid ""
+"Please register your blog through the <a href=\"%s\">Google reCAPTCHA admin "
+"page</a> and enter the public and private key in the fields below. <a href="
+"\"%s\">What is this all about</a>"
+msgstr ""
+"Por favor registra tu blog en la <a href=\"%s\">página de Administración de "
+"reCAPTCHA de Google</a>, e introduce las llaves públicas y privadas en los "
+"campos de más abajo. <a href=\"%s\">Si no sabes de que va esto, pincha aquí</"
+"a>"
+
+#: inc/class-wp_recaptcha_options.php:297
+msgid "You already entered an API Key. Use the button below to enter it again."
+msgstr ""
+"Ya has introducido una llave API. Usa el botón de aquí abajo para volver a "
+"hacerlo."
+
+#: inc/class-wp_recaptcha_options.php:308
+msgid "New API Key"
+msgstr "Nueva llave API"
+
+#: inc/class-wp_recaptcha_options.php:309
+msgid "Test API Key"
+msgstr "Probar llave API"
+
+#: inc/class-wp_recaptcha_options.php:329
+msgid "Test verfication"
+msgstr "Probar verificación"
+
+#: inc/class-wp_recaptcha_options.php:342
+msgid "The secret Key is missing."
+msgstr "Falta la llave secreta"
+
+#: inc/class-wp_recaptcha_options.php:343
+msgid ""
+"The secret Key is invalid. You better check your domain configuration and "
+"enter it again."
+msgstr ""
+"La llave secreta es inválida. Verifica la configuración de tu dominio y "
+"vuelve a intentarlo."
+
+#: inc/class-wp_recaptcha_options.php:344
+msgid "The user response was missing"
+msgstr "No se ha recibido la respuesta del usuario"
+
+#: inc/class-wp_recaptcha_options.php:345
+msgid "Invalid user response"
+msgstr "Respuesta de usuario inválida"
+
+#: inc/class-wp_recaptcha_options.php:354
+msgid "Works! All good!"
+msgstr "¡Funciona! ¡Todo bien!"
+
+#: inc/class-wp_recaptcha_options.php:366
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: inc/class-wp_recaptcha_options.php:448
+msgid "Automatic"
+msgstr "Automático"
+
+#: inc/class-wp_recaptcha_options.php:449
+msgid "Site Language"
+msgstr "Idioma del sitio"
+
+#: inc/class-wp_recaptcha_options.php:450
+msgid "Other"
+msgstr "Otro"
+
+#: inc/class-wp_recaptcha_options.php:466
+msgid "Light"
+msgstr "Claro"
+
+#: inc/class-wp_recaptcha_options.php:470
+msgid "Dark"
+msgstr "Oscuro"
+
+#: inc/class-wp_recaptcha_options.php:475
+msgid "Red"
+msgstr "Rojo"
+
+#: inc/class-wp_recaptcha_options.php:479
+msgid "White"
+msgstr "Blanco"
+
+#: inc/class-wp_recaptcha_options.php:483
+msgid "Black Glass"
+msgstr "Cristal Oscuro"
+
+#: inc/class-wp_recaptcha_options.php:487
+msgid "Clean"
+msgstr "Limpiar"
+
+#: inc/class-wp_recaptcha_options.php:491
+msgid "Custom"
+msgstr "Perzonalizado"
+
+#: inc/class-wp_recaptcha_options.php:511
+msgid "Unstyled HTML to apply your own Stylesheets."
+msgstr "HTML sin estilo para aplicar sus propias hojas de estilo."
+
+#: inc/class-wp_recaptcha_options.php:564
+#: inc/class-wp_recaptcha_options.php:588
+msgid "ReCaptcha"
+msgstr "ReCaptcha"
+
+#: inc/class-wp_recaptcha_options.php:586
+msgid "Settings"
+msgstr "Ajustes"
+
+#: inc/class-wp_recaptcha_recaptcha.php:127
+msgid "Incorrect please try again"
+msgstr "Incorrecto, por favor inténtalo otra vez"
+
+#: inc/class-wp_recaptcha_recaptcha.php:129
+msgid "Enter the words above:"
+msgstr "Introduce las palabras de aquí arriba:"
+
+#: inc/class-wp_recaptcha_recaptcha.php:130
+msgid "Enter the numbers you hear:"
+msgstr "Introduce los números que oyes:"
+
+#: inc/class-wp_recaptcha_recaptcha.php:134
+msgid "Get another CAPTCHA"
+msgstr "Cargar otro CAPTCHA"
+
+#: inc/class-wp_recaptcha_recaptcha.php:135
+msgid "Get an audio CAPTCHA"
+msgstr "Usa un Captcha de Audio"
+
+#: inc/class-wp_recaptcha_recaptcha.php:136
+msgid "Get an image CAPTCHA"
+msgstr "Usa un Captcha de Imágen"
