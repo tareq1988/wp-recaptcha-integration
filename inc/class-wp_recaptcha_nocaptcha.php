@@ -124,9 +124,10 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 <?php } ?>
 					// check if captcha element is unrendered
 					if ( ! el.childNodes.length) {
+						
 						wid = grecaptcha.render(el,{
 							'sitekey':'<?php echo WP_reCaptcha::instance()->get_option('recaptcha_publickey'); ?>',
-							'theme':'<?php echo WP_reCaptcha::instance()->get_option('recaptcha_theme'); ?>'
+							'theme':el.getAttribute('data-theme') || '<?php echo WP_reCaptcha::instance()->get_option('recaptcha_theme'); ?>'
 <?php if ( WP_reCaptcha::instance()->get_option( 'recaptcha_disable_submit' ) ) { ?>
 							,
 							'callback' : function(r){ get_form_submits(el).setEnabled(true); /* enable submit buttons */ }
@@ -151,10 +152,21 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	
 	
 	
-	public function get_html() {
+	public function get_html( $attr = array() ) {
 		$public_key = WP_reCaptcha::instance()->get_option( 'recaptcha_publickey' );
 		$theme = WP_reCaptcha::instance()->get_option('recaptcha_theme');
-		$return = sprintf( '<div id="g-recaptcha-%d" class="g-recaptcha" data-sitekey="%s" data-theme="%s"></div>' , $this->_counter++ , $public_key , $theme );
+
+		$default = array(
+			'id'			=> 'g-recaptcha-'.$this->_counter++,
+			'class'			=> "g-recaptcha",
+			'data-sitekey'	=> $public_key,
+			'data-theme' 	=> $theme,
+		);
+		$attr = wp_parse_args( $attr , $default );
+		$attr_str = '';
+		foreach ( $attr as $attr_name => $attr_val )
+			$attr_str .= sprintf( ' %s="%s"' , $attr_name , esc_attr( $attr_val ) );
+		$return = "<div {$attr_str}></div>";
 		$return .= '<noscript>'.__('Please enable JavaScript to submit this form.','wp-recaptcha-integration').'</noscript>';
 		return $return;
 	}

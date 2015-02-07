@@ -3,7 +3,7 @@
 Plugin Name: WP reCaptcha Integration
 Plugin URI: https://wordpress.org/plugins/wp-recaptcha-integration/
 Description: Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha) as well as the old style reCaptcha. Provides of the box integration for signup, login, comment forms, lost password, Ninja Forms and contact form 7.
-Version: 1.0.7
+Version: 1.0.8
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 */
@@ -269,9 +269,9 @@ class WP_reCaptcha {
 	 *	Print recaptcha HTML. Use inside a form.
 	 *
 	 */
- 	function print_recaptcha_html() {
+ 	function print_recaptcha_html( $attr = array() ) {
 		echo $this->begin_inject( );
- 		echo $this->recaptcha_html( );
+ 		echo $this->recaptcha_html( $attr );
 		echo $this->end_inject( );
  	}
  	
@@ -280,8 +280,8 @@ class WP_reCaptcha {
 	 *
 	 *	@return string recaptcha html
 	 */
- 	function recaptcha_html( ) {
-		return $this->captcha_instance()->get_html();
+ 	function recaptcha_html( $attr = array() ) {
+		return $this->captcha_instance()->get_html( $attr );
  	}
 
 	/**

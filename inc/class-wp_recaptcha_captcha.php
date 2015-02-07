@@ -11,7 +11,7 @@ abstract class WP_reCaptcha_Captcha {
 	
 	abstract function print_head();
 	abstract function print_foot();
-	abstract function get_html();
+	abstract function get_html( $attr = array() );
 	abstract function check();
 	abstract function get_supported_themes();
 

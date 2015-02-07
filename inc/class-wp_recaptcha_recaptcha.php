@@ -105,7 +105,7 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 			</script><?php
 		}
 	}
-	public function get_html() {
+	public function get_html( $attr = array() ) {
 		$public_key = WP_reCaptcha::instance()->get_option( 'recaptcha_publickey' );
 		$recaptcha_theme = WP_reCaptcha::instance()->get_option('recaptcha_theme');
 

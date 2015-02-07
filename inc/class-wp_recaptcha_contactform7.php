@@ -52,7 +52,11 @@ class WP_reCaptcha_ContactForm7 {
 		if ( empty( $tag->name ) )
 			return '';
 
-		$recaptcha_html = WP_reCaptcha::instance()->recaptcha_html();
+		$atts = null;
+		if ( $theme = $tag->get_option('theme','',true) )
+			$atts = array( 'data-theme' => $theme );
+
+		$recaptcha_html = WP_reCaptcha::instance()->recaptcha_html( $atts );
 		$validation_error = wpcf7_get_validation_error( $tag->name );
 
 		$html = sprintf(
@@ -85,7 +89,31 @@ class WP_reCaptcha_ContactForm7 {
 			<form action="">
 				<table>
 					<tr><td><input type="checkbox" checked="checked" disabled="disabled" name="required" onclick="return false" />&nbsp;<?php echo esc_html( __( 'Required field?', 'contact-form-7' ) ); ?></td></tr>
-					<tr><td><?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?><br /><input type="text" name="name" class="tg-name oneline" /></td><td></td></tr>
+					<tr><td>
+						<?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?><br />
+						<input type="text" name="name" class="tg-name oneline" />
+					</td><td><?php
+						if ( 'grecaptcha' === WP_reCaptcha::instance()->get_option('recaptcha_flavor') ) {
+							$themes = WP_reCaptcha::instance()->captcha_instance()->get_supported_themes();
+							echo esc_html( __( 'Theme', 'contact-form-7' ) ); ?><br /><?php
+							?><select name="recaptcha-theme-ui"><?php
+								?><option value=""><?php _e('Use default','wp-recaptcha-integration') ?></option><?php
+							foreach ( $themes as $theme_name => $theme ) {
+								?><option value="<?php echo $theme_name; ?>"><?php echo $theme['label'] ?></option><?php
+							}
+							?></select><?php
+							// cf7 does only allow literal <input> 
+							?><input type="hidden" name="theme" class="idvalue option" value="" /><?php
+							?><script type="text/javascript">
+(function($){
+	$(document).on('change','[name="recaptcha-theme-ui"]',function(){
+		$(this).next('[name="theme"]').val( $(this).val() ).trigger('change');
+	});
+
+})(jQuery)
+							</script><?php
+						}
+					?></td></tr>
 				</table>
 				<div class="tg-tag">
 				<?php echo esc_html( __( "Copy this code and paste it into the form left.", 'contact-form-7' ) ); ?><br />

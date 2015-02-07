@@ -58,7 +58,25 @@ class WP_reCaptcha_NinjaForms {
 			),
 			'req' => true,
 		);
-
+		if ( 'grecaptcha' === WP_reCaptcha::instance()->get_option('recaptcha_flavor') ) {
+			$themes = WP_reCaptcha::instance()->captcha_instance()->get_supported_themes();
+			$edit_options = array(
+				array( 'name' => __( 'Use Default' , 'wp-recaptcha-integration' ) , 'value' => '' ),
+			);
+			foreach ( $themes as $theme_name => $theme )
+				$edit_options[] = array( 'name' => $theme['label'] , 'value' => $theme_name );
+			$args['edit_options'] = array(
+				array(
+					'type'    => 'select',
+					'name'    => 'theme',
+					'label'   => __( 'Theme', 'wp-recaptcha-integration' ),
+					'width'   => 'wide',
+					'class'   => 'widefat',
+					'options' => $edit_options,
+				),
+			);
+		}
+		
 		ninja_forms_register_field('_recaptcha', $args);
 	}
 	
@@ -103,10 +121,12 @@ class WP_reCaptcha_NinjaForms {
 	}
 
 	function field_recaptcha_display($field_id, $data){
-		if ( WP_reCaptcha::instance()->is_required() )
-			WP_reCaptcha::instance()->print_recaptcha_html();
-		else 
+		if ( WP_reCaptcha::instance()->is_required() ) {
+			$attr = !empty($data['theme']) ? array( 'data-theme' => $data['theme'] ) : null;
+			WP_reCaptcha::instance()->print_recaptcha_html( $attr );
+		} else {
 			echo apply_filters( 'wp_recaptcha_disabled_html' ,'');
+		}
 	}
 
 	function field_recaptcha_pre_process( $field_id, $user_value ){
