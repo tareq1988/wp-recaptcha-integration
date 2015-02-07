@@ -61,7 +61,7 @@ class WP_reCaptcha_NinjaForms {
 		if ( 'grecaptcha' === WP_reCaptcha::instance()->get_option('recaptcha_flavor') ) {
 			$themes = WP_reCaptcha::instance()->captcha_instance()->get_supported_themes();
 			$edit_options = array(
-				array( 'name' => __( 'Use Default' , 'wp-recaptcha-integration' ) , 'value' => '' ),
+				array( 'name' => __( 'Use default' , 'wp-recaptcha-integration' ) , 'value' => '' ),
 			);
 			foreach ( $themes as $theme_name => $theme )
 				$edit_options[] = array( 'name' => $theme['label'] , 'value' => $theme_name );
