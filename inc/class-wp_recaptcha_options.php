@@ -461,37 +461,44 @@ class WP_reCaptcha_Options {
 	public function select_theme() {
 		$option_name = 'recaptcha_theme';
 		
-		$themes = array(
-			'light' => array(
-				'label' => __('Light','wp-recaptcha-integration') ,
-				'flavor' => 'grecaptcha',
-			),
-			'dark' => array(
-				'label' => __('Dark','wp-recaptcha-integration') ,
-				'flavor' => 'grecaptcha',
-			),
-
-			'red' => array(
-				'label' => __('Red','wp-recaptcha-integration') ,
-				'flavor' => 'recaptcha',
-			),
-			'white' => array(
-				'label' => __('White','wp-recaptcha-integration') ,
-				'flavor' => 'recaptcha',
-			),
-			'blackglass' => array(
-				'label' => __('Black Glass','wp-recaptcha-integration') ,
-				'flavor' => 'recaptcha',
-			),
-			'clean' => array(
-				'label' => __('Clean','wp-recaptcha-integration') ,
-				'flavor' => 'recaptcha',
-			),
-			'custom' => array(
-				'label' => __('Custom','wp-recaptcha-integration') ,
-				'flavor' => 'recaptcha',
-			),
-		);
+// 		$themes = array(
+// 			'light' => array(
+// 				'label' => __('Light','wp-recaptcha-integration') ,
+// 				'flavor' => 'grecaptcha',
+// 			),
+// 			'dark' => array(
+// 				'label' => __('Dark','wp-recaptcha-integration') ,
+// 				'flavor' => 'grecaptcha',
+// 			),
+// 
+// 			'red' => array(
+// 				'label' => __('Red','wp-recaptcha-integration') ,
+// 				'flavor' => 'recaptcha',
+// 			),
+// 			'white' => array(
+// 				'label' => __('White','wp-recaptcha-integration') ,
+// 				'flavor' => 'recaptcha',
+// 			),
+// 			'blackglass' => array(
+// 				'label' => __('Black Glass','wp-recaptcha-integration') ,
+// 				'flavor' => 'recaptcha',
+// 			),
+// 			'clean' => array(
+// 				'label' => __('Clean','wp-recaptcha-integration') ,
+// 				'flavor' => 'recaptcha',
+// 			),
+// 			'custom' => array(
+// 				'label' => __('Custom','wp-recaptcha-integration') ,
+// 				'flavor' => 'recaptcha',
+// 			),
+// 		);
+		$grecaptcha_themes = WP_reCaptcha_NoCaptcha::instance()->get_supported_themes();
+		$grecaptcha_themes = array_map( function( $val ){ $val['flavor'] = 'grecaptcha'; return $val; } , $grecaptcha_themes );
+		
+		$recaptcha_themes  = WP_reCaptcha_ReCaptcha::instance()->get_supported_themes();
+		$recaptcha_themes = array_map( function( $val ){ $val['flavor'] = 'recaptcha'; return $val; } , $recaptcha_themes );
+		
+		$themes = $grecaptcha_themes + $recaptcha_themes;
 
 		$option_theme = WP_reCaptcha::instance()->get_option($option_name);
 		$option_flavor = WP_reCaptcha::instance()->get_option( 'recaptcha_flavor' );

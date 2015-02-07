@@ -13,11 +13,12 @@ abstract class WP_reCaptcha_Captcha {
 	abstract function print_foot();
 	abstract function get_html();
 	abstract function check();
+	abstract function get_supported_themes();
 
 	/**
 	 *	Get languages supported by current recaptcha flavor.
 	 *
-	 *	@return array languages supported by recaptcha.
+	 *	@return array languages supported by this recaptcha.
 	 */
 	public function get_supported_languages() {
 		return $this->supported_languages;

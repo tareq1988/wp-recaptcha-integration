@@ -55,7 +55,6 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		'uk' =>	'Ukrainian',
 		'vi' =>	'Vietnamese',
 	);
-
 	private $_counter = 0;
 	/**
 	 *	Holding the singleton instance
@@ -81,6 +80,17 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	 */
 	private function __construct() {
 
+	}
+
+	public function get_supported_themes() {
+		return array(
+			'light' => array(
+				'label' => __('Light','wp-recaptcha-integration') ,
+			),
+			'dark' => array(
+				'label' => __('Dark','wp-recaptcha-integration') ,
+			),
+		);
 	}
 
 	public function print_head() {

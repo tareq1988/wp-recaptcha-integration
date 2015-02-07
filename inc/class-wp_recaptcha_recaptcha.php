@@ -18,7 +18,6 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 		'tr' =>	'Turkish',
 	);
 
-
 	/**
 	 *	Holding the singleton instance
 	 */
@@ -44,6 +43,26 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 	private function __construct() {
 		if ( ! defined( 'RECAPTCHA_API_SERVER' ) || ! function_exists( 'recaptcha_get_html' ) )
 			require_once dirname(__FILE__).'/recaptchalib.php';
+	}
+	
+	public function get_supported_themes() {
+		return array(
+			'red' => array(
+				'label' => __('Red','wp-recaptcha-integration') ,
+			),
+			'white' => array(
+				'label' => __('White','wp-recaptcha-integration') ,
+			),
+			'blackglass' => array(
+				'label' => __('Black Glass','wp-recaptcha-integration') ,
+			),
+			'clean' => array(
+				'label' => __('Clean','wp-recaptcha-integration') ,
+			),
+			'custom' => array(
+				'label' => __('Custom','wp-recaptcha-integration') ,
+			),
+		);
 	}
 
 	public function print_head() {
