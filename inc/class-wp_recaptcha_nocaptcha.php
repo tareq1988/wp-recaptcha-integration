@@ -143,7 +143,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		}
 		
 		// if jquery present re-render jquery/ajax loaded captcha elements 
-		if ( !!jQuery )
+		if ( typeof jQuery !== 'undefined' )
 			jQuery(document).ajaxComplete( recaptchaLoadCallback );
 		
 		</script><?php

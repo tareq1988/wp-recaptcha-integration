@@ -148,6 +148,8 @@ I will migrate all the translation stuff there.
 = 1.0.8 =
 - Feature: Individually set captcha theme in CF7 and Ninja forms (NoCaptcha only, old recaptcha not supported)
 - Fix: PHP Warning in settings.
+- Fix: PHP Fatal when check a old reCaptcha.
+- Fix: js error with jQuery not present
 - L10n: add Spanish
 
 = 1.0.7 =
