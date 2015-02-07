@@ -120,7 +120,7 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 	}
 	public function check() {
 		if ( ! $this->_last_result ) {
-			$private_key = $this->get_option( 'recaptcha_privatekey' );
+			$private_key = WP_reCaptcha::instance()->get_option( 'recaptcha_privatekey' );
 			$this->_last_result = recaptcha_check_answer( $private_key,
 				$_SERVER["REMOTE_ADDR"],
 				$_POST["recaptcha_challenge_field"],
