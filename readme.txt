@@ -59,6 +59,9 @@ if necessary.
   overcome this restriction I requested a little change in the official WC repository, so there 
   is hope for a future version. See: (https://github.com/woothemes/woocommerce/pull/7029)
 
+- There is no (and as far as one can see, there will never be) support for the **MailPoet**
+  subscription form.
+
 == Installation ==
 
 First follow the standard [WordPress plugin installation procedere](http://codex.wordpress.org/Managing_Plugins).
@@ -66,6 +69,11 @@ First follow the standard [WordPress plugin installation procedere](http://codex
 Then go to the [Google Recaptcha Site](http://www.google.com/recaptcha), sign up your site and enter your API-Keys on the configuration page.
 
 == Frequently asked questions ==
+
+= Will you support plugin XYZ? =
+
+If XYZ stands for a widely used free and OpenSource plugin in active development with some 
+100k+ downloads I will give it a try. Just ask. 
 
 = The captcha does not show up. What’s wrong? =
 
@@ -135,7 +143,6 @@ or removed some strings in the meantime.
 
 As soon as there is a [public centralized repository for WordPress plugin translations](https://translate.wordpress.org/projects/wp-plugins) 
 I will migrate all the translation stuff there.
-
 
 == Screenshots ==
 
