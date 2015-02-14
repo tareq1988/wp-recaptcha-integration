@@ -67,7 +67,7 @@ class WP_reCaptcha_WooCommerce {
 	 *	hooks into action `woocommerce_checkout_process`
 	 */
 	function recaptcha_check() {
-		if ( ! $this->recaptcha_check() ) 
+		if ( ! WP_reCaptcha::instance()->recaptcha_check() ) 
 			wc_add_notice( __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration'), 'error' );
 	}
 	
