@@ -150,6 +150,7 @@ I will migrate all the translation stuff there.
 - Fix: PHP Warning in settings.
 - Fix: PHP Fatal when check a old reCaptcha.
 - Fix: js error with jQuery not present
+- Fix: woocommerce checkout
 - L10n: add Spanish
 
 = 1.0.7 =
