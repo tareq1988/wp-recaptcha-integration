@@ -493,10 +493,10 @@ class WP_reCaptcha_Options {
 // 			),
 // 		);
 		$grecaptcha_themes = WP_reCaptcha_NoCaptcha::instance()->get_supported_themes();
-		$grecaptcha_themes = array_map( function( $val ){ $val['flavor'] = 'grecaptcha'; return $val; } , $grecaptcha_themes );
+		$grecaptcha_themes = array_map( array( $this , '_map_grecaptcha' ) , $grecaptcha_themes );
 		
 		$recaptcha_themes  = WP_reCaptcha_ReCaptcha::instance()->get_supported_themes();
-		$recaptcha_themes = array_map( function( $val ){ $val['flavor'] = 'recaptcha'; return $val; } , $recaptcha_themes );
+		$recaptcha_themes = array_map( array( $this , '_map_recaptcha' ) , $recaptcha_themes );
 		
 		$themes = $grecaptcha_themes + $recaptcha_themes;
 
@@ -527,6 +527,21 @@ class WP_reCaptcha_Options {
 			}
 			?></div><?php
 		?></div><?php
+	}
+	
+	/**
+	 *	@usage select_theme()
+	 */
+	private function _map_grecaptcha( $val ) {
+		$val['flavor'] = 'grecaptcha'; 
+		return $val;
+	}
+	/**
+	 *	@usage select_theme()
+	 */
+	private function _map_recaptcha( $val ) {
+		$val['flavor'] = 'recaptcha'; 
+		return $val;
 	}
 	
 	/**
