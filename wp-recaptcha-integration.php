@@ -97,6 +97,8 @@ class WP_reCaptcha {
 			add_action('plugins_loaded' , array(&$this,'plugins_loaded') );
 
 		}
+		if ( $this->get_option('recaptcha_enable_login') )
+			WP_reCaptcha_Lockout::instance();
 
 		register_activation_hook( __FILE__ , array( __CLASS__ , 'activate' ) );
 		register_deactivation_hook( __FILE__ , array( __CLASS__ , 'deactivate' ) );
