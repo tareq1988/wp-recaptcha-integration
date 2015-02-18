@@ -121,6 +121,7 @@ class WP_reCaptcha_Options {
 	 *	@param old old option value
 	 */
 	function update_option_recaptcha_apikey( $new , $old ){
+		delete_transient('recaptcha_keys_okay');
 		add_filter( 'wp_redirect' , array( &$this , 'remove_new_apikey_url' ) );
 		return $new;
 	}
@@ -131,6 +132,7 @@ class WP_reCaptcha_Options {
 	 *	@param value option value
 	 */
 	function add_option_recaptcha_apikey( $option , $value ){
+		delete_transient('recaptcha_keys_okay');
 		if ( in_array( $option , array('recaptcha_publickey','recaptcha_privatekey') ) )
 			add_filter( 'wp_redirect' , array( &$this , 'remove_new_apikey_url' ) );
 	}
@@ -160,7 +162,7 @@ class WP_reCaptcha_Options {
 	 *	admin init hook. Setup settings according.
 	 */
 	function admin_init( ) {
-		$has_api_key = WP_reCaptcha::instance()->has_api_key();
+		$has_api_key = WP_reCaptcha::instance()->has_api_key() && WP_reCaptcha::instance()->test_keys();
 		if ( ! $has_api_key && current_user_can( 'manage_options' ) ) {
 			add_action('admin_notices',array( &$this , 'api_key_notice'));
 		}

@@ -97,13 +97,10 @@ class WP_reCaptcha {
 			add_action('plugins_loaded' , array(&$this,'plugins_loaded') );
 
 		}
-		if ( $this->get_option('recaptcha_enable_login') )
-			WP_reCaptcha_Lockout::instance();
 
 		register_activation_hook( __FILE__ , array( __CLASS__ , 'activate' ) );
 		register_deactivation_hook( __FILE__ , array( __CLASS__ , 'deactivate' ) );
 		register_uninstall_hook( __FILE__ , array( __CLASS__ , 'uninstall' ) );
-
 	}
 	
 	/**
@@ -350,8 +347,15 @@ class WP_reCaptcha {
 	 *	@return object user or wp_error
 	 */
 	function deny_login( $user ) {
-		if ( isset( $_POST["log"]) )
-			$user = $this->wp_error( $user );
+		if ( isset( $_POST["log"]) && ! $this->recaptcha_check() ) {
+			$msg = __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration');
+			if ( in_array('administrator',$user->roles) && ! $this->test_keys() ) {
+				return $user;
+			} else {
+				return $this->wp_error( $user );
+			}
+			return new WP_Error( 'captcha_error' , $msg );
+		}
 		return $user;
 	}
 	
@@ -459,6 +463,47 @@ class WP_reCaptcha {
 	 */
 	function has_api_key() {
 		return $this->_has_api_key;
+	}
+	
+	/**
+	 *	Test public and private key
+	 *
+	 *	@return bool
+	 */
+	public function test_keys() {
+		if ( ! ( $keys_okay = get_transient( 'recaptcha_keys_okay' ) ) ) {
+			$pub_okay = $this->test_public_key();
+			$prv_okay = $this->test_private_key();
+			
+			$keys_okay = $prv_okay && $pub_okay;
+			
+			//cache the result
+			set_transient( 'recaptcha_keys_okay' , $keys_okay ? 'yes' : 'no' , 15 * MINUTE_IN_SECONDS );
+		}
+		return $keys_okay == 'yes';
+	}
+	
+	/**
+	 *	Test private key
+	 *
+	 *	@return bool
+	 */
+	public function test_private_key() {
+		$prv_key_url = sprintf( "http://www.google.com/recaptcha/api/verify?privatekey=%s" , $this->get_option('recaptcha_privatekey') );
+		$prv_response = wp_remote_get( $prv_key_url );
+		return ! is_wp_error( $prv_response ) && ! strpos(wp_remote_retrieve_body( $prv_response ),'invalid-site-private-key');
+	}
+
+	/**
+	 *	Test public key
+	 *
+	 *	@return bool
+	 */
+	public function test_public_key() {
+		$rec = WP_reCaptcha::instance();
+		$pub_key_url = sprintf( "http://www.google.com/recaptcha/api/challenge?k=%s" , $this->get_option('recaptcha_publickey') );
+		$pub_response = wp_remote_get( $pub_key_url );
+		return ! is_wp_error( $pub_response ) && ! strpos(wp_remote_retrieve_body( $pub_response ),'Format of site key was invalid');
 	}
 	
 
