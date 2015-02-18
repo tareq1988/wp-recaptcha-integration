@@ -70,6 +70,43 @@ Then go to the [Google Recaptcha Site](http://www.google.com/recaptcha), sign up
 
 == Frequently asked questions ==
 
+= The login captcha says 'ERROR: invalid sitekey' What can I do? =
+
+Log in with an administrator account and ignore the captcha. If the keys do not work, the 
+captcha test will be skipped and you will see a admin message, asking you to set up a new keypair.
+
+If this does not work for some reason, you will either need access to your WordPress 
+installation (via SSH or FTP) or database access.
+
+**With FTP Access:**
+
+1. Add this line of Code somewhere at the end of your theme functions.php: 
+   <code>add_filter('wp_recaptcha_required','__return_false');</code>
+   
+   This will disable the chaptcha everywhere.
+   
+2. Set up a new keypair and test it.
+
+3. Remove the line above from your theme functions.php.
+
+
+**If you have Database access**
+
+1. Execute the following SQL-Commands in your Database: 
+   <code>DELETE FROM wp_options WHERE option_name = 'recaptcha_publickey';</code> 
+   <code>DELETE FROM wp_options WHERE option_name = 'recaptcha_privatekey';</code>
+
+   (Please note that `wp_options` might have a different prefix in your installation.)
+   
+2. After the login you will see a message asking you to set up the API keys.
+
+3. Set up a new keypair on Google and test it.
+
+**If none of these works for you**
+
+Too bad. You will have to ask somebody with either FTP or database access to do one of 
+the above for you.
+
 = Will you support plugin XYZ? =
 
 If XYZ stands for a widely used free and OpenSource plugin in active development with some 

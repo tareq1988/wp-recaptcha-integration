@@ -173,7 +173,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	public function check() {
 		$private_key = WP_reCaptcha::instance()->get_option( 'recaptcha_privatekey' );
 		$user_response = isset( $_REQUEST['g-recaptcha-response'] ) ? $_REQUEST['g-recaptcha-response'] : false;
-		if ( $user_response ) {
+		if ( $user_response !== false ) {
 			if (  ! $this->_last_result ) {
 				$remote_ip = $_SERVER['REMOTE_ADDR'];
 				$url = "https://www.google.com/recaptcha/api/siteverify?secret=$private_key&response=$user_response&remoteip=$remote_ip";
