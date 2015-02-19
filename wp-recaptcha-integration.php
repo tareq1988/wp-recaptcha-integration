@@ -3,7 +3,7 @@
 Plugin Name: WP reCaptcha Integration
 Plugin URI: https://wordpress.org/plugins/wp-recaptcha-integration/
 Description: Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha) as well as the old style reCaptcha. Provides of the box integration for signup, login, comment forms, lost password, Ninja Forms and contact form 7.
-Version: 1.0.9
+Version: 1.1.0
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 */
@@ -155,36 +155,36 @@ class WP_reCaptcha {
 			if ( $this->get_option('recaptcha_enable_signup') ) {
 				// buddypress suuport.
 				if ( function_exists('buddypress') ) {
-					add_action('bp_account_details_fields',array($this,'print_recaptcha_html'),10,0);
-					add_filter('bp_signup_pre_validate',array(&$this,'recaptcha_check_or_die'),99 );
+					add_action('bp_account_details_fields',array($this,'print_recaptcha_html'));
+					add_action('bp_signup_pre_validate',array(&$this,'recaptcha_check_or_die'),99 );
 				} else {
-					add_action('register_form',array($this,'print_recaptcha_html'),10,0);
+					add_action('register_form',array($this,'print_recaptcha_html'));
 					add_filter('registration_errors',array(&$this,'registration_errors'));
 				}
 				if ( is_multisite() ) {
-					add_action( 'signup_extra_fields' , array($this,'print_recaptcha_html'),10,0);
+					add_action( 'signup_extra_fields' , array($this,'print_recaptcha_html'));
 					add_filter('wpmu_validate_user_signup',array(&$this,'wpmu_validate_user_signup'));
 				}
-				add_action( 'print_signup_recaptcha' , array( &$this , 'print_recaptcha_html' ) );
 				
 			}
 			if ( $this->get_option('recaptcha_enable_login') ) {
-				add_action('login_form',array(&$this,'print_recaptcha_html'),10,0);
+				add_action('login_form',array(&$this,'print_recaptcha_html'));
 				add_filter('wp_authenticate_user',array(&$this,'deny_login'),99 );
-
-				add_action( 'print_login_recaptcha' , array( &$this , 'print_recaptcha_html' ) );
 			}
 			if ( $this->get_option('recaptcha_enable_lostpw') ) {
-				add_action('lostpassword_form' , array($this,'print_recaptcha_html'),10,0);
+				add_action('lostpassword_form' , array($this,'print_recaptcha_html') );
 //*
-				add_filter('lostpassword_post' , array(&$this,'recaptcha_check_or_die') , 99 );
+				add_action('lostpassword_post' , array(&$this,'recaptcha_check_or_die') , 99 );
 /*/ // switch this when pull request accepted and included in official WC release.
 				add_filter('allow_password_reset' , array(&$this,'wp_error') );
 //*/
-				add_action( 'print_lostpw_recaptcha' , array( &$this , 'print_recaptcha_html' ) );
 			}
 			if ( 'WPLANG' === $this->get_option( 'recaptcha_language' ) ) 
 				add_filter( 'wp_recaptcha_language' , array( &$this,'recaptcha_wplang' ) );
+
+			add_action( 'recaptcha_print' , array( &$this , 'print_recaptcha_html' ) );
+			add_filter( 'recaptcha_valid' , array( &$this , 'recaptcha_check' ) );
+			add_filter( 'recaptcha_error' , array( &$this , 'wp_error' ) );
 		}
 	}
 	
