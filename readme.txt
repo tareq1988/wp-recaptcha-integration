@@ -24,6 +24,7 @@ form 7 as well as a plugin API for your own integrations.
 - WooCommerce Support (Only checkout, registration and login form. Not password reset)
 - [Ninja Forms](http://ninjaforms.com/) integration
 - [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) integration
+- For integration in your custom forms see this [wiki article](https://github.com/mcguffin/wp-recaptcha-integration/wiki/Custom-Themes-and-Forms) for details.
 
 = Localizations =
 - Brazilian Portuguese (thanks to [Vinícius Ferraz](http://www.viniciusferraz.com))
