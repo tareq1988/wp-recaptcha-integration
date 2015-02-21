@@ -190,7 +190,7 @@ I will migrate all the translation stuff there.
 == Changelog ==
 
 = 1.1.0 =
-- Feature: Prevent Lockout
+- Feature: Prevent Lockout - Administrators can still log in when the API keys are broken
 - Filters: add actions `recaptcha_print`, `print_comments_recaptcha` and filters `recaptcha_valid`, `recaptcha_error` for custom forms.
 
 = 1.0.9 =
