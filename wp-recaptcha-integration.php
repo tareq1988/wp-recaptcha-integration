@@ -81,13 +81,15 @@ class WP_reCaptcha {
 			add_site_option('recaptcha_enable_login' , false); // global
 			add_site_option('recaptcha_enable_lostpw' , false); // global
 			add_site_option('recaptcha_disable_for_known_users' , true); // global
+			add_site_option( 'recaptcha_lockout' , true );
 			$this->_has_api_key = get_site_option( 'recaptcha_publickey' ) && get_site_option( 'recaptcha_privatekey' );
 		} else {
-			add_option('recaptcha_enable_comments' , true); // global
-			add_option('recaptcha_enable_signup' , true); // global
-			add_option('recaptcha_enable_login' , false); // global
-			add_option('recaptcha_enable_lostpw' , false); // global
-			add_option('recaptcha_disable_for_known_users' , true); // global
+			add_option( 'recaptcha_enable_comments' , true); // global
+			add_option( 'recaptcha_enable_signup' , true); // global
+			add_option( 'recaptcha_enable_login' , false); // global
+			add_option( 'recaptcha_enable_lostpw' , false); // global
+			add_option( 'recaptcha_disable_for_known_users' , true); // global
+			add_option( 'recaptcha_lockout' , true );
 			$this->_has_api_key = get_option( 'recaptcha_publickey' ) && get_option( 'recaptcha_privatekey' );
 		}
 
@@ -188,19 +190,30 @@ class WP_reCaptcha {
 		}
 	}
 	
-	
+	/**
+	 *	Set current captcha instance and return it.
+	 *	
+	 *	@return	object	WP_reCaptcha_Captcha
+	 */
 	public function captcha_instance() {
-		if ( is_null( $this->_captcha_instance ) ) {
-			switch ( $this->get_option( 'recaptcha_flavor' ) ) {
-				case 'grecaptcha':
-					$this->_captcha_instance = WP_reCaptcha_NoCaptcha::instance();
-					break;
-				case 'recaptcha':
-					$this->_captcha_instance = WP_reCaptcha_ReCaptcha::instance();
-					break;
-			}
-		}
+		if ( is_null( $this->_captcha_instance ) )
+			$this->_captcha_instance = $this->captcha_instance_by_flavor( $this->get_option( 'recaptcha_flavor' ) );
 		return $this->_captcha_instance;
+	}
+	
+	/**
+	 *	Set current captcha instance and return it.
+	 *	
+	 *	@param	string	captcha flavor. 'grecaptcha' (noCaptcha) or 'recaptcha' (reCaptcha)
+	 *	@return	object	WP_reCaptcha_Captcha
+	 */
+	public function captcha_instance_by_flavor( $flavor ) {
+		switch( $flavor ) {
+			case 'grecaptcha':
+				return WP_reCaptcha_NoCaptcha::instance();
+			case 'recaptcha':
+				return WP_reCaptcha_ReCaptcha::instance();
+		}
 	}
 	
 	/**
@@ -355,7 +368,7 @@ class WP_reCaptcha {
 	function deny_login( $user ) {
 		if ( isset( $_POST["log"]) && ! $this->recaptcha_check() ) {
 			$msg = __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration');
-			if ( in_array('administrator',$user->roles) && ! $this->test_keys() ) {
+			if ( $this->get_option('recaptcha_lockout') && in_array('administrator',$user->roles) && ! $this->test_keys() ) {
 				return $user;
 			} else {
 				return $this->wp_error( $user );
@@ -540,6 +553,7 @@ class WP_reCaptcha {
 			delete_site_option( 'recaptcha_enable_login' );
 			delete_site_option( 'recaptcha_enable_wc_checkout' );
 			delete_site_option( 'recaptcha_disable_for_known_users' );
+			delete_site_option( 'recaptcha_lockout' );
 			
 			foreach ( wp_get_sites() as $site) {
 				switch_to_blog( $site["blog_id"] );
@@ -562,6 +576,7 @@ class WP_reCaptcha {
 			delete_option( 'recaptcha_enable_login' );
 			delete_option( 'recaptcha_enable_wc_checkout' );
 			delete_option( 'recaptcha_disable_for_known_users' );
+			delete_option( 'recaptcha_lockout' );
 		}
 	}
 	
@@ -596,37 +611,16 @@ class WP_reCaptcha {
 	 */
 	function recaptcha_wplang( ) {
 		$locale = get_locale();
-		/* Sometimes WP uses different locales the the ones supported by nocaptcha. */
-		$mapping = array(
-			'es_MX' => 'es-419',
-			'es_PE' => 'es-419',
-			'es_CL' => 'es-419',
-			'he_IL' => 'iw',
-		);
-		if ( isset( $mapping[$locale] ) )
-			$locale = $mapping[$locale];
-		return $this->recaptcha_language( $locale );
+		return $this->captcha_instance()->get_language( $locale );
 	}
 	/**
-	 *	Rewrite WP get_locale() to recaptcha lang param.
-	 *
-	 *	@return string recaptcha language
+	 *	Get recaptcha language code that matches input language code
+	 *	
+	 *	@param	$lang	string language code
+	 *	@return	string	recaptcha language code if supported by current flavor, empty string otherwise
 	 */
 	function recaptcha_language( $lang ) {
-		$lang = str_replace( '_' , '-' , $lang );
-		
-		$langs = $this->get_supported_languages();
-		// direct hit: return it.
-		if ( isset($langs[$lang]) )
-			return $lang;
-		
-		// remove countrycode
-		$lang = preg_replace('/-(.*)$/','',$lang);
-		if ( isset($langs[$lang]) )
-			return $lang;
-		
-		// lang does not exist.
-		return '';
+		return $this->captcha_instance()->get_language( $lang );
 	}
 
 	/**

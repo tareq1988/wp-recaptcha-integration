@@ -25,6 +25,28 @@ abstract class WP_reCaptcha_Captcha {
 	}
 
 	/**
+	 *	Get recaptcha language code that matches input language code
+	 *	
+	 *	@param	$lang	string language code
+	 *	@return	string	recaptcha language code if supported by current flavor, empty string otherwise
+	 */
+	public function get_language( $lang ) {
+		$lang = str_replace( '_' , '-' , $lang );
+		
+		// direct hit: return it.
+		if ( isset($this->supported_languages[$lang]) )
+			return $lang;
+		
+		// remove countrycode, try again
+		$lang = preg_replace('/-(.*)$/','',$lang);
+		if ( isset($this->supported_languages[$lang]) )
+			return $lang;
+		
+		// lang does not exist.
+		return '';
+	}
+
+	/**
 	 *	Get last result of recaptcha check
 	 *	@return string recaptcha html
 	 */

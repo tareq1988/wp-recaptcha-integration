@@ -174,7 +174,7 @@ msgstr "Por favor, configure as chaves pública (Public Key) e privada (Private 
 # @ wp-recaptcha-integration
 #: inc/class-wp-recaptcha-options.php:285
 #, php-format
-msgid "Please register your blog through the <a href=\"%s\">Google reCAPTCHA admin page</a> and enter the public and private key in the fields below. <a href=\"%s\">What is this all about</a>"
+msgid "Please register your blog through the <a href=\"%s\">Google reCAPTCHA admin page</a> and enter the public and private key in the fields below. <a href=\"%s\">What is this all about?</a>"
 msgstr ""
 "Por favor, registre seu site através do <a href=\"%s\">site do Google reCAPTCHA</a> \n"
 "e entre com as chaves pública (Public Key) e privada (Private Key) nos campos abaixo. <a \n"

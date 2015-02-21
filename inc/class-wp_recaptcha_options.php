@@ -168,19 +168,25 @@ class WP_reCaptcha_Options {
 		}
 
 		$this->enter_api_key = ! $has_api_key || ( isset($_REQUEST['recaptcha-action']) && $_REQUEST['recaptcha-action'] == 'recaptcha-set-api-key');
+		
+		if ( $this->enter_api_key )
+			add_settings_section( 'recaptcha_apikey' , __( 'Connect' , 'wp-recaptcha-integration' ), array( &$this , 'explain_apikey' ), 'recaptcha');
+		add_settings_section( 'recaptcha_protection' , __( 'Protect' , 'wp-recaptcha-integration' ), array( &$this , 'explain_protection' ), 'recaptcha');
+		add_settings_section( 'recaptcha_styling' ,  __( 'Style' , 'wp-recaptcha-integration' ), array( &$this , 'explain_styling' ), 'recaptcha');
+		if ( ! $this->enter_api_key )
+			add_settings_section( 'recaptcha_apikey' , __( 'Connect' , 'wp-recaptcha-integration' ), array( &$this , 'explain_apikey' ), 'recaptcha');
+		
 		if ( $this->enter_api_key ) {
 			// no API Key. Let the user enter it.
 			register_setting( 'recaptcha_options', 'recaptcha_publickey' , 'trim' );
 			register_setting( 'recaptcha_options', 'recaptcha_privatekey' , 'trim' );
 			add_settings_field('recaptcha_publickey', __('Public Key','wp-recaptcha-integration'), array(&$this,'secret_input_text'), 'recaptcha', 'recaptcha_apikey' , array('name'=>'recaptcha_publickey') );
 			add_settings_field('recaptcha_privatekey', __('Private Key','wp-recaptcha-integration'), array(&$this,'secret_input_text'), 'recaptcha', 'recaptcha_apikey', array('name'=>'recaptcha_privatekey'));
-			add_settings_section('recaptcha_apikey', __( 'Connecting' , 'wp-recaptcha-integration' ), array(&$this,'explain_apikey'), 'recaptcha');
 			if ( $has_api_key ) {
 				add_settings_field('cancel', '' , array(&$this,'cancel_enter_api_key'), 'recaptcha', 'recaptcha_apikey' );
 			}
 		} else {
 			// API Key. Add test tool.
-			add_settings_section('recaptcha_apikey', __( 'Connecting' , 'wp-recaptcha-integration' ), array(&$this,'explain_apikey'), 'recaptcha');
 			add_action('wp_ajax_recaptcha-test-api-key' , array( &$this , 'ajax_test_api_key' ) );
 			add_action('wp_ajax_recaptcha-test-verification' , array( &$this , 'ajax_test_api_key_verification' ) );
 		}
@@ -193,11 +199,9 @@ class WP_reCaptcha_Options {
 				register_setting( 'recaptcha_options', 'recaptcha_theme'  , array( &$this , 'sanitize_theme' ) );
 				register_setting( 'recaptcha_options', 'recaptcha_disable_submit' , 'intval');
 				
-				add_settings_field('recaptcha_language', __( 'Language Settings' ), array(&$this,'select_language'), 'recaptcha', 'recaptcha_options');
-				
 
 				add_settings_field('recaptcha_flavor', __('Flavor','wp-recaptcha-integration'), 
-					array(&$this,'input_radio'), 'recaptcha', 'recaptcha_options',
+					array(&$this,'input_radio'), 'recaptcha', 'recaptcha_styling',
 					array( 
 						'name' => 'recaptcha_flavor',
 						'items' => array(
@@ -211,15 +215,17 @@ class WP_reCaptcha_Options {
 							),
 						),
 					 ) );
-
-				add_settings_field('recaptcha_theme', __('Theme','wp-recaptcha-integration'), array(&$this,'select_theme'), 'recaptcha', 'recaptcha_options');
+				
+				add_settings_field('recaptcha_language', __( 'Language Settings' ), array(&$this,'select_language'), 'recaptcha', 'recaptcha_styling');
+				
+				add_settings_field('recaptcha_theme', __('Theme','wp-recaptcha-integration'), array(&$this,'select_theme'), 'recaptcha', 'recaptcha_styling');
 
 				add_settings_field('recaptcha_disable_submit', __('Disable Submit Button','wp-recaptcha-integration'), 
-					array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' , 
+					array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_styling' , 
 					array('name'=>'recaptcha_disable_submit','label'=>__( 'Disable Form Submit Button until no-captcha is entered.' ,'wp-recaptcha-integration' ) ) 
 				);
-
 			}
+			
 			if ( ! WP_reCaptcha::is_network_activated() || is_network_admin() ) {
 				// network options
 				register_setting( 'recaptcha_options', 'recaptcha_enable_comments' , 'intval');
@@ -231,31 +237,32 @@ class WP_reCaptcha_Options {
 					register_setting( 'recaptcha_options', 'recaptcha_enable_wc_order' , 'intval');
 
 				register_setting( 'recaptcha_options', 'recaptcha_disable_for_known_users' , 'intval');
-
+				
+				/*
 				add_settings_field('recaptcha_enable_comments', __('Protect Comments','wp-recaptcha-integration'), 
-					array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' , 
+					array(&$this,'input_check_onoff'), 'recaptcha', 'recaptcha_protection' , 
 					array('name'=>'recaptcha_enable_comments','label'=>__( 'Protect comment forms with recaptcha.' ,'wp-recaptcha-integration' ) ) 
 				);
 			
 				add_settings_field('recaptcha_enable_signup', __('Protect Signup','wp-recaptcha-integration'), 
-					array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options',      
+					array(&$this,'input_check_onoff'), 'recaptcha', 'recaptcha_protection',      
 					array('name'=>'recaptcha_enable_signup','label'=>__( 'Protect signup form with recaptcha.','wp-recaptcha-integration' ) )
 				);
 			
 				add_settings_field('recaptcha_enable_login', __('Protect Login','wp-recaptcha-integration'), 
-					array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' ,
+					array(&$this,'input_check_onoff'), 'recaptcha', 'recaptcha_protection' ,
 					array('name'=>'recaptcha_enable_login','label'=>__( 'Protect Login form with recaptcha.','wp-recaptcha-integration' )) 
 				);
 
 				add_settings_field('recaptcha_enable_lostpw', __('Protect Lost Password','wp-recaptcha-integration'), 
-					array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' ,
+					array(&$this,'input_check_onoff'), 'recaptcha', 'recaptcha_protection' ,
 					array('name'=>'recaptcha_enable_lostpw','label'=>__( 'Protect Lost Password form with recaptcha.','wp-recaptcha-integration' )) 
 				);
 				// woocommerce integration
 				if ( function_exists('WC') ) {
 					$wc_warn =  WP_reCaptcha::instance()->get_option('recaptcha_enable_wc_order') && WP_reCaptcha::instance()->get_option('recaptcha_flavor') !== 'grecaptcha';
 					add_settings_field('recaptcha_enable_wc_order', __('Protect WooCommerce Checkout','wp-recaptcha-integration'), 
-						array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' ,
+						array(&$this,'input_check_onoff'), 'recaptcha', 'recaptcha_protection' ,
 						array(
 							'name'=>'recaptcha_enable_wc_order',
 							'label'=>__( 'Protect wooCommerce Checkout with a recaptcha.','wp-recaptcha-integration' ),
@@ -267,12 +274,54 @@ class WP_reCaptcha_Options {
 						add_settings_error('recaptcha',2,__( 'The Old Style recaptcha doesn‘t work together with the WooCommerce checkout form. The Captcha will not be displayed,' ,'wp-recaptcha-integration' ) );
 					}
 				}
+				/*/
+				$protect_settings = array();
+				$protect_settings[] = array(
+					'name' 			=>	'recaptcha_enable_comments',
+					'label'			=>	__('Comment Form','wp-recaptcha-integration'),
+					'class' 		=> 	'',
+				);
+				$protect_settings[] = array(
+					'name' 			=>	'recaptcha_enable_signup',
+					'label'			=>	__('Signup Form','wp-recaptcha-integration'),
+					'class' 		=> 	'',
+				);
+				$protect_settings[] = array(
+					'name' 			=>	'recaptcha_enable_login',
+					'label'			=>	__('Login Form','wp-recaptcha-integration'),
+					'class' 		=> 	'',
+				);
+				$protect_settings[] = array(
+					'name' 			=>	'recaptcha_enable_lostpw',
+					'label'			=>	__('Lost Password Form','wp-recaptcha-integration'),
+					'class' 		=> 	'',
+				);
+				if ( function_exists('WC') ) {
+					$wc_warn =  WP_reCaptcha::instance()->get_option('recaptcha_enable_wc_order') && WP_reCaptcha::instance()->get_option('recaptcha_flavor') !== 'grecaptcha';
+					$protect_settings[] = array(
+						'name'=>'recaptcha_enable_wc_order',
+						'label'=>__( 'woocommerce Checkout','wp-recaptcha-integration' ),
+						'class'	=> 'flavor-grecaptcha',
+					);
+				}
+				add_settings_field('recaptcha_protection', __('Forms to protect','wp-recaptcha-integration'), 
+					array(&$this,'input_protect'), 'recaptcha', 'recaptcha_protection' ,
+					$protect_settings 
+				);
+				
 				add_settings_field('recaptcha_disable_for_known_users', __('Disable for known users','wp-recaptcha-integration'), 
-					array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_options' ,
+					array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_protection' ,
 					array('name'=>'recaptcha_disable_for_known_users','label'=>__( 'Disable reCaptcha verification for logged in users.','wp-recaptcha-integration' )) 
 				);
+				add_settings_field('recaptcha_lockout', __('Prevent lockout','wp-recaptcha-integration'), 
+					array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_protection' ,
+					array( 
+						'name'=>'recaptcha_lockout',
+						'label'=>__( 'Allow administrator to log in if API keys do not work.','wp-recaptcha-integration' ),
+						'description' => __( 'When the captcha verification fails, and the private or public API key does not work the plugin will let you in anyway. Please note that with this option checked plus a broken keypair your site will be open to brute force attacks, that try to guess an administrator password.','wp-recaptcha-integration' ),
+					) 
+				);
 			}
-			add_settings_section('recaptcha_options', __( 'Features' , 'wp-recaptcha-integration' ), '__return_false', 'recaptcha');
 
 			if ( ! WP_reCaptcha::instance()->get_option( 'recaptcha_publickey' ) || ! WP_reCaptcha::instance()->get_option( 'recaptcha_privatekey' ) )
 				add_settings_error('recaptcha',1,__('Please configure the public and private key. <a href="http://www.google.com/recaptcha/whyrecaptcha">What are you trying to tell me?</a>','wp-recaptcha-integration'),'updated');
@@ -288,7 +337,7 @@ class WP_reCaptcha_Options {
 				$info_url = 'https://developers.google.com/recaptcha/intro';
 				$admin_url = 'https://www.google.com/recaptcha/admin';
 				printf(
-					__( 'Please register your blog through the <a href="%s">Google reCAPTCHA admin page</a> and enter the public and private key in the fields below. <a href="%s">What is this all about</a>', 'wp-recaptcha-integration' ) ,
+					__( 'Please register your blog through the <a href="%s">Google reCAPTCHA admin page</a> and enter the public and private key in the fields below. <a href="%s">What is this all about?</a>', 'wp-recaptcha-integration' ) ,
 						$admin_url , $info_url 
 					);
 			?></p><?php
@@ -312,6 +361,21 @@ class WP_reCaptcha_Options {
 				?></p><?php
 			?></div><?php
 		}
+	}
+	
+	public function explain_protection() {
+		?><div class="recaptcha-explain"><?php
+			?><p class="description"><?php 
+				_e( 'Select which forms you want to protect with a captcha.' , 'wp-recaptcha-integration' );
+			?></p><?php
+		?></div><?php
+	}
+	public function explain_styling() {
+		?><div class="recaptcha-explain"><?php
+			?><p class="description"><?php 
+				_e( 'Choose a flavor and theme for your Captcha. Please note that with the old style reCaptcha you cannot have more than one captcha per page.' , 'wp-recaptcha-integration' );
+			?></p><?php
+		?></div><?php
 	}
 	
 	
@@ -418,11 +482,46 @@ class WP_reCaptcha_Options {
 			?><input id="<?php echo $name ?>" type="checkbox" name="<?php echo $name ?>" value="1" <?php checked($value,1,true) ?> />
 			<?php
 			echo $label;
+			if ( $description ) {
+				?><p class="description"><?php echo $description ?></p><?php
+			}
 		?></label><?php
-		if ( $description ) {
-			?><p class="description"><?php echo $description ?></p><?php
-		}
 	}
+	
+	/**
+	 *	On/off switch. Basically A Checkbox
+	 *
+	 *	@param args array(
+	 *					'name' => '', // checkbox field name, must match an option name
+	 *					'label' => '', // button label
+	 *					'description' => '', // button label
+	 *					'class' => '', // button label
+	 *				)
+	 */
+	public function input_check_onoff($args) {
+		$args = wp_parse_args($args,array(
+			'name' => '',
+			'label' => '',
+			'class' => '',
+		));
+		extract($args);
+		$value = WP_reCaptcha::instance()->get_option( $name );
+
+		?><div class="recaptcha-onoff <?php echo $class ?>"><?php
+			?><input type="hidden" name="<?php echo $name ?>" value="0" /><?php
+			?><input id="<?php echo $name ?>" type="checkbox" name="<?php echo $name ?>" value="1" <?php checked($value,1,true) ?> /><?php
+			?><label for="<?php echo $name ?>"><?php
+				?><span class="dashicons dashicons-lock"></span><?php
+				?><span class="title"><?php echo $label ?></span><?php
+			?></label><?php
+		?></div><?php
+	}
+	
+	public function input_protect( $switches ) {
+		foreach ( $switches as $switch ) 
+			$this->input_check_onoff( $switch );
+	}
+	
 	/**
 	 *	A Text field. 
 	 *	Used for api key input.
@@ -443,18 +542,23 @@ class WP_reCaptcha_Options {
 		$option_name = 'recaptcha_language';
 		$option_value = WP_reCaptcha::instance()->get_option( $option_name );
 
-		$available_langs = WP_reCaptcha::instance()->get_supported_languages();
-
+		$all_available_langs = array(
+			'recaptcha'		=>	WP_reCaptcha_ReCaptcha::instance()->get_supported_languages(),
+			'grecaptcha'	=>	WP_reCaptcha_NoCaptcha::instance()->get_supported_languages(),
+		);
+		
 		?><div class="recaptcha-select-language flavor-<?php echo $option_flavor ?>"><?php
-			?><select name="<?php echo $option_name ?>"><?php
-				?><option <?php selected($option_value,'',true); ?> value=""><?php _e( 'Automatic','wp-recaptcha-integration' ); ?></option><?php
-				?><option <?php selected($option_value,'WPLANG',true); ?> value="WPLANG"><?php _e( 'Site Language' ); ?></option><?php
-				?><optgroup label="<?php _e('Other') ?>"><?php
-				foreach ( $available_langs as $lang => $lang_name ) {
-					?><option <?php selected($option_value,$lang,true); ?> value="<?php echo $lang; ?>"><?php _e( $lang_name ); ?></option><?php
-				}
-				?></optgroup><?php
-			?></select><?php
+			foreach( $all_available_langs as $flavor => $available_langs ) {
+				?><select class="flavor-<?php echo $flavor ?>" name="<?php echo $option_name ?>[<?php echo $flavor ?>]"><?php
+					?><option <?php selected($option_value,'',true); ?> value=""><?php _e( 'Automatic','wp-recaptcha-integration' ); ?></option><?php
+					?><option <?php selected($option_value,'WPLANG',true); ?> value="WPLANG"><?php _e( 'Site Language' ); ?></option><?php
+					?><optgroup label="<?php _e('Other') ?>"><?php
+					foreach ( $available_langs as $lang => $lang_name ) {
+						?><option <?php selected($option_value,$lang,true); ?> value="<?php echo $lang; ?>"><?php _e( $lang_name ); ?></option><?php
+					}
+					?></optgroup><?php
+				?></select><?php
+			}
 		?></div><?php
 	}
 	/**
@@ -463,37 +567,6 @@ class WP_reCaptcha_Options {
 	public function select_theme() {
 		$option_name = 'recaptcha_theme';
 		
-// 		$themes = array(
-// 			'light' => array(
-// 				'label' => __('Light','wp-recaptcha-integration') ,
-// 				'flavor' => 'grecaptcha',
-// 			),
-// 			'dark' => array(
-// 				'label' => __('Dark','wp-recaptcha-integration') ,
-// 				'flavor' => 'grecaptcha',
-// 			),
-// 
-// 			'red' => array(
-// 				'label' => __('Red','wp-recaptcha-integration') ,
-// 				'flavor' => 'recaptcha',
-// 			),
-// 			'white' => array(
-// 				'label' => __('White','wp-recaptcha-integration') ,
-// 				'flavor' => 'recaptcha',
-// 			),
-// 			'blackglass' => array(
-// 				'label' => __('Black Glass','wp-recaptcha-integration') ,
-// 				'flavor' => 'recaptcha',
-// 			),
-// 			'clean' => array(
-// 				'label' => __('Clean','wp-recaptcha-integration') ,
-// 				'flavor' => 'recaptcha',
-// 			),
-// 			'custom' => array(
-// 				'label' => __('Custom','wp-recaptcha-integration') ,
-// 				'flavor' => 'recaptcha',
-// 			),
-// 		);
 		$grecaptcha_themes = WP_reCaptcha_NoCaptcha::instance()->get_supported_themes();
 		$grecaptcha_themes = array_map( array( $this , '_map_grecaptcha' ) , $grecaptcha_themes );
 		
@@ -505,7 +578,7 @@ class WP_reCaptcha_Options {
 		$option_theme = WP_reCaptcha::instance()->get_option($option_name);
 		$option_flavor = WP_reCaptcha::instance()->get_option( 'recaptcha_flavor' );
 	
-		?><div class="recaptcha-select-theme flavor-<?php echo $option_flavor ?>"><?php
+		?><div class="recaptcha-select-theme"><?php
 	
 		foreach ( $themes as $value => $theme ) {
 			extract( $theme ); // label, flavor
@@ -547,11 +620,16 @@ class WP_reCaptcha_Options {
 	}
 	
 	/**
-	 *	Check valid recaptcha theme, check if theme fits to flavor
+	 *	Check if language is supported by current recaptcha flavor
 	 */
 	public function sanitize_language( $language ) {
+		$flavor = isset($_REQUEST['recaptcha_flavor']) ? $_REQUEST['recaptcha_flavor'] : WP_reCaptcha::instance()->get_option('recaptcha_flavor');
+
+		if ( isset( $language[$flavor] ) )
+			$language = $language[$flavor];
+		
 		if ( $language != 'WPLANG' )
-			$language = WP_reCaptcha::instance()->recaptcha_language( $language );
+			$language = WP_reCaptcha::instance()->captcha_instance_by_flavor( $flavor )->get_language( $language );
 		return $language;
 	}
 	/**
@@ -605,7 +683,8 @@ class WP_reCaptcha_Options {
 	 *	Rendering the options page
 	 */
 	public function render_options_page() {
-		?><div class="wrap"><?php
+		$option_flavor = WP_reCaptcha::instance()->get_option( 'recaptcha_flavor' );
+		?><div class="wrap flavor-<?php echo $option_flavor ?>"><?php
 			?><h2><?php /*icon*/ 
 				_e('Settings');
 				echo ' › '; 

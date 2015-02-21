@@ -3,7 +3,7 @@
 		$('[name="recaptcha_flavor"]:checked').trigger('click');
 	});
 	$(document).on('click','[name="recaptcha_flavor"]',function(){
-		$('.recaptcha-select-theme')
+		$(this).closest('.wrap')
 			.removeClass('flavor-recaptcha')
 			.removeClass('flavor-grecaptcha')
 			.addClass('flavor-'+$(this).val());

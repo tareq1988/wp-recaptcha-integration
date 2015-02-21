@@ -92,6 +92,28 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 			),
 		);
 	}
+	/**
+	 *	Override method
+	 *	Get recaptcha language code that matches input language code
+	 *	Sometimes WP uses different locales the the ones supported by nocaptcha. 
+	 *	
+	 *	@param	$lang	string language code
+	 *	@return	string	recaptcha language code if supported by current flavor, empty string otherwise
+	 */
+	public function get_language( $lang ) {
+		/*
+		 	Map WP locale to recatcha locale.
+		*/
+		$mapping = array(
+			'es_MX' => 'es-419',
+			'es_PE' => 'es-419',
+			'es_CL' => 'es-419',
+			'he_IL' => 'iw',
+		);
+		if ( isset( $mapping[$lang] ) )
+			$lang = $mapping[$lang];
+		return parent::get_language( $lang );
+	}
 
 	public function print_head() {
 		?><style type="text/css">
