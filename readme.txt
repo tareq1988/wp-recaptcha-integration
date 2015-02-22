@@ -209,6 +209,7 @@ I will migrate all the translation stuff there.
 - Redseign settings page
 - Fix: Options: testing keys for multiple times
 - Fix: Options: cancel button target
+- Fix: Options: test keys only with a nocaptcha
 
 = 1.0.9 =
 - Fix: Preserve PHP 5.2 compatibility
