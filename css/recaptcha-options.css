@@ -95,3 +95,13 @@
 .warning {
 	color:red;
 }
+
+
+
+
+
+.recaptcha-explain .loading .spinner {
+	display:inline-block;
+	float:none;
+	vertical-align:middle;
+}

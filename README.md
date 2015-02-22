@@ -68,7 +68,6 @@ add_filter('wp_recaptcha_required' , 'my_wp_recaptcha_required');
 
 // store in session if captcha solved
 function my_wp_recaptcha_checked( $success ) {
-	vaR_dump($success);
 	if ( $success )
 		$_SESSION['recaptcha_solved'] = true;
 }

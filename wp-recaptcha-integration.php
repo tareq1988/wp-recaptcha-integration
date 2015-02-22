@@ -528,7 +528,6 @@ class WP_reCaptcha {
 		$pub_key_url = sprintf( "http://www.google.com/recaptcha/api/challenge?k=%s" , $key );
 		$pub_response = wp_remote_get( $pub_key_url );
 		$pub_response_body = wp_remote_retrieve_body( $pub_response );
-		var_dump($pub_response_body);
 		return ! is_wp_error( $pub_response ) && ! strpos( $pub_response_body ,'Format of site key was invalid');
 	}
 	

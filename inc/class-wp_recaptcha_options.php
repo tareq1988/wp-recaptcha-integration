@@ -187,6 +187,7 @@ class WP_reCaptcha_Options {
 			}
 		} else {
 			// API Key. Add test tool.
+			add_action('wp_ajax_recaptcha-init-test-api-key' , array( &$this , 'ajax_init_test_api_key' ) );
 			add_action('wp_ajax_recaptcha-test-api-key' , array( &$this , 'ajax_test_api_key' ) );
 			add_action('wp_ajax_recaptcha-test-verification' , array( &$this , 'ajax_test_api_key_verification' ) );
 		}
@@ -355,14 +356,21 @@ class WP_reCaptcha_Options {
 				$nonce = wp_create_nonce( $action );
 				$test_url = add_query_arg( array('_wpnonce' => $nonce , 'action' => $action ) , admin_url( 'admin-ajax.php' ) );
 			
+				$action = 'recaptcha-init-test-api-key';
+				$nonce = wp_create_nonce( $action );
+				$init_test_url = add_query_arg( array('_wpnonce' => $nonce , 'action' => $action ) , admin_url( 'admin-ajax.php' ) );
+			
 				?><p class="submit"><?php 
 					?><a class="button" href="<?php echo $new_url ?>"><?php _e('New API Key' , 'wp-recaptcha-integration') ?></a><?php
-					?><a id="test-api-key" class="button" href="<?php echo $test_url ?>"><?php _e('Test API Key' , 'wp-recaptcha-integration') ?></a><?php
+					?><a id="test-api-key" class="button" data-init-href="<?php echo $init_test_url ?>" href="<?php echo $test_url ?>"><?php _e('Test API Key' , 'wp-recaptcha-integration') ?></a><?php
 				?></p><?php
 			?></div><?php
 		}
 	}
 	
+	/**
+	 *	Intro text for the Protection setting
+	 */
 	public function explain_protection() {
 		?><div class="recaptcha-explain"><?php
 			?><p class="description"><?php 
@@ -370,6 +378,9 @@ class WP_reCaptcha_Options {
 			?></p><?php
 		?></div><?php
 	}
+	/**
+	 *	Intro text for the Styling setting
+	 */
 	public function explain_styling() {
 		?><div class="recaptcha-explain"><?php
 			?><p class="description"><?php 
@@ -383,11 +394,23 @@ class WP_reCaptcha_Options {
 	 *	Test api key ajax response.
 	 *	Returns reCaptcha HTML
 	 */
-	public function ajax_test_api_key() {
+	public function ajax_init_test_api_key() {
 		if ( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'] , $_REQUEST['action'] ) ) {
 			header('Content-Type: text/html');
 			WP_reCaptcha::instance()->recaptcha_head( 'grecaptcha' );
 			WP_reCaptcha::instance()->recaptcha_foot( 'grecaptcha' );
+		}
+		exit(0);
+	}
+	/**
+	 *	Test api key ajax response.
+	 *	Returns reCaptcha HTML
+	 */
+	public function ajax_test_api_key() {
+		if ( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'] , $_REQUEST['action'] ) ) {
+			header('Content-Type: text/html');
+// 			WP_reCaptcha::instance()->recaptcha_head( 'grecaptcha' );
+// 			WP_reCaptcha::instance()->recaptcha_foot( 'grecaptcha' );
 			WP_reCaptcha::instance()->print_recaptcha_html( 'grecaptcha' );
 			$action = 'recaptcha-test-verification';
 			$nonce = wp_create_nonce( $action );
@@ -410,7 +433,7 @@ class WP_reCaptcha_Options {
 					'missing-input-response' => __('The user response was missing','wp-recaptcha-integration'),
 					'invalid-input-response' => __('Invalid user response','wp-recaptcha-integration'),
 				);
-				$result = WP_reCaptcha::instance()->get_last_result();
+				$result = (array) WP_reCaptcha::instance()->get_last_result();
 				if ( isset( $result['error-codes'] ) ) {
 					foreach ( $result['error-codes'] as $err ) {
 						?><div class="error"><p><?php echo $errs[$err]; ?></p></div><?php
@@ -694,7 +717,7 @@ class WP_reCaptcha_Options {
 			?><form action="options.php" method="post"><?php
 				settings_fields( 'recaptcha_options' );
 				do_settings_sections( 'recaptcha' ); 
-				submit_button();
+				submit_button( null , 'primary' , null, null, array('autocomplete'=>'off'));
 			?></form><?php
 		?></div><?php
 	}
