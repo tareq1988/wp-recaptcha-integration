@@ -398,8 +398,8 @@ class WP_reCaptcha_Options {
 		if ( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'] , $_REQUEST['action'] ) ) {
 			header('Content-Type: text/html');
 			add_filter('option_recaptcha_disable_submit','__return_false');
-			WP_reCaptcha::instance()->recaptcha_head( 'grecaptcha' );
-			WP_reCaptcha::instance()->recaptcha_foot( 'grecaptcha' );
+			WP_reCaptcha_noCaptcha::instance()->print_head( 'grecaptcha' );
+			WP_reCaptcha_noCaptcha::instance()->print_foot( 'grecaptcha' );
 		}
 		exit(0);
 	}
@@ -412,7 +412,7 @@ class WP_reCaptcha_Options {
 			header('Content-Type: text/html');
 // 			WP_reCaptcha::instance()->recaptcha_head( 'grecaptcha' );
 // 			WP_reCaptcha::instance()->recaptcha_foot( 'grecaptcha' );
-			WP_reCaptcha::instance()->print_recaptcha_html( 'grecaptcha' );
+			echo WP_reCaptcha_noCaptcha::instance()->get_html( 'grecaptcha' );
 			$action = 'recaptcha-test-verification';
 			$nonce = wp_create_nonce( $action );
 			?><input type="hidden" name="<?php echo $action ?>-nonce" value="<?php echo $nonce ?>" /><?php
@@ -427,14 +427,14 @@ class WP_reCaptcha_Options {
 	public function ajax_test_api_key_verification() {
 		if ( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'] , $_REQUEST['action'] ) ) {
 			header('Content-Type: text/html');
-			if ( ! WP_reCaptcha::instance()->recaptcha_check( 'grecaptcha' ) ) {
+			if ( ! WP_reCaptcha_noCaptcha::instance()->check( 'grecaptcha' ) ) {
 				$errs = array(
 					'missing-input-secret' => __('The secret Key is missing.','wp-recaptcha-integration'),
 					'invalid-input-secret' => __('The secret Key is invalid. You better check your domain configuration and enter it again.','wp-recaptcha-integration'),
 					'missing-input-response' => __('The user response was missing','wp-recaptcha-integration'),
 					'invalid-input-response' => __('Invalid user response','wp-recaptcha-integration'),
 				);
-				$result = (array) WP_reCaptcha::instance()->get_last_result();
+				$result = (array) WP_reCaptcha_noCaptcha::instance()->get_last_result();
 				if ( isset( $result['error-codes'] ) ) {
 					foreach ( $result['error-codes'] as $err ) {
 						?><div class="error"><p><?php echo $errs[$err]; ?></p></div><?php
