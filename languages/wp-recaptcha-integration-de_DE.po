@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP reCaptcha Integration v1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-02-22 13:55:31+0000\n"
+"PO-Revision-Date: 2015-02-22 13:56:11+0000\n"
 "Last-Translator: admin <joern@flyingletters.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -335,7 +335,7 @@ msgstr "Registrierung"
 #: inc/class-wp_recaptcha_options.php:292
 #@ wp-recaptcha-integration
 msgid "Login Form"
-msgstr "Login Formular"
+msgstr "Anmeldung"
 
 #: inc/class-wp_recaptcha_options.php:297
 #@ wp-recaptcha-integration
