@@ -73,7 +73,7 @@ Then go to the [Google Recaptcha Site](http://www.google.com/recaptcha), sign up
 
 = The login captcha says 'ERROR: invalid sitekey' What can I do? =
 
-Log in with an administrator account and ignore the captcha. If the keys do not work, the 
+Log in with an administrator account and ignore the captcha. If the keys are invalid, the 
 captcha test will be skipped and you will see a admin message, asking you to set up a new keypair.
 
 If this does not work for some reason, you will either need access to your WordPress 
@@ -107,6 +107,19 @@ installation (via SSH or FTP) or database access.
 
 Too bad. You will have to ask somebody with either FTP or database access to do one of 
 the above for you.
+
+= Privacy: Will the captcha send the visitors IP address to google? =
+
+Yes and no. The captcha verification process, comming into effect after the user has solved 
+the challenge does not require the disclosure of the visitors IP address, so it is omitted.
+
+But everything related to the displaying of the captcha widget like the challenge image, 
+the JavaScripts and so on is loaded directly from Google and is very likely to be logged, 
+evaluated and stored forever.
+
+In other words: Google knows which (recaptcha protected) website is accessed from which IP. 
+
+If that's an issue for you, you should rather use a self hosted solution. 
 
 = Will you support plugin XYZ? =
 
