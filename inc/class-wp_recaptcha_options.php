@@ -397,6 +397,7 @@ class WP_reCaptcha_Options {
 	public function ajax_init_test_api_key() {
 		if ( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'] , $_REQUEST['action'] ) ) {
 			header('Content-Type: text/html');
+			add_filter('option_recaptcha_disable_submit','__return_false');
 			WP_reCaptcha::instance()->recaptcha_head( 'grecaptcha' );
 			WP_reCaptcha::instance()->recaptcha_foot( 'grecaptcha' );
 		}

@@ -184,7 +184,7 @@ the official WP plugin repository first.
 
 = I found a bug and fixed it. How can I contribute? =
 
-Either post it on [GitHub](https://github.com/mcguffin/wp-recaptcha-integration) or—if you are working on a cloned repository—send me a pull request.
+Either post it on [GitHub](https://github.com/mcguffin/wp-recaptcha-integration) or—if you are working on a forked repository—send me a pull request.
 
 = Will you accept translations? =
 
@@ -206,6 +206,9 @@ I will migrate all the translation stuff there.
 = 1.1.0 =
 - Feature: Prevent Lockout - Administrators can still log in when the API keys are broken
 - Filters: add actions `recaptcha_print`, `print_comments_recaptcha` and filters `recaptcha_valid`, `recaptcha_error` for custom forms.
+- Redseign settings page
+- Fix: Options: testing keys for multiple times
+- Fix: Options: cancel button target
 
 = 1.0.9 =
 - Fix: Preserve PHP 5.2 compatibility
