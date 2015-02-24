@@ -10,7 +10,7 @@ Features
 - Supports old as well as new reCaptcha.
 - [Ninja Forms](http://ninjaforms.com/) integration
 - [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) integration
-- Tested with up to WP 4.2-alpha, Ninja Forms 2.8.7, Contact Form 7 4.1
+- Tested with up to WP 4.2-alpha, Ninja Forms 2.8.7, Contact Form 7 4.1, WooCommerce 2.3.5
 
 Limitations
 -----------
@@ -33,16 +33,13 @@ Fires after a recaptcha has been checked.
 ##### Example
 
 ```
-// will disable recaptcha for nice spambots
-function my_recaptcha_required( $is_required ) {
-	if ( is_nice_spambot() )
-		return false;
-	else if ( is_ugly_spambot() )
-		return true;
-	else
-		return $is_required;
+
+// will redirect to http://honeypot.org when captcha test fails.
+function my_recaptcha_checked( $check_successful ) {
+	if ( ! $check_successful ) 
+		wp_redirect( 'http://honeypot.org' );
 }
-add_filter('wp_recaptcha_required','my_recaptcha_required');
+add_filter('wp_recaptcha_checked','my_recaptcha_checked');
 ```
 
 ##### Real World Example
@@ -56,7 +53,7 @@ function my_session_start( ) {
 		session_start();
 	}
 }
-add_action('init','my_session_start');
+add_action('init','my_session_start',1);
 
 // don't requiere captcha, if session says so
 function my_wp_recaptcha_required( $is_required ) {
@@ -67,8 +64,8 @@ function my_wp_recaptcha_required( $is_required ) {
 add_filter('wp_recaptcha_required' , 'my_wp_recaptcha_required');
 
 // store in session if captcha solved
-function my_wp_recaptcha_checked( $success ) {
-	if ( $success )
+function my_wp_recaptcha_checked( $check_successful ) {
+	if ( $check_successful )
 		$_SESSION['recaptcha_solved'] = true;
 }
 add_action('wp_recaptcha_checked','my_wp_recaptcha_checked');
@@ -108,6 +105,27 @@ add_filter('wp_recaptcha_disabled_html','my_recaptcha_disabled_html');
 ```
 
 #### Filter `wp_recaptcha_language`
+
+Override the recaptcha language attribute. Possible return values are depending on the 
+languages supported by the current captcha flavor.
+
+**Note:** This filter is used internally in order to set the language according to the 
+current WP language. I cannot imagine a real-world use case, but for the sake of 
+completeness I documented it here.
+
+##### Example
+```
+// will set language to french if language is german
+// (French is considered a very elegant and pleasing language in germany, 
+// your vistors from DE will love you for it!)
+function my_recaptcha_language( $lang ) {
+	if ( $lang == 'de' )
+		return 'fr';
+	return $lang;
+}
+add_filter('wp_recaptcha_language','my_recaptcha_language');
+```
+
 
 Support
 -------

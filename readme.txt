@@ -1,14 +1,14 @@
 === WordPress ReCaptcha Integration ===
 Contributors: podpirate
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=F8NKC6TCASUXE
-Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms
+Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
 Requires at least: 3.8
-Tested up to: 4.1
+Tested up to: 4.2
 Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-reCaptcha for login, signup, comment forms, Ninja Forms and Contact Form 7.
+reCaptcha for login, signup, comment forms, Ninja Forms Contact Form 7 and woocommerce.
 
 == Description ==
 
@@ -39,14 +39,18 @@ On a **WP Multisite** you can either activate the plugin network wide or on a si
 
 Activated on a single site everything works as usual.
 
-With network activation entering the API key and setting up where a recaptcha is required 
-is up to the network admin. A blog admin can only select a theme and override the API key 
-if necessary.
+With network activation entering the API key and setting up where a captcha is required 
+is up to the network admin. A blog admin can override the API key e.g. when his blog is 
+running under his/her own domain name. 
 
 
 = Known Limitations =
 - You can't have more than one old style reCaptcha on a page. This is a limitiation of 
   reCaptcha itself. If that's an issue for you, you should use the no Captcha Form.
+
+- A No Captcha definitely requires client side JavaScript enabled. That's how it does its 
+  sophisticated bot detection magic. There is no fallback. If your visitor does not have 
+  JS enabled the captcha test will not let him through.
 
 - On a **Contact Form 7** when the reCaptcha is disabled (e.g. for logged in users) the field
   label will be still visible. This is due to CF7 Shortcode architecture, and can't be fixed.
@@ -54,30 +58,36 @@ if necessary.
   To handle this there is a filter `recaptcha_disabled_html`. You can return a message for your logged-in 
   users here. Check out the [GitHub Repo](https://github.com/mcguffin/wp-recaptcha-integration) for details.
 
-- Old style reCaptchas do not work together with **WooCommerce**. 
+- Old style reCaptcha does not work together with **WooCommerce**. 
 
-- In **WooCommerce** the reset password form can not be protected by a captcha. To 
-  overcome this restriction I requested a little change in the official WC repository, so there 
-  is hope for a future version. See: (https://github.com/woothemes/woocommerce/pull/7029)
+- In **WooCommerce** the reset password form can not be protected by a captcha. Woocommerce does 
+  not fire any action in the lost password form, so there is no way for the plugin to hook in
+  To overcome this restriction [I asked for a little change](https://github.com/woothemes/woocommerce/pull/7029) 
+  in the official WC repository. Sadly it did not make into the WC core.
 
-- There is no (and as far as one can see, there will never be) support for the **MailPoet**
-  subscription form.
+- Due to a lack of filters there is no (and as far as one can see, there will never be) 
+  support for the **MailPoet** subscription form.
 
 == Installation ==
 
 First follow the standard [WordPress plugin installation procedere](http://codex.wordpress.org/Managing_Plugins).
 
-Then go to the [Google Recaptcha Site](http://www.google.com/recaptcha), sign up your site and enter your API-Keys on the configuration page.
+Then go to the [Google Recaptcha Site](http://www.google.com/recaptcha), register your site and enter your API-Keys on the configuration page.
 
 == Frequently asked questions ==
 
-= The login captcha says 'ERROR: invalid sitekey' What can I do? =
+= The login captcha says 'ERROR: (something somthing)'. What can I do? =
 
-Log in with an administrator account and ignore the captcha. If the keys are invalid, the 
-captcha test will be skipped and you will see a admin message, asking you to set up a new keypair.
+If it says 'Invalid sitekey' and you checked the 'Prevent lockout' option on the plugin 
+settings (it's on by default) you can log in with an administrator account and ignore the 
+captcha. If the keys are really invalid, the plugin will let you in, so you can set up a 
+new keypair. 
 
-If this does not work for some reason, you will either need access to your WordPress 
-installation (via SSH or FTP) or database access.
+When you see "Invalid domain for site key", then the key is okay in general, but not for 
+your domain. The server can not test this case, so an effective lockout prevention is not 
+possible.
+
+You will either need access to your WordPress installation (via SSH or FTP) or database access.
 
 **With FTP Access:**
 

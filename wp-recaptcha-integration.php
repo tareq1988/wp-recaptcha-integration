@@ -182,7 +182,7 @@ class WP_reCaptcha {
 //*/
 			}
 			if ( 'WPLANG' === $this->get_option( 'recaptcha_language' ) ) 
-				add_filter( 'wp_recaptcha_language' , array( &$this,'recaptcha_wplang' ) );
+				add_filter( 'wp_recaptcha_language' , array( &$this,'recaptcha_wplang' ) , 5 );
 
 			add_action( 'recaptcha_print' , array( &$this , 'print_recaptcha_html' ) );
 			add_filter( 'recaptcha_valid' , array( &$this , 'recaptcha_check' ) );
