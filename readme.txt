@@ -87,7 +87,26 @@ When you see "Invalid domain for site key", then the key is okay in general, but
 your domain. The server can not test this case, so an effective lockout prevention is not 
 possible.
 
-You will either need access to your WordPress installation (via SSH or FTP) or database access.
+You will either need one of the following:
+- access to the settings for your sitekey on [reCaptcha API key administration](https://www.google.com/recaptcha/admin#list)
+- access to your WordPress installation (via SSH or FTP) or database access 
+- database access
+
+
+**With API key admin**
+
+1. Look at source code of the login page.
+
+2. Find the part saying <code>data-sitekey="**XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX**"</code>
+   The part marked in bold is your sitekey.
+
+3. Go to the [Google reCaptcha API key administration](https://www.google.com/recaptcha/admin#list)
+
+4. Find the list entry with the sitekey from step 2
+
+5. If lockout prevention is enabled you can simply delete the key set up a new one.
+   If not enter your domain name at "Domains" in a new line and wait up to 30 minutes. 
+
 
 **With FTP Access:**
 
@@ -113,10 +132,11 @@ You will either need access to your WordPress installation (via SSH or FTP) or d
 
 3. Set up a new keypair on Google and test it.
 
+
 **If none of these works for you**
 
-Too bad. You will have to ask somebody with either FTP or database access to do one of 
-the above for you.
+That's too bad...
+
 
 = Privacy: Will the captcha send the visitors IP address to google? =
 
@@ -131,10 +151,12 @@ In other words: Google knows which (recaptcha protected) website is accessed fro
 
 If that's an issue for you, you should rather use a self hosted solution. 
 
+
 = Will you support plugin XYZ? =
 
 If XYZ stands for a widely used free and OpenSource plugin in active development with some 
 100k+ downloads I will give it a try. Just ask. 
+
 
 = The captcha does not show up. What’s wrong? =
 
@@ -155,6 +177,7 @@ Here is some code that will fix it:
 
 If the problem still persist, Houston really has a problem, and you are welcome to post a support request. 
 
+
 = Disabled submit buttons should be grey! Why aren't they? =
 
 Very likely the Author of your Theme didn't care that a non functinal form element should 
@@ -166,15 +189,18 @@ look different than a functional one. This how you can overcome that issue:
 - Create a zip Archive out of the included file `grey-out-disabled.php` and name it `grey-out-disabled.zip`.
 - Install and activate it like any other WordPress plugin
 
+
 = I want my visitors to solve only one Captcha and then never again. Is that possible? =
 
 Yes. You can store in a session if a captcha was solved, and use the `wp_recaptcha_required` 
 filter to supress further captchas. See (https://github.com/mcguffin/wp-recaptcha-integration#real-world-example) 
 for a code example.
 
+
 = I found a bug. Where should I post it? =
 
 I personally prefer GitHub but you can post it in the forum as well. The plugin code is here: [GitHub](https://github.com/mcguffin/wp-recaptcha-integration)
+
 
 = I want to use the latest files. How can I do this? =
 
@@ -192,9 +218,11 @@ Please note that the GitHub repository is more likely to contain unstable and un
 concerning stability or security (like crashes, vulnerabilities and alike) are more likely to be fixed in 
 the official WP plugin repository first.
 
+
 = I found a bug and fixed it. How can I contribute? =
 
 Either post it on [GitHub](https://github.com/mcguffin/wp-recaptcha-integration) or—if you are working on a forked repository—send me a pull request.
+
 
 = Will you accept translations? =
 
@@ -205,18 +233,21 @@ or removed some strings in the meantime.
 As soon as there is a [public centralized repository for WordPress plugin translations](https://translate.wordpress.org/projects/wp-plugins) 
 I will migrate all the translation stuff there.
 
+
 == Screenshots ==
 
 1. Plugin Settings
 2. Ninja Form Integration
 3. Contact Form 7 Integration
 
+
 == Changelog ==
 
 = 1.1.0 =
 - Feature: Prevent Lockout - Administrators can still log in when the API keys are broken
 - Filters: add actions `recaptcha_print`, `print_comments_recaptcha` and filters `recaptcha_valid`, `recaptcha_error` for custom forms.
-- Redseign settings page
+- Redeseign settings page
+- Fix: woocommerce: add captcha at checkout > create customer account when checkout is off and signup is on.
 - Fix: Options: testing keys for multiple times
 - Fix: Options: cancel button target
 - Fix: Options: test keys only with a nocaptcha
