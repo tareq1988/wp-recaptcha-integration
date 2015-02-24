@@ -125,6 +125,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 
 
 	public function print_foot() {
+		$sitekey = WP_reCaptcha::instance()->get_option('recaptcha_publickey');
 		$language_param = '';
 		if ( $language_code = apply_filters( 'wp_recaptcha_language' , WP_reCaptcha::instance()->get_option( 'recaptcha_language' ) ) )
 			$language_param = "&hl=$language_code";
@@ -150,7 +151,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 					console.log(el);
 					if ( ! el.childNodes.length) {
 						wid = grecaptcha.render(el,{
-							'sitekey':'<?php echo WP_reCaptcha::instance()->get_option('recaptcha_publickey'); ?>',
+							'sitekey':'<?php echo $sitekey ?>',
 							'theme':el.getAttribute('data-theme') || '<?php echo WP_reCaptcha::instance()->get_option('recaptcha_theme'); ?>'
 <?php if ( WP_reCaptcha::instance()->get_option( 'recaptcha_disable_submit' ) ) { ?>
 							,
@@ -168,7 +169,10 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		
 		// if jquery present re-render jquery/ajax loaded captcha elements 
 		if ( typeof jQuery !== 'undefined' )
-			jQuery(document).ajaxComplete( recaptchaLoadCallback );
+			jQuery(document).ajaxComplete( function(evt,xhr,set){
+				if( xhr.responseText && xhr.responseText.indexOf('<?php echo $sitekey ?>') !== -1)
+					recaptchaLoadCallback();
+			} );
 		
 		</script><?php
 		?><script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit<?php echo $language_param ?>" async defer></script><?php
