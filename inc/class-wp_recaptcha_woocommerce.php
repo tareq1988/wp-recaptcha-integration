@@ -39,11 +39,11 @@ class WP_reCaptcha_WooCommerce {
 	function init() {
 		$wp_recaptcha = WP_reCaptcha::instance();
 		$require_recaptcha = $wp_recaptcha->is_required();
-		
+		$enable_order = $wp_recaptcha->get_option('recaptcha_enable_wc_order') ;
 		if ( $require_recaptcha ) {
 			// WooCommerce support
 			if ( $wp_recaptcha->get_option('recaptcha_flavor') == 'grecaptcha' && function_exists( 'wc_add_notice' ) ) {
-				if ( $wp_recaptcha->get_option('recaptcha_enable_wc_order') ) {
+				if ( $enable_order ) {
 					add_action('woocommerce_review_order_before_submit' , array($wp_recaptcha,'print_recaptcha_html'),10,0);
 					add_action('woocommerce_checkout_process', array( &$this , 'recaptcha_check' ) );
 				}
@@ -55,13 +55,25 @@ class WP_reCaptcha_WooCommerce {
 				if ( $wp_recaptcha->get_option('recaptcha_enable_signup') ) {
 					// displaying the captcha at hook 'registration_form' already done by core plugin
 					add_filter('woocommerce_registration_errors', array( &$this , 'login_errors' ) , 10 , 3 );
+					if ( ! $enable_order )
+						add_filter('woocommerce_checkout_fields', array( &$this , 'checkout_fields' ) , 10 , 3 );
 				}
+				add_filter('woocommerce_form_field_recaptcha', array( $wp_recaptcha , 'recaptcha_html' ) , 10 , 3 );
 				/*
 				LOSTPW: Not possible yet. Needs https://github.com/woothemes/woocommerce/pull/7029 being applied.
 				*/
 			}
 		}
 	}
+	
+	function checkout_fields( $checkout_fields ) {
+		$checkout_fields['account']['recaptcha'] = array(
+			'type' => 'recaptcha',
+			'label' => __( 'Are you human', 'wp-recaptcha-integration' ),
+		);
+		return $checkout_fields;
+	}
+	
 	/**
 	 *	WooCommerce recaptcha Check
 	 *	hooks into action `woocommerce_checkout_process`
