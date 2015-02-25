@@ -180,8 +180,8 @@ class WP_reCaptcha_Options {
 			// no API Key. Let the user enter it.
 			register_setting( 'recaptcha_options', 'recaptcha_publickey' , 'trim' );
 			register_setting( 'recaptcha_options', 'recaptcha_privatekey' , 'trim' );
-			add_settings_field('recaptcha_publickey', __('Public Key','wp-recaptcha-integration'), array(&$this,'secret_input_text'), 'recaptcha', 'recaptcha_apikey' , array('name'=>'recaptcha_publickey') );
-			add_settings_field('recaptcha_privatekey', __('Private Key','wp-recaptcha-integration'), array(&$this,'secret_input_text'), 'recaptcha', 'recaptcha_apikey', array('name'=>'recaptcha_privatekey'));
+			add_settings_field('recaptcha_publickey', __('Site key','wp-recaptcha-integration'), array(&$this,'secret_input_text'), 'recaptcha', 'recaptcha_apikey' , array('name'=>'recaptcha_publickey') );
+			add_settings_field('recaptcha_privatekey', __('Secret key','wp-recaptcha-integration'), array(&$this,'secret_input_text'), 'recaptcha', 'recaptcha_apikey', array('name'=>'recaptcha_privatekey'));
 			if ( $has_api_key ) {
 				add_settings_field('cancel', '' , array(&$this,'cancel_enter_api_key'), 'recaptcha', 'recaptcha_apikey' );
 			}

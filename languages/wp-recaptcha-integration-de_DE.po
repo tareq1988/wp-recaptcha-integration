@@ -98,13 +98,13 @@ msgstr ""
 
 #: inc/class-wp_recaptcha_options.php:183
 #@ wp-recaptcha-integration
-msgid "Public Key"
-msgstr "Public Key"
+msgid "Site key"
+msgstr "Websiteschlüssel"
 
 #: inc/class-wp_recaptcha_options.php:184
 #@ wp-recaptcha-integration
-msgid "Private Key"
-msgstr "Private Key"
+msgid "Secret key"
+msgstr "Geheimer Schlüssel"
 
 #: inc/class-wp_recaptcha_options.php:204
 #@ wp-recaptcha-integration

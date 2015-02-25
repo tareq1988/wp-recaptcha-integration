@@ -72,12 +72,12 @@ msgstr ""
 "de reCaptcha</a>."
 
 #: inc/class-wp_recaptcha_options.php:173
-msgid "Public Key"
-msgstr "Llave pública"
+msgid "Site key"
+msgstr "Clave del sitio"
 
 #: inc/class-wp_recaptcha_options.php:174
-msgid "Private Key"
-msgstr "Llave Privada"
+msgid "Secret key"
+msgstr "Clave secreta"
 
 #: inc/class-wp_recaptcha_options.php:175
 #: inc/class-wp_recaptcha_options.php:181

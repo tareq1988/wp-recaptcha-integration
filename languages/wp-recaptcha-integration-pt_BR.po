@@ -92,13 +92,13 @@ msgstr ""
 
 # @ wp-recaptcha-integration
 #: inc/class-wp-recaptcha-options.php:173
-msgid "Public Key"
-msgstr "Chave pública (Public Key)"
+msgid "Site key"
+msgstr "Chave pública (Sitekey)"
 
 # @ wp-recaptcha-integration
 #: inc/class-wp-recaptcha-options.php:174
-msgid "Private Key"
-msgstr "Chave privada (Private Key)"
+msgid "Secret key"
+msgstr "Chave privada (Secret Key)"
 
 # @ wp-recaptcha-integration
 #: inc/class-wp-recaptcha-options.php:175
