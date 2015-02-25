@@ -34,9 +34,18 @@ class WP_reCaptcha_ContactForm7 {
 		add_action( 'admin_init', array( &$this , 'add_tag_generator_recaptcha' ), 45 );
 		add_filter( 'wpcf7_validate_recaptcha', array( &$this , 'recaptcha_validation_filter' ) , 10, 2 );
 		add_filter( 'wpcf7_validate_recaptcha*', array( &$this , 'recaptcha_validation_filter' ) , 10, 2 );
+		add_filter( 'wpcf7_messages' , array( &$this , 'add_error_message' ) );
 	}
 
-
+	
+	function add_error_message( $messages ) {
+		$messages['wp_recaptcha_invalid'] = array(
+			'description'	=> __( "Google reCaptcha does not validate.", 'wp-recaptcha-integration' ),
+			'default'		=> __("The Captcha didn’t verify.",'wp-recaptcha-integration')
+		);
+		return $messages;
+	}
+	
 	function add_shortcode_recaptcha() {
 		wpcf7_add_shortcode(
 			array( 'recaptcha','recaptcha*'),
@@ -92,6 +101,7 @@ class WP_reCaptcha_ContactForm7 {
 					<tr><td>
 						<?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?><br />
 						<input type="text" name="name" class="tg-name oneline" />
+						<?php echo esc_html( __( 'Error message', 'wp-recaptcha-integration' ) ); ?><br />
 					</td><td><?php
 						if ( 'grecaptcha' === WP_reCaptcha::instance()->get_option('recaptcha_flavor') ) {
 							$themes = WP_reCaptcha::instance()->captcha_instance()->get_supported_themes();
@@ -108,6 +118,9 @@ class WP_reCaptcha_ContactForm7 {
 (function($){
 	$(document).on('change','[name="recaptcha-theme-ui"]',function(){
 		$(this).next('[name="theme"]').val( $(this).val() ).trigger('change');
+	});
+	$(document).on('change','[name="recaptcha-message-ui"]',function(){
+		$(this).next('[name="message"]').val( $(this).val() ).trigger('change');
 	});
 
 })(jQuery)
@@ -134,7 +147,10 @@ class WP_reCaptcha_ContactForm7 {
 		$name = $tag->name;
 
 		if ( ! WP_reCaptcha::instance()->recaptcha_check() ) {
-			$message = __("The Captcha didn’t verify.",'wp-recaptcha-integration');
+			$message = wpcf7_get_message( 'wp_recaptcha_invalid' );
+			if ( ! $message ) 
+				$message = __("The Captcha didn’t verify.",'wp-recaptcha-integration');
+			 
 			if ( method_exists($result, 'invalidate' ) ) { // since CF7 4.1
 				$result->invalidate( $tag , $message );
 			} else {
