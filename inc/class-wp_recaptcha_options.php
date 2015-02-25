@@ -452,7 +452,7 @@ class WP_reCaptcha_Options {
 	 *	checks the verification process and shows an error on fail.
 	 */
 	public function cancel_enter_api_key() {
-		$url = $this->remove_new_apikey_url( add_query_arg() );
+		$url = $this->remove_new_apikey_url( add_query_arg(null,null) );
 		?><a class="button" href="<?php echo $url ?>"><?php _e( 'Cancel' ) ?></a><?php
 	}
 	
