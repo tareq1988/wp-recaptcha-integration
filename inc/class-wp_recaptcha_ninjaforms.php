@@ -27,10 +27,27 @@ class WP_reCaptcha_NinjaForms {
 	 *	Prevent from creating more than one instance
 	 */
 	private function __construct() {
-		add_action('init', array(&$this,'register_field_recaptcha'));
-		add_action('wp_footer',array(&$this,'recaptcha_script'),9999);
-		add_filter('ninja_forms_field',array(&$this,'recaptcha_field_data'),10,2);
+		add_action( 'init', array(&$this,'register_field_recaptcha'));
+		add_action( 'init' , array( &$this , 'late_init' ) , 99 );
+		add_action( 'wp_footer' , array(&$this,'recaptcha_script'),9999 );
+		add_filter( 'ninja_forms_field' , array(&$this,'recaptcha_field_data'), 10, 2 );
+		add_filter( 'ninja_forms_settings' , array( &$this , 'nf_settings' ) );
 	}
+	function nf_settings( $settings ) {
+		if ( ! isset($settings['wp_recaptcha_invalid']) )
+			$settings['wp_recaptcha_invalid'] = __("The Captcha didn’t verify.",'wp-recaptcha-integration');
+		return $settings;
+	}
+	function late_init() {
+		global $ninja_forms_tabs_metaboxes;
+		
+		$ninja_forms_tabs_metaboxes['ninja-forms-settings']['label_settings']['label_labels']['settings'][] = array(
+			'name' => 'wp_recaptcha_invalid',
+			'type' => 'text',
+			'label' => __( "Google reCaptcha does not validate.", 'wp-recaptcha-integration' ),
+		);
+	}
+	
 	function register_field_recaptcha(){
 		$args = array(
 			'name' => __( 'reCAPTCHA', 'wp-recaptcha-integration' ),
@@ -131,13 +148,16 @@ class WP_reCaptcha_NinjaForms {
 
 	function field_recaptcha_pre_process( $field_id, $user_value ){
 		global $ninja_forms_processing;
-		$recaptcha_error = __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration');
+		$plugin_settings = nf_get_settings();
+		
+		$recaptcha_error = __("The Captcha didn’t verify.",'wp-recaptcha-integration');
+		if ( isset( $plugin_settings['wp_recaptcha_invalid'] ) ) 
+			$recaptcha_error = $plugin_settings['wp_recaptcha_invalid'];
 
 		$field_row = ninja_forms_get_field_by_id($field_id);
 		$field_data = $field_row['data'];
 		$form_row = ninja_forms_get_form_by_field_id($field_id);
 		$form_id = $form_row['id'];
-
 
 		$require_recaptcha = WP_reCaptcha::instance()->is_required();
 	

@@ -245,9 +245,10 @@ I will migrate all the translation stuff there.
 
 = 1.1.0 =
 - Feature: Prevent Lockout - Admins can still log in when the API keys are invalid
+- Feature: Customize error message on contact form 7 and ninja forms
 - Filters: add actions `recaptcha_print`, `print_comments_recaptcha` and filters `recaptcha_valid`, `recaptcha_error` for custom forms.
 - Redesign: settings page
-- Fix: woocommerce: add captcha at checkout > create customer account when checkout is off and signup is on.
+- Fix: woocommerce checkout form: fix unnecessary captcha test on new customer registration
 - Fix: settings: testing keys for multiple times
 - Fix: settings: key setup -> cancel button target
 - Fix: settings: test keys only with a nocaptcha
