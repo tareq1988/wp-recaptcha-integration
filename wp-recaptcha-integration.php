@@ -355,7 +355,9 @@ class WP_reCaptcha {
 	 *	@return bool false if check does not validate
 	 */
 	function recaptcha_check( ) {
-		return $this->captcha_instance()->check();
+		if ( $this->is_required() )
+			return $this->captcha_instance()->check();
+		return true;
 	}
 	
 	/**
