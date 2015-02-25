@@ -39,24 +39,28 @@ class WP_reCaptcha_WooCommerce {
 	function init() {
 		$wp_recaptcha = WP_reCaptcha::instance();
 		$require_recaptcha = $wp_recaptcha->is_required();
-		$enable_order = $wp_recaptcha->get_option('recaptcha_enable_wc_order') ;
+		$enable_order  = $wp_recaptcha->get_option('recaptcha_enable_wc_order') ;
+		$enable_signup = $wp_recaptcha->get_option('recaptcha_enable_signup') ;
+		$enable_login  = $wp_recaptcha->get_option('recaptcha_enable_login');
 		if ( $require_recaptcha ) {
 			// WooCommerce support
 			if ( $wp_recaptcha->get_option('recaptcha_flavor') == 'grecaptcha' && function_exists( 'wc_add_notice' ) ) {
 				if ( $enable_order ) {
 					add_action('woocommerce_review_order_before_submit' , array($wp_recaptcha,'print_recaptcha_html'),10,0);
 					add_action('woocommerce_checkout_process', array( &$this , 'recaptcha_check' ) );
+				} else if ( $enable_signup ) {
+					add_filter( 'wp_recaptcha_required' , array( &$this , 'disable_on_checkout' ) );
 				}
-				if ( $wp_recaptcha->get_option('recaptcha_enable_login') ) {
+				if ( $enable_login ) {
 					add_action('woocommerce_login_form' , array($wp_recaptcha,'print_recaptcha_html'),10,0);
 					add_filter('woocommerce_process_login_errors', array( &$this , 'login_errors' ) , 10 , 3 );
 					
 				}
-				if ( $wp_recaptcha->get_option('recaptcha_enable_signup') ) {
+				if ( $enable_signup ) {
 					// displaying the captcha at hook 'registration_form' already done by core plugin
 					add_filter('woocommerce_registration_errors', array( &$this , 'login_errors' ) , 10 , 3 );
-					if ( ! $enable_order )
-						add_filter('woocommerce_checkout_fields', array( &$this , 'checkout_fields' ) , 10 , 3 );
+// 					if ( ! $enable_order )
+// 						add_filter('woocommerce_checkout_fields', array( &$this , 'checkout_fields' ) , 10 , 3 );
 				}
 				add_filter('woocommerce_form_field_recaptcha', array( $wp_recaptcha , 'recaptcha_html' ) , 10 , 3 );
 				/*
@@ -65,7 +69,7 @@ class WP_reCaptcha_WooCommerce {
 			}
 		}
 	}
-	
+	/*
 	function checkout_fields( $checkout_fields ) {
 		$checkout_fields['account']['recaptcha'] = array(
 			'type' => 'recaptcha',
@@ -73,7 +77,7 @@ class WP_reCaptcha_WooCommerce {
 		);
 		return $checkout_fields;
 	}
-	
+	*/
 	/**
 	 *	WooCommerce recaptcha Check
 	 *	hooks into action `woocommerce_checkout_process`
@@ -91,6 +95,16 @@ class WP_reCaptcha_WooCommerce {
 		if ( ! WP_reCaptcha::instance()->recaptcha_check() ) 
 			$validation_error->add( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
 		return $validation_error;
+	}
+	
+	/**
+	 *	WooCommerce recaptcha Check
+	 *	hooks into actions `woocommerce_process_login_errors` and `woocommerce_registration_errors`
+	 */
+	function disable_on_checkout( $enabled ) {
+		if ( defined( 'WOOCOMMERCE_CHECKOUT' ) )
+			return false;
+		return $enabled;
 	}
 }
 
