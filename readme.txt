@@ -244,13 +244,13 @@ I will migrate all the translation stuff there.
 == Changelog ==
 
 = 1.1.0 =
-- Feature: Prevent Lockout - Administrators can still log in when the API keys are broken
+- Feature: Prevent Lockout - Admins can still log in when the API keys are invalid
 - Filters: add actions `recaptcha_print`, `print_comments_recaptcha` and filters `recaptcha_valid`, `recaptcha_error` for custom forms.
-- Redeseign settings page
+- Redesign: settings page
 - Fix: woocommerce: add captcha at checkout > create customer account when checkout is off and signup is on.
-- Fix: Options: testing keys for multiple times
-- Fix: Options: cancel button target
-- Fix: Options: test keys only with a nocaptcha
+- Fix: settings: testing keys for multiple times
+- Fix: settings: key setup -> cancel button target
+- Fix: settings: test keys only with a nocaptcha
 
 = 1.0.9 =
 - Fix: Preserve PHP 5.2 compatibility
