@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP reCaptcha Integration v1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-02-22 13:56:11+0000\n"
+"PO-Revision-Date: 2015-02-25 14:37:41+0000\n"
 "Last-Translator: admin <joern@flyingletters.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,12 +21,12 @@ msgstr ""
 "X-Textdomain-Support: yes"
 
 #: inc/class-wp_recaptcha_ninjaforms.php:134
-#: inc/class-wp_recaptcha_woocommerce.php:71
-#: inc/class-wp_recaptcha_woocommerce.php:80
-#: wp-recaptcha-integration.php:370
-#: wp-recaptcha-integration.php:416
-#: wp-recaptcha-integration.php:430
-#: wp-recaptcha-integration.php:442
+#: inc/class-wp_recaptcha_woocommerce.php:83
+#: inc/class-wp_recaptcha_woocommerce.php:92
+#: wp-recaptcha-integration.php:372
+#: wp-recaptcha-integration.php:418
+#: wp-recaptcha-integration.php:432
+#: wp-recaptcha-integration.php:444
 #@ wp-recaptcha-integration
 msgid "<strong>Error:</strong> the Captcha didn’t verify."
 msgstr "<strong>Fehler:</strong> Sicherheitstest nicht bestanden"
@@ -270,7 +270,7 @@ msgstr "Absendebutton deaktivieren"
 msgid "Disable Form Submit Button until no-captcha is entered."
 msgstr "Den Absendenbutton deaktivieren, bis das Captcha gelöst wurde."
 
-#: inc/class-wp_recaptcha_nocaptcha.php:194
+#: inc/class-wp_recaptcha_nocaptcha.php:198
 #@ wp-recaptcha-integration
 msgid "Please enable JavaScript to submit this form."
 msgstr "Bitte aktiveren Sie JavaScript, um dieses Formular abschicken zu können."
@@ -376,4 +376,9 @@ msgstr "Welche Formulare möchtest Du mit einem Captcha schützen?"
 #@ wp-recaptcha-integration
 msgid "Choose a flavor and theme for your Captcha. Please note that with the old style reCaptcha you cannot have more than one captcha per page."
 msgstr "Wähle eine Geschmachsrichtung. Zu beachten ist, dass beim alten reCaptcha nur ein Captcha auf einer Seite möglich ist."
+
+#: inc/class-wp_recaptcha_woocommerce.php:72
+#@ wp-recaptcha-integration
+msgid "Are you human"
+msgstr "Bist Du ein Mensch"
 
