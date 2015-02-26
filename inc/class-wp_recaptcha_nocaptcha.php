@@ -138,7 +138,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 			} catch(err){
 				return;
 			}
-			var e=document.getElementsByClassName('g-recaptcha'),form_submits;
+			var e=document.querySelectorAll ? document.querySelectorAll('.g-recaptcha') : document.getElementsByClassName('g-recaptcha'),form_submits;
 
 			for (var i=0;i<e.length;i++) {
 				(function(el){
