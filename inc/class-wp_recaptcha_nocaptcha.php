@@ -79,7 +79,9 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	 *	Prevent from creating more than one instance
 	 */
 	private function __construct() {
-
+		add_action( 'wp_footer' , array($this,'print_foot') );
+		if ( apply_filters( 'wp_recaptcha_print_login_css' , true ) )
+			add_action( 'login_head' , array($this,'print_login_head') );
 	}
 
 	public function get_supported_themes() {
@@ -115,7 +117,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		return parent::get_language( $lang );
 	}
 
-	public function print_head() {
+	public function print_login_head() {
 		?><style type="text/css">
 		#login {
 			width:350px !important;

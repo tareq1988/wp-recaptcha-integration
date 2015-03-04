@@ -135,10 +135,8 @@ class WP_reCaptcha {
 	function init() {
 		load_plugin_textdomain( 'wp-recaptcha-integration', false , dirname( plugin_basename( __FILE__ ) ).'/languages/' );
 		$require_recaptcha = $this->is_required();
-		
+		$this->captcha_instance();
 		if ( $require_recaptcha ) {
-			add_action( 'wp_head' , array($this,'recaptcha_head') );
-			add_action( 'wp_footer' , array($this,'recaptcha_foot') );
 			
 			if ( $this->get_option('recaptcha_enable_signup') || $this->get_option('recaptcha_enable_login')  || $this->get_option('recaptcha_enable_lostpw') ) {
 				add_action( 'login_head' , array(&$this,'recaptcha_head') );

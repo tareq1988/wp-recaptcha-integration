@@ -43,6 +43,10 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 	private function __construct() {
 		if ( ! defined( 'RECAPTCHA_API_SERVER' ) || ! function_exists( 'recaptcha_get_html' ) )
 			require_once dirname(__FILE__).'/recaptchalib.php';
+		add_action( 'wp_head' , array($this,'print_head') );
+		add_action( 'wp_footer' , array($this,'print_foot') );
+		if ( apply_filters( 'wp_recaptcha_print_login_css' , true ) )
+			add_action( 'login_head' , array($this,'print_login_head') );
 	}
 	
 	public function get_supported_themes() {
@@ -64,7 +68,13 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 			),
 		);
 	}
-
+	public function print_login_head() {
+		?><style type="text/css">
+		#login {
+			width:360px !important;
+		}
+		</style><?php
+	}
 	public function print_head() {
 		$recaptcha_theme = WP_reCaptcha::instance()->get_option('recaptcha_theme');
 		if ( $recaptcha_theme == 'custom' ) {
