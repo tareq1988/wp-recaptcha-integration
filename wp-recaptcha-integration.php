@@ -135,11 +135,14 @@ class WP_reCaptcha {
 	function init() {
 		load_plugin_textdomain( 'wp-recaptcha-integration', false , dirname( plugin_basename( __FILE__ ) ).'/languages/' );
 		$require_recaptcha = $this->is_required();
-		$this->captcha_instance();
+		
 		if ( $require_recaptcha ) {
+			add_action( 'wp_head' , array($this,'recaptcha_head') );
+			add_action( 'wp_footer' , array($this,'recaptcha_foot') );
 			
 			if ( $this->get_option('recaptcha_enable_signup') || $this->get_option('recaptcha_enable_login')  || $this->get_option('recaptcha_enable_lostpw') ) {
 				add_action( 'login_head' , array(&$this,'recaptcha_head') );
+				add_action( 'login_head' , array(&$this,'recaptcha_login_head') );
 				add_action( 'login_footer' , array(&$this,'recaptcha_foot') );
 			}
 			if ( $this->get_option('recaptcha_enable_comments') ) {
@@ -236,9 +239,23 @@ class WP_reCaptcha {
 	 *	hooks into `wp_head`
 	 */
 	function recaptcha_head( ) {
-		$this->begin_inject( );
-		$this->captcha_instance()->print_head();
-		$this->end_inject( );
+		if ( apply_filters( 'wp_recaptcha_do_scripts' , true ) ) {
+			$this->begin_inject( );
+			$this->captcha_instance()->print_head();
+			$this->end_inject( );
+		}
+ 	}
+ 	
+	/**
+	 *	print recaptcha login form stylesheets
+	 *	hooks into `wp_head`
+	 */
+	function recaptcha_login_head( ) {
+		if ( apply_filters( 'wp_recaptcha_print_login_css' , true ) ) {
+			$this->begin_inject( );
+			$this->captcha_instance()->print_login_head();
+			$this->end_inject( );
+		}
  	}
  	
 	/**
@@ -247,38 +264,40 @@ class WP_reCaptcha {
 	 *
 	 */
 	function recaptcha_foot( ) {
-		$this->begin_inject( );
+		if ( apply_filters( 'wp_recaptcha_do_scripts' , true ) ) {
+			$this->begin_inject( );
 		
-		// getting submit buttons of an elements form
-		if ( $this->get_option( 'recaptcha_disable_submit' ) ) { 
-			?><script type="text/javascript">
-			function get_form_submits(el){
-				var form,current=el,ui,type,slice = Array.prototype.slice,self=this;
-				this.submits=[];
-				this.form=false;
+			// getting submit buttons of an elements form
+			if ( $this->get_option( 'recaptcha_disable_submit' ) ) { 
+				?><script type="text/javascript">
+				function get_form_submits(el){
+					var form,current=el,ui,type,slice = Array.prototype.slice,self=this;
+					this.submits=[];
+					this.form=false;
 				
-				this.setEnabled=function(e){
-					for ( var s in self.submits ) {
-						if (e) self.submits[s].removeAttribute('disabled');
-						else  self.submits[s].setAttribute('disabled','disabled');
+					this.setEnabled=function(e){
+						for ( var s in self.submits ) {
+							if (e) self.submits[s].removeAttribute('disabled');
+							else  self.submits[s].setAttribute('disabled','disabled');
+						}
+						return this;
+					};
+					while ( current && current.nodeName != 'BODY' && current.nodeName != 'FORM' ) {
+						current = current.parentNode;
 					}
+					if ( !current || current.nodeName != 'FORM' ) 
+						return false;
+					this.form=current;
+					ui=slice.call(this.form.getElementsByTagName('input')).concat(slice.call(this.form.getElementsByTagName('button')));
+					for (var i in ui ) if ( (type=ui[i].getAttribute('TYPE')) && type=='submit' ) this.submits.push(ui[i]);
 					return this;
-				};
-				while ( current && current.nodeName != 'BODY' && current.nodeName != 'FORM' ) {
-					current = current.parentNode;
 				}
-				if ( !current || current.nodeName != 'FORM' ) 
-					return false;
-				this.form=current;
-				ui=slice.call(this.form.getElementsByTagName('input')).concat(slice.call(this.form.getElementsByTagName('button')));
-				for (var i in ui ) if ( (type=ui[i].getAttribute('TYPE')) && type=='submit' ) this.submits.push(ui[i]);
-				return this;
+				</script><?php
 			}
-			</script><?php
-		}
-		$this->captcha_instance()->print_foot();
+			$this->captcha_instance()->print_foot();
 		
-		$this->end_inject( );
+			$this->end_inject( );
+		}
 	}
 	
 	/**

@@ -105,36 +105,38 @@ class WP_reCaptcha_NinjaForms {
 	}
 
 	function recaptcha_script($id) {
-		/*
-		refresh captcha after form submission.
-		*/
-		$flavor = WP_reCaptcha::instance()->get_option( 'recaptcha_flavor' );
-		switch ( $flavor ) {
-			case 'recaptcha':
-				$html = '<script type="text/javascript"> 
-		// reload recaptcha after failed ajax form submit
-		jQuery(document).on("submitResponse.default", function(e, response){
-			Recaptcha.reload();
-		});
-	</script>';
-				break;
-			case 'grecaptcha':
-				$html = '<script type="text/javascript"> 
-		// reload recaptcha after failed ajax form submit
-		(function($){
-		$(document).on("submitResponse.default", function(e, response){
-			if ( grecaptcha ) {
-				var wid = $(\'#ninja_forms_form_\'+response.form_id).find(\'.g-recaptcha\').data(\'widget-id\');
-				grecaptcha.reset(wid);
+		if ( apply_filters( 'wp_recaptcha_do_scripts' , true ) ) {
+			/*
+			refresh captcha after form submission.
+			*/
+			$flavor = WP_reCaptcha::instance()->get_option( 'recaptcha_flavor' );
+			switch ( $flavor ) {
+				case 'recaptcha':
+					$html = '<script type="text/javascript"> 
+			// reload recaptcha after failed ajax form submit
+			jQuery(document).on("submitResponse.default", function(e, response){
+				Recaptcha.reload();
+			});
+		</script>';
+					break;
+				case 'grecaptcha':
+					$html = '<script type="text/javascript"> 
+			// reload recaptcha after failed ajax form submit
+			(function($){
+			$(document).on("submitResponse.default", function(e, response){
+				if ( grecaptcha ) {
+					var wid = $(\'#ninja_forms_form_\'+response.form_id).find(\'.g-recaptcha\').data(\'widget-id\');
+					grecaptcha.reset(wid);
+				}
+			});
+			})(jQuery);
+		</script>';
+					break;
 			}
-		});
-		})(jQuery);
-	</script>';
-				break;
+			WP_reCaptcha::instance()->begin_inject(false,', Ninja form integration');
+			echo $html;
+			WP_reCaptcha::instance()->end_inject();
 		}
-		WP_reCaptcha::instance()->begin_inject(false,', Ninja form integration');
-		echo $html;
-		WP_reCaptcha::instance()->end_inject();
 	}
 
 	function field_recaptcha_display($field_id, $data){

@@ -43,10 +43,6 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 	private function __construct() {
 		if ( ! defined( 'RECAPTCHA_API_SERVER' ) || ! function_exists( 'recaptcha_get_html' ) )
 			require_once dirname(__FILE__).'/recaptchalib.php';
-		add_action( 'wp_head' , array($this,'print_head') );
-		add_action( 'wp_footer' , array($this,'print_foot') );
-		if ( apply_filters( 'wp_recaptcha_print_login_css' , true ) )
-			add_action( 'login_head' , array($this,'print_login_head') );
 	}
 	
 	public function get_supported_themes() {
