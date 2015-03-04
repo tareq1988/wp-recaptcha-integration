@@ -10,6 +10,7 @@ abstract class WP_reCaptcha_Captcha {
 	protected $_last_result = false;
 	
 	abstract function print_head();
+	abstract function print_login_head();
 	abstract function print_foot();
 	abstract function get_html( $attr = array() );
 	abstract function check();

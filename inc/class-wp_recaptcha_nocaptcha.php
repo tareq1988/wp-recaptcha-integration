@@ -116,6 +116,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 			$lang = $mapping[$lang];
 		return parent::get_language( $lang );
 	}
+	public function print_head() {}
 
 	public function print_login_head() {
 		?><style type="text/css">
@@ -129,8 +130,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	public function print_foot() {
 		$sitekey = WP_reCaptcha::instance()->get_option('recaptcha_publickey');
 		$language_param = '';
-		if ( $language_code = apply_filters( 'wp_recaptcha_language' , WP_reCaptcha::instance()->get_option( 'recaptcha_language' ) ) )
-			$language_param = "&hl=$language_code";
+		
 		
 		?><script type="text/javascript">
 		var recaptcha_widgets={};
@@ -177,7 +177,15 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 			} );
 		
 		</script><?php
-		?><script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit<?php echo $language_param ?>" async defer></script><?php
+		$recaptcha_api_url = "https://www.google.com/recaptcha/api.js";
+		$recaptcha_api_url = add_query_arg(array(
+				'onload' => 'recaptchaLoadCallback',
+				'render' => 'explicit',
+			),$recaptcha_api_url);
+		if ( $language_code = apply_filters( 'wp_recaptcha_language' , WP_reCaptcha::instance()->get_option( 'recaptcha_language' ) ) )
+			$recaptcha_api_url = add_query_arg('hl',$language_code,$recaptcha_api_url);
+		
+		?><script src="<?php echo esc_url( $recaptcha_api_url ) ?>" async defer></script><?php
 	}
 	
 	
