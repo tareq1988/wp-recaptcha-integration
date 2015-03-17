@@ -147,13 +147,12 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 					var wid;
 <?php } ?>
 					// check if captcha element is unrendered
-					console.log(el);
 					if ( ! el.childNodes.length) {
 						wid = grecaptcha.render(el,{
 							'sitekey':'<?php echo $sitekey ?>',
 							'theme':el.getAttribute('data-theme') || '<?php echo WP_reCaptcha::instance()->get_option('recaptcha_theme'); ?>'
-<?php if ( WP_reCaptcha::instance()->get_option( 'recaptcha_disable_submit' ) ) { ?>
-							,
+<?php if ( WP_reCaptcha::instance()->get_option( 'recaptcha_disable_submit' ) ) { 
+?>							,
 							'callback' : function(r){ get_form_submits(el).setEnabled(true); /* enable submit buttons */ }
 <?php } ?>
 						});
