@@ -126,6 +126,31 @@ function my_recaptcha_language( $lang ) {
 add_filter('wp_recaptcha_language','my_recaptcha_language');
 ```
 
+#### Filter `wp_recaptcha_do_scripts`
+
+Use this to disable loading of the recaptcha scripts.
+
+##### Example
+```
+// Will disable script loading on the frontend
+if ( ! is_admin() && ! in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) )
+	add_filter('wp_recaptcha_do_scripts','__return_false');
+	
+```
+
+#### Filter `wp_recaptcha_print_login_css`
+
+Use this to disable the css on the login page.
+
+##### Example
+```
+// Will disable plugin css on the login page
+add_filter('wp_recaptcha_print_login_css','__return_false');
+	
+```
+
+
+
 ToDo:
 -----
 

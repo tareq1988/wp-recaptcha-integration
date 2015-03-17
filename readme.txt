@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
 Requires at least: 3.8
 Tested up to: 4.2
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -242,6 +242,12 @@ I will migrate all the translation stuff there.
 
 
 == Changelog ==
+
+= 1.1.1 =
+- Filter: `wp_recaptcha_do_scripts` allow disabling recaptcha scripts on certain pages.
+- Filter: `wp_recaptcha_print_login_css`, allow disabling login CSS.
+- Fix: Didn't render with Submit Button Disabling checked
+- Fix: Use `add_query_arg()` to generate recaptcha API URL
 
 = 1.1.0 =
 - Feature: Prevent Lockout - Admins can still log in when the API keys are invalid
