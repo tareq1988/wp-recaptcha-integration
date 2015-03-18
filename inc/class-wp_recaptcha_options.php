@@ -233,49 +233,13 @@ class WP_reCaptcha_Options {
 				register_setting( 'recaptcha_options', 'recaptcha_enable_signup', 'intval' );
 				register_setting( 'recaptcha_options', 'recaptcha_enable_login' , 'intval');
 				register_setting( 'recaptcha_options', 'recaptcha_enable_lostpw' , 'intval');
+				register_setting( 'recaptcha_options', 'recaptcha_lockout' , 'intval');
 
 				if ( function_exists('WC') )
 					register_setting( 'recaptcha_options', 'recaptcha_enable_wc_order' , 'intval');
 
 				register_setting( 'recaptcha_options', 'recaptcha_disable_for_known_users' , 'intval');
 				
-				/*
-				add_settings_field('recaptcha_enable_comments', __('Protect Comments','wp-recaptcha-integration'), 
-					array(&$this,'input_check_onoff'), 'recaptcha', 'recaptcha_protection' , 
-					array('name'=>'recaptcha_enable_comments','label'=>__( 'Protect comment forms with recaptcha.' ,'wp-recaptcha-integration' ) ) 
-				);
-			
-				add_settings_field('recaptcha_enable_signup', __('Protect Signup','wp-recaptcha-integration'), 
-					array(&$this,'input_check_onoff'), 'recaptcha', 'recaptcha_protection',      
-					array('name'=>'recaptcha_enable_signup','label'=>__( 'Protect signup form with recaptcha.','wp-recaptcha-integration' ) )
-				);
-			
-				add_settings_field('recaptcha_enable_login', __('Protect Login','wp-recaptcha-integration'), 
-					array(&$this,'input_check_onoff'), 'recaptcha', 'recaptcha_protection' ,
-					array('name'=>'recaptcha_enable_login','label'=>__( 'Protect Login form with recaptcha.','wp-recaptcha-integration' )) 
-				);
-
-				add_settings_field('recaptcha_enable_lostpw', __('Protect Lost Password','wp-recaptcha-integration'), 
-					array(&$this,'input_check_onoff'), 'recaptcha', 'recaptcha_protection' ,
-					array('name'=>'recaptcha_enable_lostpw','label'=>__( 'Protect Lost Password form with recaptcha.','wp-recaptcha-integration' )) 
-				);
-				// woocommerce integration
-				if ( function_exists('WC') ) {
-					$wc_warn =  WP_reCaptcha::instance()->get_option('recaptcha_enable_wc_order') && WP_reCaptcha::instance()->get_option('recaptcha_flavor') !== 'grecaptcha';
-					add_settings_field('recaptcha_enable_wc_order', __('Protect WooCommerce Checkout','wp-recaptcha-integration'), 
-						array(&$this,'input_check_onoff'), 'recaptcha', 'recaptcha_protection' ,
-						array(
-							'name'=>'recaptcha_enable_wc_order',
-							'label'=>__( 'Protect wooCommerce Checkout with a recaptcha.','wp-recaptcha-integration' ),
-							'description' => __( 'This will only work with No Captcha flavor.','wp-recaptcha-integration' ),
-							'class'	=> $wc_warn ? 'warning dashicons-before dashicons-no' : '',
-						) 
-					);
-					if ( $wc_warn ) {
-						add_settings_error('recaptcha',2,__( 'The Old Style recaptcha doesn‘t work together with the WooCommerce checkout form. The Captcha will not be displayed,' ,'wp-recaptcha-integration' ) );
-					}
-				}
-				/*/
 				$protect_settings = array();
 				$protect_settings[] = array(
 					'name' 			=>	'recaptcha_enable_comments',
