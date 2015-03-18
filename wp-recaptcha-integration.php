@@ -276,7 +276,7 @@ class WP_reCaptcha {
 					this.form=false;
 				
 					this.setEnabled=function(e){
-						for ( var s in self.submits ) {
+						for ( var s=0;s<self.submits.length;s++ ) {
 							if (e) self.submits[s].removeAttribute('disabled');
 							else  self.submits[s].setAttribute('disabled','disabled');
 						}
