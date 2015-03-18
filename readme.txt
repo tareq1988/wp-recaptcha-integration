@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
 Requires at least: 3.8
 Tested up to: 4.2
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -242,6 +242,10 @@ I will migrate all the translation stuff there.
 
 
 == Changelog ==
+
+= 1.1.2 =
+- Fix: Was not possible to uncheck lockout setting.
+- Fix: Potential JS error when 'Disable Submit Buttons' was enabled.
 
 = 1.1.1 =
 - Filter: `wp_recaptcha_do_scripts` allow disabling recaptcha scripts on certain pages.
