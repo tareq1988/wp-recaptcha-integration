@@ -61,9 +61,9 @@ running under his/her own domain name.
 - Old style reCaptcha does not work together with **WooCommerce**. 
 
 - In **WooCommerce** the reset password form can not be protected by a captcha. Woocommerce does 
-  not fire any action in the lost password form, so there is no way for the plugin to hook in
-  To overcome this restriction [I asked for a little change](https://github.com/woothemes/woocommerce/pull/7029) 
-  in the official WC repository. Sadly it did not make into the WC core.
+  not fire any action in the lost password form, so there is no way for the plugin to hook in.
+  To overcome this restriction [I asked for a little change](https://github.com/woothemes/woocommerce/pull/7786) 
+  in the official WC repository. Already my second attemt. Hopefully it will make it this time.
 
 - Due to a lack of filters there is no (and as far as one can see, there will never be) 
   support for the **MailPoet** subscription form.
@@ -242,6 +242,9 @@ I will migrate all the translation stuff there.
 
 
 == Changelog ==
+
+= 1.1.3 =
+- WooCommerce: Add action listener to `woocommerce_lostpassword_form` in advance
 
 = 1.1.2 =
 - Fix: Was not possible to uncheck lockout setting.

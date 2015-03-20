@@ -42,6 +42,7 @@ class WP_reCaptcha_WooCommerce {
 		$enable_order  = $wp_recaptcha->get_option('recaptcha_enable_wc_order') ;
 		$enable_signup = $wp_recaptcha->get_option('recaptcha_enable_signup') ;
 		$enable_login  = $wp_recaptcha->get_option('recaptcha_enable_login');
+		$enable_lostpw = $wp_recaptcha->get_option('recaptcha_enable_lostpw');
 		if ( $require_recaptcha ) {
 			// WooCommerce support
 			if ( $wp_recaptcha->get_option('recaptcha_flavor') == 'grecaptcha' && function_exists( 'wc_add_notice' ) ) {
@@ -54,7 +55,6 @@ class WP_reCaptcha_WooCommerce {
 				if ( $enable_login ) {
 					add_action('woocommerce_login_form' , array($wp_recaptcha,'print_recaptcha_html'),10,0);
 					add_filter('woocommerce_process_login_errors', array( &$this , 'login_errors' ) , 10 , 3 );
-					
 				}
 				if ( $enable_signup ) {
 					// displaying the captcha at hook 'registration_form' already done by core plugin
@@ -64,8 +64,11 @@ class WP_reCaptcha_WooCommerce {
 				}
 				add_filter('woocommerce_form_field_recaptcha', array( $wp_recaptcha , 'recaptcha_html' ) , 10 , 3 );
 				/*
-				LOSTPW: Not possible yet. Needs https://github.com/woothemes/woocommerce/pull/7029 being applied.
+				LOSTPW: Not possible yet. Needs https://github.com/woothemes/woocommerce/pull/7786 being applied.
 				*/
+				if ( $enable_lostpw ) {
+					add_action( 'woocommerce_lostpassword_form' , array($wp_recaptcha,'print_recaptcha_html'),10,0);
+				}
 			}
 		}
 	}
