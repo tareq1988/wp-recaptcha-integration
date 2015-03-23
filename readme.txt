@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
 Requires at least: 3.8
 Tested up to: 4.2
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,8 +62,7 @@ running under his/her own domain name.
 
 - In **WooCommerce** the reset password form can not be protected by a captcha. Woocommerce does 
   not fire any action in the lost password form, so there is no way for the plugin to hook in.
-  To overcome this restriction [I asked for a little change](https://github.com/woothemes/woocommerce/pull/7786) 
-  in the official WC repository. Already my second attemt. Hopefully it will make it this time.
+  This will propably be fixed with WooCommerce 2.3.8.
 
 - Due to a lack of filters there is no (and as far as one can see, there will never be) 
   support for the **MailPoet** subscription form.
@@ -244,7 +243,7 @@ I will migrate all the translation stuff there.
 == Changelog ==
 
 = 1.1.3 =
-- WooCommerce: Add action listener to `woocommerce_lostpassword_form` in advance
+- WooCommerce: Add action listener to `woocommerce_lostpassword_form` (probably functional in WC 2.3.8).
 
 = 1.1.2 =
 - Fix: Was not possible to uncheck lockout setting.
