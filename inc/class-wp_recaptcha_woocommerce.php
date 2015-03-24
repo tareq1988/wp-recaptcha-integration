@@ -49,6 +49,7 @@ class WP_reCaptcha_WooCommerce {
 				if ( $enable_order ) {
 					add_action('woocommerce_review_order_before_submit' , array($wp_recaptcha,'print_recaptcha_html'),10,0);
 					add_action('woocommerce_checkout_process', array( &$this , 'recaptcha_check' ) );
+					add_filter( 'wc_checkout_recaptcha_html' , array( &$this , 'recaptcha_html' ) );
 				} else if ( $enable_signup ) {
 					add_filter( 'wp_recaptcha_required' , array( &$this , 'disable_on_checkout' ) );
 				}

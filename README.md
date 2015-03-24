@@ -149,12 +149,25 @@ add_filter('wp_recaptcha_print_login_css','__return_false');
 	
 ```
 
+#### Filter `{$feature}recaptcha_html`
 
+I order to integrate recaptcha in your custom forms, there are six filters added in order 
+to get the recaptcha HTML:
+ - `recaptcha_html`, 
+ - `lostpassword_recaptcha_html`
+ - `login_recaptcha_html`
+ - `signup_recaptcha_html`
+ - `comments_recaptcha_html`
+ - `wc_checkout_recaptcha_html`
 
-ToDo:
------
+Use `apply_filters('feature_recaptcha_html','')` to retrieve the HTML.
 
+##### Example
 
+    // $recaptcha_html will hold the recaptcha HTML if 
+    // a captcha validation is required AND recaptcha is enabled for comment forms
+    $recaptcha_html = apply_filters( 'comments_recaptcha_html' , '' );
+	
 
 Support
 -------

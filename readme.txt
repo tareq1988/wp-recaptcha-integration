@@ -243,6 +243,7 @@ I will migrate all the translation stuff there.
 == Changelog ==
 
 = 1.1.3 =
+- Comments: use filter `comment_form_submit_button` in WP >= 4.2
 - WooCommerce: Add action listener to `woocommerce_lostpassword_form` (probably functional in WC 2.3.8).
 
 = 1.1.2 =
