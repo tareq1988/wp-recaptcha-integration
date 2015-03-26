@@ -246,6 +246,7 @@ I will migrate all the translation stuff there.
 - Comments: use filter `comment_form_submit_button` in WP >= 4.2
 - WooCommerce: Add action listener to `woocommerce_lostpassword_form` (probably functional in WC 2.3.8).
 - Introduce `{$feature}recaptcha_html` filters for custom form integration.
+- Introduce filter `wp_recaptcha_cf7_shortcode_wrap`.
 
 = 1.1.2 =
 - Fix: Was not possible to uncheck lockout setting.

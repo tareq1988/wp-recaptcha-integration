@@ -69,7 +69,7 @@ class WP_reCaptcha_ContactForm7 {
 		$validation_error = wpcf7_get_validation_error( $tag->name );
 
 		$html = sprintf(
-			'<span class="wpcf7-form-control-wrap %1$s">%2$s %3$s</span>',
+			apply_filters( 'wp_recaptcha_cf7_shortcode_wrap' ,'<span class="wpcf7-form-control-wrap %1$s">%2$s %3$s</span>' ),
 			$tag->name, $recaptcha_html, $validation_error );
 	
 		return $html;
