@@ -243,8 +243,9 @@ I will migrate all the translation stuff there.
 == Changelog ==
 
 = 1.1.4 =
-- Fix: get key option
-- Fix: Key testing
+- Comments: get back to `comment_form_defaults` filter (was introduced in 1.1.3)
+- Fix: Get key option
+- Fix: Key testing return value
 
 = 1.1.3 =
 - Comments: use filter `comment_form_submit_button` in WP >= 4.2
