@@ -3,7 +3,7 @@
 Plugin Name: WP reCaptcha Integration
 Plugin URI: https://wordpress.org/plugins/wp-recaptcha-integration/
 Description: Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha) as well as the old style reCaptcha. Provides of the box integration for signup, login, comment forms, lost password, Ninja Forms and contact form 7.
-Version: 1.1.3
+Version: 1.1.4
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 */
@@ -82,7 +82,6 @@ class WP_reCaptcha {
 			add_site_option('recaptcha_enable_lostpw' , false); // global
 			add_site_option('recaptcha_disable_for_known_users' , true); // global
 			add_site_option( 'recaptcha_lockout' , true );
-			$this->_has_api_key = get_site_option( 'recaptcha_publickey' ) && get_site_option( 'recaptcha_privatekey' );
 		} else {
 			add_option( 'recaptcha_enable_comments' , true); // global
 			add_option( 'recaptcha_enable_signup' , true); // global
@@ -90,8 +89,8 @@ class WP_reCaptcha {
 			add_option( 'recaptcha_enable_lostpw' , false); // global
 			add_option( 'recaptcha_disable_for_known_users' , true); // global
 			add_option( 'recaptcha_lockout' , true );
-			$this->_has_api_key = get_option( 'recaptcha_publickey' ) && get_option( 'recaptcha_privatekey' );
 		}
+		$this->_has_api_key = $this->get_option( 'recaptcha_publickey' ) && $this->get_option( 'recaptcha_privatekey' );
 
 		if ( $this->_has_api_key ) {
 
@@ -537,10 +536,10 @@ class WP_reCaptcha {
 			$pub_okay = $this->test_public_key();
 			$prv_okay = $this->test_private_key();
 			
-			$keys_okay = $prv_okay && $pub_okay;
+			$keys_okay = ( $prv_okay && $pub_okay ) ? 'yes' : 'no';
 			
 			//cache the result
-			set_transient( 'recaptcha_keys_okay' , $keys_okay ? 'yes' : 'no' , 15 * MINUTE_IN_SECONDS );
+			set_transient( 'recaptcha_keys_okay' , $keys_okay , 15 * MINUTE_IN_SECONDS );
 		}
 		return $keys_okay == 'yes';
 	}
