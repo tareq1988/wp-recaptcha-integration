@@ -145,8 +145,8 @@ class WP_reCaptcha {
 				add_action( 'login_footer' , array(&$this,'recaptcha_foot') );
 			}
 			if ( $this->get_option('recaptcha_enable_comments') ) {
-				/*
-				add_action('comment_form_after_fields',array($this,'print_recaptcha_html'),10,0);
+				//*
+				add_filter('comment_form_defaults',array($this,'comment_form_defaults'),10);
 				/*/
 
 				// WP 4.2 introduced `comment_form_submit_button` filter 
