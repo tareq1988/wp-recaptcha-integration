@@ -197,10 +197,10 @@ class WP_reCaptcha {
 				add_filter( 'wp_recaptcha_language' , array( &$this,'recaptcha_wplang' ) , 5 );
 
 			add_action( 'recaptcha_print' , array( &$this , 'print_recaptcha_html' ) );
-			add_filter( 'recaptcha_valid' , array( &$this , 'recaptcha_check' ) );
 			add_filter( 'recaptcha_error' , array( &$this , 'wp_error' ) );
 			add_filter( 'recaptcha_html' , array( &$this , 'recaptcha_html' ) );
 		}
+		add_filter( 'recaptcha_valid' , array( &$this , 'recaptcha_check' ) );
 	}
 	
 	/**
