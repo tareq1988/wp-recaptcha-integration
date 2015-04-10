@@ -45,6 +45,9 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 			require_once dirname(__FILE__).'/recaptchalib.php';
 	}
 	
+	/**
+	 * @inheritdoc
+	 */
 	public function get_supported_themes() {
 		return array(
 			'red' => array(
@@ -64,6 +67,9 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 			),
 		);
 	}
+	/**
+	 * @inheritdoc
+	 */
 	public function print_login_head() {
 		?><style type="text/css">
 		#login {
@@ -71,6 +77,9 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 		}
 		</style><?php
 	}
+	/**
+	 * @inheritdoc
+	 */
 	public function print_head() {
 		$recaptcha_theme = WP_reCaptcha::instance()->get_option('recaptcha_theme');
 		if ( $recaptcha_theme == 'custom' ) {
@@ -94,6 +103,9 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 			</script><?php
 		}
 	}
+	/**
+	 * @inheritdoc
+	 */
 	public function print_foot() {
 		if ( WP_reCaptcha::instance()->get_option( 'recaptcha_disable_submit' ) ) { 
 
@@ -111,6 +123,9 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 			</script><?php
 		}
 	}
+	/**
+	 * @inheritdoc
+	 */
 	public function get_html( $attr = array() ) {
 		$public_key = WP_reCaptcha::instance()->get_option( 'recaptcha_publickey' );
 		$recaptcha_theme = WP_reCaptcha::instance()->get_option('recaptcha_theme');
@@ -124,6 +139,9 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 		}
 		return $return;
 	}
+	/**
+	 * @inheritdoc
+	 */
 	public function check() {
 		if ( ! $this->_last_result ) {
 			$private_key = WP_reCaptcha::instance()->get_option( 'recaptcha_privatekey' );

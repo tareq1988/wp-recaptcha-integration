@@ -113,8 +113,14 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 			$lang = $mapping[$lang];
 		return parent::get_language( $lang );
 	}
+	/**
+	 * @inheritdoc
+	 */
 	public function print_head() {}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function print_login_head() {
 		?><style type="text/css">
 		#login {
@@ -124,6 +130,9 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	}
 
 
+	/**
+	 * @inheritdoc
+	 */
 	public function print_foot() {
 		$sitekey = WP_reCaptcha::instance()->get_option('recaptcha_publickey');
 		$language_param = '';
@@ -186,6 +195,9 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	
 	
 	
+	/**
+	 * @inheritdoc
+	 */
 	public function get_html( $attr = array() ) {
 		$public_key = WP_reCaptcha::instance()->get_option( 'recaptcha_publickey' );
 		$theme = WP_reCaptcha::instance()->get_option('recaptcha_theme');
@@ -204,6 +216,9 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		$return .= '<noscript>'.__('Please enable JavaScript to submit this form.','wp-recaptcha-integration').'</noscript>';
 		return $return;
 	}
+	/**
+	 * @inheritdoc
+	 */
 	public function check() {
 		$private_key = WP_reCaptcha::instance()->get_option( 'recaptcha_privatekey' );
 		$user_response = isset( $_REQUEST['g-recaptcha-response'] ) ? $_REQUEST['g-recaptcha-response'] : false;
