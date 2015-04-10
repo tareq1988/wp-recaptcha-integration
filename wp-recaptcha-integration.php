@@ -92,7 +92,7 @@ class WP_reCaptcha {
 		}
 		$this->_has_api_key = $this->get_option( 'recaptcha_publickey' ) && $this->get_option( 'recaptcha_privatekey' );
 
-		if ( $this->_has_api_key ) {
+		if ( $this->has_api_key() ) {
 
 			add_action('init' , array(&$this,'init') , 9 );
 			add_action('plugins_loaded' , array(&$this,'plugins_loaded') );
@@ -109,7 +109,7 @@ class WP_reCaptcha {
 	 *	Hooks into 'plugins_loaded'
 	 */
 	function plugins_loaded() {
-		if ( $this->_has_api_key ) {
+		if ( $this->has_api_key() ) {
 			// NinjaForms support
 			// check if ninja forms is present
 			if ( class_exists('Ninja_Forms') || function_exists('ninja_forms_register_field') )
@@ -410,7 +410,7 @@ class WP_reCaptcha {
 	function deny_login( $user ) {
 		if ( isset( $_POST["log"]) && ! $this->recaptcha_check() ) {
 			$msg = __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration');
-			if ( $this->get_option('recaptcha_lockout') && in_array('administrator',$user->roles) && ! $this->test_keys() ) {
+			if ( $this->get_option('recaptcha_lockout') && in_array( 'administrator' , $user->roles ) && ! $this->test_keys() ) {
 				return $user;
 			} else {
 				return $this->wp_error( $user );
@@ -532,32 +532,18 @@ class WP_reCaptcha {
 	 *	@return bool
 	 */
 	public function test_keys() {
-		if ( ! ( $keys_okay = get_transient( 'recaptcha_keys_okay' ) ) ) {
+// 		if ( ! ( $keys_okay = get_transient( 'recaptcha_keys_okay' ) ) ) {
 			$pub_okay = $this->test_public_key();
 			$prv_okay = $this->test_private_key();
 			
-			$keys_okay = ( $prv_okay && $pub_okay ) ? 'yes' : 'no';
+// 			$keys_okay = ( $prv_okay && $pub_okay ) ? 'yes' : 'no';
 			
 			//cache the result
-			set_transient( 'recaptcha_keys_okay' , $keys_okay , 15 * MINUTE_IN_SECONDS );
-		}
-		return $keys_okay == 'yes';
+// 			set_transient( 'recaptcha_keys_okay' , $keys_okay , 15 * MINUTE_IN_SECONDS );
+// 		}
+		return $prv_okay && $pub_okay;
 	}
 	
-	/**
-	 *	Test private key
-	 *
-	 *	@return bool
-	 */
-	public function test_private_key( $key = null ) {
-		if ( is_null( $key ) )
-			$key = $this->get_option('recaptcha_privatekey');
-		$prv_key_url = sprintf( "http://www.google.com/recaptcha/api/verify?privatekey=%s" , $key );
-		$prv_response = wp_remote_get( $prv_key_url );
-		$prv_rspbody = wp_remote_retrieve_body( $prv_response );
-		return ! is_wp_error( $prv_response ) && ! strpos(wp_remote_retrieve_body( $prv_response ),'invalid-site-private-key');
-	}
-
 	/**
 	 *	Test public key
 	 *
@@ -571,6 +557,20 @@ class WP_reCaptcha {
 		$pub_response = wp_remote_get( $pub_key_url );
 		$pub_response_body = wp_remote_retrieve_body( $pub_response );
 		return ! is_wp_error( $pub_response ) && ! strpos( $pub_response_body ,'Format of site key was invalid');
+	}
+
+	/**
+	 *	Test private key
+	 *
+	 *	@return bool
+	 */
+	public function test_private_key( $key = null ) {
+		if ( is_null( $key ) )
+			$key = $this->get_option('recaptcha_privatekey');
+		$prv_key_url = sprintf( "http://www.google.com/recaptcha/api/verify?privatekey=%s" , $key );
+		$prv_response = wp_remote_get( $prv_key_url );
+		$prv_rspbody = wp_remote_retrieve_body( $prv_response );
+		return ! is_wp_error( $prv_response ) && ! strpos(wp_remote_retrieve_body( $prv_response ),'invalid-site-private-key');
 	}
 	
 

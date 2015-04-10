@@ -242,6 +242,9 @@ I will migrate all the translation stuff there.
 
 == Changelog ==
 
+= 1.1.5 =
+- Fix: Remove automatic key testing in Backend.
+
 = 1.1.4 =
 - Comments: get back to `comment_form_defaults` filter (was introduced in 1.1.3)
 - Fix: Get key option

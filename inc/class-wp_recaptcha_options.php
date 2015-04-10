@@ -26,6 +26,7 @@ class WP_reCaptcha_Options {
 	 */
 	private function __clone() {
 	}
+	
 	/**
 	 *	Prevent from creating more than one instance
 	 */
@@ -162,7 +163,7 @@ class WP_reCaptcha_Options {
 	 *	admin init hook. Setup settings according.
 	 */
 	function admin_init( ) {
-		$has_api_key = WP_reCaptcha::instance()->has_api_key() && WP_reCaptcha::instance()->test_keys();
+		$has_api_key = WP_reCaptcha::instance()->has_api_key();
 		if ( ! $has_api_key && current_user_can( 'manage_options' ) ) {
 			add_action('admin_notices',array( &$this , 'api_key_notice'));
 		}
