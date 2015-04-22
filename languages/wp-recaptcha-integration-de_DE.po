@@ -374,13 +374,13 @@ msgstr "Welche Formulare möchtest Du mit einem Captcha schützen?"
 #: inc/class-wp_recaptcha_options.php:351
 #@ wp-recaptcha-integration
 msgid "Choose a flavor and theme for your Captcha. Please note that with the old style reCaptcha you cannot have more than one captcha per page."
-msgstr "Wähle eine Variante für dein Captcha. Beachte bitte, dass beim alten reCaptcha nur ein Captcha auf einer Seite möglich ist."
+msgstr "Wähle eine Variante für Dein Captcha. Beachte bitte, dass beim alten reCaptcha nur ein Captcha auf einer Seite möglich ist."
 
 #: inc/class-wp_recaptcha_contactform7.php:43
 #: inc/class-wp_recaptcha_ninjaforms.php:47
 #@ wp-recaptcha-integration
 msgid "Google reCaptcha does not validate."
-msgstr "Google reCaptcha konnte nicht bestätigt werden"
+msgstr "Google reCaptcha konnte nicht bestätigt werden."
 
 #: inc/class-wp_recaptcha_contactform7.php:106
 #@ wp-recaptcha-integration
