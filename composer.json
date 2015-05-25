@@ -1,0 +1,7 @@
+{
+    "name": "mcguffin/wp-recaptcha-integration",
+    "description": "WordPress reCaptcha integration supporting Ninja Forms and Contact Form 7",
+    "require": {
+        "php": ">=5.2.4"
+    }
+}
