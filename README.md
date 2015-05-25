@@ -17,6 +17,8 @@ Limitations
 - You can't have more than one old style reCaptcha on a page. This is a limitiation of 
   reCaptcha itself. If that's an issue for you, you should use the no Captcha Form.
 
+- NoCaptcha only works with JavaScript enabled.
+
 - On a Contact Form 7 when the reCaptcha is disabled (e.g. for logged in users) the field
   label will be still visible. This is due to CF7 Shortcode architecture, and can't be fixed.
 

@@ -62,7 +62,7 @@ running under his/her own domain name.
 
 - In **WooCommerce** the reset password form can not be protected by a captcha. Woocommerce does 
   not fire any action in the lost password form, so there is no way for the plugin to hook in.
-  This will propably be fixed with WooCommerce 2.3.8.
+  Take a look at [this thread](https://wordpress.org/support/topic/captcha-not-showing-on-lost-password-page?replies=7) for a workaround.
 
 - Due to a lack of filters there is no (and as far as one can see, there will never be) 
   support for the **MailPoet** subscription form.
