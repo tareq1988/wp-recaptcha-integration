@@ -240,7 +240,7 @@ I will migrate all the translation stuff there.
 
 == Screenshots ==
 
-1. Plugin Settings
+1. Plugin Settings (v 1.1.4)
 2. Ninja Form Integration
 3. Contact Form 7 Integration
 
@@ -248,7 +248,11 @@ I will migrate all the translation stuff there.
 == Changelog ==
 
 = 1.1.5 =
+- Feature: Noscript fallback option for noCaptcha
+- Feature: Option for WP 4.2 compatible hook on comment form.
 - Fix: Remove automatic key testing in Backend.
+- L10n: Improved de_DE ([thx @quassy](https://github.com/quassy))
+- L10n: Updated pt_BR ([thx again man](http://www.viniciusferraz.com))
 
 = 1.1.4 =
 - Comments: get back to `comment_form_defaults` filter (was introduced in 1.1.3)
