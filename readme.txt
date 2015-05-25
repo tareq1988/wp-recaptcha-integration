@@ -137,6 +137,11 @@ You will either need one of the following:
 That's too bad...
 
 
+= I can't get it to work with my custom comments form. Will you fix for me? =
+
+No. Have a look at the project wiki
+
+
 = Privacy: Will the captcha send the visitors IP address to google? =
 
 Yes and no. The captcha verification process, comming into effect after the user has solved 

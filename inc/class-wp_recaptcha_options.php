@@ -63,6 +63,7 @@ class WP_reCaptcha_Options {
 				'recaptcha_enable_wc_order' => 'intval',
 				'recaptcha_disable_for_known_users' => 'intval',
 				'recaptcha_noscript' => 'intval',
+				'recaptcha_comment_use_42_filter' => 'intval',
 			);
 			if ( array_intersect( array_keys( $_POST ) , array_keys( $opts ) ) )
 				check_admin_referer( 'recaptcha-network-settings' );
@@ -176,7 +177,9 @@ class WP_reCaptcha_Options {
 			add_settings_section( 'recaptcha_styling' ,  __( 'Style' , 'wp-recaptcha-integration' ), array( &$this , 'explain_styling' ), 'recaptcha');
 		}
 		add_settings_section( 'recaptcha_apikey' , __( 'Connect' , 'wp-recaptcha-integration' ), array( &$this , 'explain_apikey' ), 'recaptcha');
-		
+		if ( ! $this->enter_api_key ) {
+			add_settings_section( 'recaptcha_advanced' ,  __( 'Advanced' , 'wp-recaptcha-integration' ), array( &$this , 'explain_advanced' ), 'recaptcha');
+		}
 		if ( $this->enter_api_key ) {
 			// no API Key. Let the user enter it.
 			register_setting( 'recaptcha_options', 'recaptcha_publickey' , 'trim' );
@@ -200,6 +203,7 @@ class WP_reCaptcha_Options {
 				register_setting( 'recaptcha_options', 'recaptcha_flavor' , array( &$this , 'sanitize_flavor' ) );
 				register_setting( 'recaptcha_options', 'recaptcha_theme'  , array( &$this , 'sanitize_theme' ) );
 				register_setting( 'recaptcha_options', 'recaptcha_disable_submit' , 'intval');
+
 				register_setting( 'recaptcha_options', 'recaptcha_noscript' , 'intval');
 				
 
@@ -228,7 +232,7 @@ class WP_reCaptcha_Options {
 					array('name'=>'recaptcha_disable_submit','label'=>__( 'Disable Form Submit Button until no-captcha is entered.' ,'wp-recaptcha-integration' ) ) 
 				);
 				add_settings_field('recaptcha_noscript', __('Noscript Fallback','wp-recaptcha-integration'), 
-					array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_styling' ,
+					array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_advanced' ,
 					array( 
 						'name'=>'recaptcha_noscript',
 						'label'=>__( 'Provide a fallback for non javascript capable browsers.','wp-recaptcha-integration' ),
@@ -236,6 +240,20 @@ class WP_reCaptcha_Options {
 						'class' => 'flavor-grecaptcha',
 					) 
 				);
+
+				global $wp_version;
+				if ( version_compare( $wp_version , '4.2' ) >= 0 ) {
+					register_setting( 'recaptcha_options', 'recaptcha_comment_use_42_filter' , 'intval');
+					add_settings_field('recaptcha_comment_use_42_filter', __('Comment Form rendering','wp-recaptcha-integration'), 
+						array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_advanced' ,
+						array( 
+							'name'=>'recaptcha_comment_use_42_filter',
+							'label'=>__( 'My Comment Form is WordPress 4.2 compatible.','wp-recaptcha-integration' ),
+							'description' => __( 'Enable this when your comment form uses the <code>comment_form_submit_button</code> filter. (Or just try if it works.)','wp-recaptcha-integration' ),
+							'class' => 'flavor-grecaptcha',
+						) 
+					);
+				}
 			}
 			
 			if ( ! WP_reCaptcha::is_network_activated() || is_network_admin() ) {
@@ -352,6 +370,13 @@ class WP_reCaptcha_Options {
 				_e( 'Select which forms you want to protect with a captcha.' , 'wp-recaptcha-integration' );
 			?></p><?php
 		?></div><?php
+	}
+
+	/**
+	 *	Intro text for the Protection setting
+	 */
+	public function explain_advanced() {
+		// nothing to say here, huh?
 	}
 	/**
 	 *	Intro text for the Styling setting

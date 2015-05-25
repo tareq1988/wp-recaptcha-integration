@@ -69,6 +69,7 @@ class WP_reCaptcha {
 		add_option('recaptcha_theme','light'); // local
 		add_option('recaptcha_disable_submit',false); // local
 		add_option('recaptcha_noscript',false); // local
+		add_option('recaptcha_comment_use_42_filter',false); // local
 		add_option('recaptcha_publickey',''); // 1st global -> then local
 		add_option('recaptcha_privatekey',''); // 1st global -> then local
 		add_option('recaptcha_language',''); // 1st global -> then local
@@ -146,14 +147,13 @@ class WP_reCaptcha {
 				add_action( 'login_footer' , array(&$this,'recaptcha_foot') );
 			}
 			if ( $this->get_option('recaptcha_enable_comments') ) {
-				//*
+				/*
 				add_filter('comment_form_defaults',array($this,'comment_form_defaults'),10);
 				/*/
-
 				// WP 4.2 introduced `comment_form_submit_button` filter 
 				// which is much more likely to work
 				global $wp_version;
-				if ( version_compare( $wp_version , '4.2' ) >= 0 )
+				if ( version_compare( $wp_version , '4.2' ) >= 0 && $this->get_option('recaptcha_comment_use_42_filter') )
 					add_filter('comment_form_submit_button',array($this,'prepend_recaptcha_html'),10,2);
 				else 
 					add_filter('comment_form_defaults',array($this,'comment_form_defaults'),10);
@@ -611,6 +611,8 @@ class WP_reCaptcha {
 				delete_option( 'recaptcha_flavor' );
 				delete_option( 'recaptcha_theme' );
 				delete_option( 'recaptcha_language' );
+				delete_option( 'recaptcha_comment_use_42_filter' );
+				delete_option( 'recaptcha_noscript' );
 				restore_current_blog();
 			}
 		} else {
