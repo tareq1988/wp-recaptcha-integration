@@ -28,7 +28,7 @@ msgstr ""
 #: wp-recaptcha-integration.php:484
 #@ wp-recaptcha-integration
 msgid "<strong>Error:</strong> the Captcha didn’t verify."
-msgstr "<strong>Fehler:</strong> Sicherheitstest nicht bestanden"
+msgstr "<strong>Fehler:</strong> Sicherheitstest nicht bestanden."
 
 #: inc/class-wp_recaptcha_recaptcha.php:152
 #@ wp-recaptcha-integration
@@ -38,7 +38,7 @@ msgstr "Falsch. Bitte noch einmal versuchen"
 #: inc/class-wp_recaptcha_recaptcha.php:154
 #@ wp-recaptcha-integration
 msgid "Enter the words above:"
-msgstr "Geben Sie die Wörten oben ein."
+msgstr "Geben Sie die Wörten oben ein:"
 
 #: inc/class-wp_recaptcha_recaptcha.php:155
 #@ wp-recaptcha-integration
@@ -48,17 +48,17 @@ msgstr "Geben Sie die Zahlen ein, die Sie hören:"
 #: inc/class-wp_recaptcha_recaptcha.php:159
 #@ wp-recaptcha-integration
 msgid "Get another CAPTCHA"
-msgstr "Anderes CAPTCHA."
+msgstr "Anderes CAPTCHA"
 
 #: inc/class-wp_recaptcha_recaptcha.php:160
 #@ wp-recaptcha-integration
 msgid "Get an audio CAPTCHA"
-msgstr "Audio CAPTCHA"
+msgstr "Audio-CAPTCHA"
 
 #: inc/class-wp_recaptcha_recaptcha.php:161
 #@ wp-recaptcha-integration
 msgid "Get an image CAPTCHA"
-msgstr "Bild CAPTCHA"
+msgstr "Bild-CAPTCHA"
 
 #: inc/class-wp_recaptcha_contactform7.php:89
 #: inc/class-wp_recaptcha_ninjaforms.php:53
@@ -93,7 +93,7 @@ msgstr "Sicherheitstest nicht bestanden"
 #, php-format
 #@ wp-recaptcha-integration
 msgid "<strong>reCaptcha needs your attention:</strong> To make it work You need to enter an api key. <br />You can do so at the <a href=\"%s\">reCaptcha settings page</a>."
-msgstr "<strong>reCaptcha braucht Deine Aufmerksamkeit:</strong> Damit das Plugin funktioniert, mußt Du einen API-Schlüssel eintragen. <br />Zu den <a href=\\\"%s\\\">reCaptcha Einstellungen</a>."
+msgstr "<strong>reCaptcha braucht Deine Aufmerksamkeit:</strong> Damit das Plugin funktioniert, musst Du einen API-Schlüssel eintragen. <br />Zu den <a href=\\\"%s\\\">reCaptcha-Einstellungen</a>."
 
 #: inc/class-wp_recaptcha_options.php:183
 #@ wp-recaptcha-integration
@@ -108,12 +108,12 @@ msgstr "Geheimer Schlüssel"
 #: inc/class-wp_recaptcha_options.php:204
 #@ wp-recaptcha-integration
 msgid "Flavor"
-msgstr "Geschmacksrichtung"
+msgstr "Variante"
 
 #: inc/class-wp_recaptcha_options.php:215
 #@ wp-recaptcha-integration
 msgid "Old style reCAPTCHA where you type some cryptic text"
-msgstr "Klassisch, man muß kryptische Wörter eingeben"
+msgstr "Klassisch, man muss kryptische Wörter eingeben"
 
 #: inc/class-wp_recaptcha_contactform7.php:110
 #: inc/class-wp_recaptcha_ninjaforms.php:89
@@ -131,19 +131,19 @@ msgstr "Abschalten bei bekannten Benutzern"
 #: inc/class-wp_recaptcha_options.php:279
 #@ wp-recaptcha-integration
 msgid "Disable reCaptcha verification for logged in users."
-msgstr "Die reCaptcha-Verifizierung für eingeloggte Benutzer deaktivieren"
+msgstr "Die reCaptcha-Verifizierung für eingeloggte Benutzer deaktivieren."
 
 #: inc/class-wp_recaptcha_options.php:292
 #@ wp-recaptcha-integration
 msgid "Please configure the public and private key. <a href=\"http://www.google.com/recaptcha/whyrecaptcha\">What are you trying to tell me?</a>"
-msgstr "Bitte konfigurieren Sie den privaten und den Öffentlichen Schlüssel (private &amp; public key). <a href=\"http://www.google.com/recaptcha/whyrecaptcha\">Was willst Du mir damit zu sagen?</a>"
+msgstr "Bitte konfigurieren Sie den privaten und den öffentlichen Schlüssel (private &amp; public key). <a href=\"http://www.google.com/recaptcha/whyrecaptcha\">Was willst Du mir damit sagen?</a>"
 
 #: inc/class-wp_recaptcha_options.php:305
 #, php-format
 #@ wp-recaptcha-integration
 msgid "Please register your blog through the <a href=\"%s\">Google reCAPTCHA admin page</a> and enter the public and private key in the fields below. <a href=\"%s\">What is this all about?</a>"
 msgstr ""
-"Bitte registriere Deinen Blog auf der <a href=\"%s\">Google reCAPTCHA Admin Seite</a> \n"
+"Bitte registriere Deinen Blog auf der <a href=\"%s\">Adminseite für Google reCAPTCHA</a> \n"
 "und trage unten den öffentlichen und privaten Schüssel ein. <a \n"
 "href=\"%s\">Was erzählst Du mir da?</a>"
 
@@ -160,7 +160,7 @@ msgstr "Neuer API-Schlüssel"
 #: inc/class-wp_recaptcha_options.php:420
 #@ default
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: inc/class-wp_recaptcha_nocaptcha.php:87
 #@ wp-recaptcha-integration
@@ -190,7 +190,7 @@ msgstr "Schwarzes Glas"
 #: inc/class-wp_recaptcha_recaptcha.php:60
 #@ wp-recaptcha-integration
 msgid "Clean"
-msgstr "Clean"
+msgstr "Schlicht"
 
 #: inc/class-wp_recaptcha_recaptcha.php:63
 #@ wp-recaptcha-integration
@@ -200,7 +200,7 @@ msgstr "Eigenes"
 #: inc/class-wp_recaptcha_options.php:581
 #@ wp-recaptcha-integration
 msgid "Unstyled HTML to apply your own Stylesheets."
-msgstr "Pures HTML für Deine eigenen Stylessheets"
+msgstr "Pures HTML für Deine eigenen Stylessheets."
 
 #: inc/class-wp_recaptcha_options.php:654
 #: inc/class-wp_recaptcha_options.php:679
@@ -211,18 +211,18 @@ msgstr "ReCaptcha"
 #: inc/class-wp_recaptcha_options.php:677
 #@ default
 msgid "Settings"
-msgstr ""
+msgstr "Einstellungen"
 
 #: inc/class-wp_recaptcha_options.php:211
 #@ wp-recaptcha-integration
 msgid "No Captcha where you just click a button"
-msgstr "No Captcha. Einfach Checkbox anklicken."
+msgstr "No Captcha. Einfach Checkbox anklicken"
 
 #: inc/class-wp_recaptcha_options.php:94
 #: inc/class-wp_recaptcha_options.php:106
 #@ wp-recaptcha-integration
 msgid "reCaptcha Settings"
-msgstr "reCaptcha Einstellungen"
+msgstr "reCaptcha-Einstellungen"
 
 #: inc/class-wp_recaptcha_options.php:95
 #@ wp-recaptcha-integration
@@ -232,7 +232,7 @@ msgstr "reCaptcha"
 #: inc/class-wp_recaptcha_options.php:329
 #@ wp-recaptcha-integration
 msgid "Test API Key"
-msgstr "API Schlüssel testen"
+msgstr "API-Schlüssel testen"
 
 #: inc/class-wp_recaptcha_options.php:383
 #@ wp-recaptcha-integration
@@ -247,7 +247,7 @@ msgstr "Der geheime Schlüssel fehlt."
 #: inc/class-wp_recaptcha_options.php:397
 #@ wp-recaptcha-integration
 msgid "The secret Key is invalid. You better check your domain configuration and enter it again."
-msgstr "Der geheime Schlüssel ist ungültig. Am besten prüfst Du Deine Domain.-Konfiguration und trägst ihn nochmal ein."
+msgstr "Der geheime Schlüssel ist ungültig. Am besten prüfst Du Deine Domain-Konfiguration und trägst ihn nochmal ein."
 
 #: inc/class-wp_recaptcha_options.php:399
 #@ wp-recaptcha-integration
@@ -257,7 +257,7 @@ msgstr "Ungültige Antwort"
 #: inc/class-wp_recaptcha_options.php:408
 #@ wp-recaptcha-integration
 msgid "Works! All good!"
-msgstr "Läuft! Sehr gut."
+msgstr "Läuft! Sehr gut!"
 
 #: inc/class-wp_recaptcha_options.php:224
 #@ wp-recaptcha-integration
@@ -288,7 +288,7 @@ msgstr "Standardwert"
 #: inc/class-wp_recaptcha_options.php:220
 #@ default
 msgid "Language Settings"
-msgstr ""
+msgstr "Sprache einstellen"
 
 #: inc/class-wp_recaptcha_options.php:541
 #@ wp-recaptcha-integration
@@ -298,12 +298,12 @@ msgstr "Automatisch"
 #: inc/class-wp_recaptcha_options.php:542
 #@ default
 msgid "Site Language"
-msgstr ""
+msgstr "Sprache der Seite"
 
 #: inc/class-wp_recaptcha_options.php:543
 #@ default
 msgid "Other"
-msgstr ""
+msgstr "Andere"
 
 #: inc/class-wp_recaptcha_options.php:173
 #: inc/class-wp_recaptcha_options.php:177
@@ -359,12 +359,12 @@ msgstr "Aussperren verhindern"
 #: inc/class-wp_recaptcha_options.php:285
 #@ wp-recaptcha-integration
 msgid "Allow administrator to log in if API keys do not work."
-msgstr "Administrator Login erlauben, wenn die API-Schlüssel nicht funktionieren"
+msgstr "Administrator-Login erlauben, wenn die API-Schlüssel nicht funktionieren."
 
 #: inc/class-wp_recaptcha_options.php:286
 #@ wp-recaptcha-integration
 msgid "When the captcha verification fails, and the private or public API key does not work the plugin will let you in anyway. Please note that with this option checked plus a broken keypair your site will be open to brute force attacks, that try to guess an administrator password."
-msgstr "Wenn der Captcha-Test fehlschlägt und der private oder öffentliche Schlüssel nicht funktionieren, läßt Dich das Plugin trotzdem herein. Mit einem kaputten Schlüsselpaar ist Deine Seite offen für Brute-Force-Angriffe."
+msgstr "Wenn der Captcha-Test fehlschlägt und der private oder öffentliche Schlüssel nicht funktionieren, lässt Dich das Plugin trotzdem herein. Mit einem kaputten Schlüsselpaar ist Deine Seite offen für Brute-Force-Angriffe."
 
 #: inc/class-wp_recaptcha_options.php:341
 #@ wp-recaptcha-integration
@@ -374,16 +374,16 @@ msgstr "Welche Formulare möchtest Du mit einem Captcha schützen?"
 #: inc/class-wp_recaptcha_options.php:351
 #@ wp-recaptcha-integration
 msgid "Choose a flavor and theme for your Captcha. Please note that with the old style reCaptcha you cannot have more than one captcha per page."
-msgstr "Wähle eine Geschmachsrichtung. Zu beachten ist, dass beim alten reCaptcha nur ein Captcha auf einer Seite möglich ist."
+msgstr "Wähle eine Variante für Dein Captcha. Beachte bitte, dass beim alten reCaptcha nur ein Captcha auf einer Seite möglich ist."
 
 #: inc/class-wp_recaptcha_contactform7.php:43
 #: inc/class-wp_recaptcha_ninjaforms.php:47
 #@ wp-recaptcha-integration
 msgid "Google reCaptcha does not validate."
-msgstr ""
+msgstr "Google reCaptcha konnte nicht bestätigt werden."
 
 #: inc/class-wp_recaptcha_contactform7.php:106
 #@ wp-recaptcha-integration
 msgid "Error message"
-msgstr ""
+msgstr "Fehlermeldung"
 
