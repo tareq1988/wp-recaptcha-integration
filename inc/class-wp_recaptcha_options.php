@@ -219,7 +219,7 @@ class WP_reCaptcha_Options {
 						),
 					 ) );
 				
-				add_settings_field('recaptcha_language', __( 'Language Settings','wp-recaptcha-integration' ), array(&$this,'select_language'), 'recaptcha', 'recaptcha_styling');
+				add_settings_field('recaptcha_language', __( 'Language Settings' ), array(&$this,'select_language'), 'recaptcha', 'recaptcha_styling');
 				
 				add_settings_field('recaptcha_theme', __('Theme','wp-recaptcha-integration'), array(&$this,'select_theme'), 'recaptcha', 'recaptcha_styling');
 
