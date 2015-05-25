@@ -68,6 +68,7 @@ class WP_reCaptcha {
 		add_option('recaptcha_flavor','grecaptcha'); // local
 		add_option('recaptcha_theme','light'); // local
 		add_option('recaptcha_disable_submit',false); // local
+		add_option('recaptcha_noscript',false); // local
 		add_option('recaptcha_publickey',''); // 1st global -> then local
 		add_option('recaptcha_privatekey',''); // 1st global -> then local
 		add_option('recaptcha_language',''); // 1st global -> then local
