@@ -73,7 +73,7 @@ class WP_reCaptcha_NinjaForms {
 			'limit' => 1,
 			'edit_options' => array(
 			),
-			'req' => true,
+			'req' => false,
 		);
 		if ( 'grecaptcha' === WP_reCaptcha::instance()->get_option('recaptcha_flavor') ) {
 			$themes = WP_reCaptcha::instance()->captcha_instance()->get_supported_themes();
