@@ -247,6 +247,9 @@ I will migrate all the translation stuff there.
 
 == Changelog ==
 
+= 1.1.6 =
+- Fix: Skip Ninja Forms required check
+
 = 1.1.5 =
 - Feature: Noscript fallback option for noCaptcha
 - Feature: Option for WP 4.2 compatible hook on comment form.
