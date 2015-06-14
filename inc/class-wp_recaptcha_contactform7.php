@@ -92,54 +92,117 @@ class WP_reCaptcha_ContactForm7 {
 
 
 
-	function recaptcha_settings_callback( $contact_form ) {
+	function recaptcha_settings_callback( $contact_form , $args = '' ) {
+		$args = wp_parse_args( $args, array() );
 		$type = 'recaptcha';
-	
-		?>
-		<div id="wpcf7-tg-pane-<?php echo $type; ?>" class="hidden">
-			<form action="">
-				<table>
-					<tr><td><input type="checkbox" checked="checked" disabled="disabled" name="required" onclick="return false" />&nbsp;<?php echo esc_html( __( 'Required field?', 'contact-form-7' ) ); ?></td></tr>
-					<tr><td>
-						<?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?><br />
-						<input type="text" name="name" class="tg-name oneline" />
-						<?php echo esc_html( __( 'Error message', 'wp-recaptcha-integration' ) ); ?><br />
-					</td><td><?php
-						if ( 'grecaptcha' === WP_reCaptcha::instance()->get_option('recaptcha_flavor') ) {
-							$themes = WP_reCaptcha::instance()->captcha_instance()->get_supported_themes();
-							echo esc_html( __( 'Theme', 'contact-form-7' ) ); ?><br /><?php
-							?><select name="recaptcha-theme-ui"><?php
-								?><option value=""><?php _e('Use default','wp-recaptcha-integration') ?></option><?php
-							foreach ( $themes as $theme_name => $theme ) {
-								?><option value="<?php echo $theme_name; ?>"><?php echo $theme['label'] ?></option><?php
-							}
-							?></select><?php
-							// cf7 does only allow literal <input> 
-							?><input type="hidden" name="theme" class="idvalue option" value="" /><?php
-							?><script type="text/javascript">
-(function($){
-	$(document).on('change','[name="recaptcha-theme-ui"]',function(){
-		$(this).next('[name="theme"]').val( $(this).val() ).trigger('change');
-	});
-	$(document).on('change','[name="recaptcha-message-ui"]',function(){
-		$(this).next('[name="message"]').val( $(this).val() ).trigger('change');
-	});
+		if ( defined( 'WPCF7_VERSION') && version_compare( WPCF7_VERSION , '4.2' ) >= 0 ) {
+			?>
+			<div class="control-box">
+				<fieldset>
+					<legend><?php _e( 'reCAPTCHA', 'wp-recaptcha-integration' ) ?></legend>
 
-})(jQuery)
-							</script><?php
-						}
-					?></td></tr>
-				</table>
-				<div class="tg-tag">
-				<?php echo esc_html( __( "Copy this code and paste it into the form left.", 'contact-form-7' ) ); ?><br />
-				<input type="text" name="<?php echo $type; ?>" class="tag wp-ui-text-highlight code" readonly="readonly" onfocus="this.select()" />
+					<table class="form-table">
+						<tbody>
+							
+							<tr>
+								<th scope="row"><?php echo esc_html( __( 'Field type', 'contact-form-7' ) ); ?></th>
+								<td>
+									<fieldset>
+										<legend class="screen-reader-text"><?php echo esc_html( __( 'Field type', 'contact-form-7' ) ); ?></legend>
+										<label><input type="checkbox" checked="checked" disabled="disabled" name="required" onclick="return false" /> <?php echo esc_html( __( 'Required field', 'contact-form-7' ) ); ?></label>
+									</fieldset>
+								</td>
+							</tr>
+							
+							<tr>
+								<th scope="row"><?php esc_html_e( __( 'Name', 'contact-form-7' ) ); ?></th>
+								<td>
+									<fieldset>
+										<legend class="screen-reader-text"><?php esc_html_e( __( 'Name', 'contact-form-7' ) ); ?></legend>
+										<label><input type="text" name="name" class="tg-name oneline" /></label>
+									</fieldset>
+								</td>
+							</tr><?php
+							
+							if ( 'grecaptcha' === WP_reCaptcha::instance()->get_option('recaptcha_flavor') ) {
+								?><tr>
+									<th scope="row"><?php esc_html_e( __( 'Theme', 'wp-recaptcha-integration' ) ); ?></th>
+									<td>
+										<fieldset>
+											<legend class="screen-reader-text"><?php esc_html_e( __( 'Theme', 'wp-recaptcha-integration' ) ); ?></legend>
+											<label><?php
+												$this->_theme_select();
+											?></label>
+										</fieldset>
+									</td>
+								</tr><?php
+							}
+						?></tbody>
+					</table>
+				</fieldset>
+			</div>
+			<div class="insert-box">
+				<input type="text" name="<?php echo $type; ?>" class="tag code" readonly="readonly" onfocus="this.select()" />
+
+				<div class="submitbox">
+				<input type="button" class="button button-primary insert-tag" value="<?php echo esc_attr( __( 'Insert Tag', 'contact-form-7' ) ); ?>" />
 				</div>
-			</form>
-		</div>
-		<?php
+
+				<br class="clear" />
+
+				<p class="description recaptcha-tag">
+					<label for="<?php echo esc_attr( $args['content'] . '-recaptchatag' ); ?>">
+						<?php /* esc_html_e( __( "Foobar", 'contact-form-7' ), '<strong><span class="recaptcha-tag"></span></strong>' );*/ ?>
+						<input type="text" class="recaptcha-tag code hidden" readonly="readonly" id="<?php echo esc_attr( $args['content'] . '-recaptchatag' ); ?>" />
+					</label>
+				</p>
+			</div>
+			<?php
+		} else {
+			?>
+			<div id="wpcf7-tg-pane-<?php echo $type; ?>" class="_hidden">
+				<form action="">
+					<table>
+						<tr><td><input type="checkbox" checked="checked" disabled="disabled" name="required" onclick="return false" />&nbsp;<?php echo esc_html( __( 'Required field?', 'contact-form-7' ) ); ?></td></tr>
+						<tr><td>
+							<?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?><br />
+							<input type="text" name="name" class="tg-name oneline" />
+						</td><td><?php
+							if ( 'grecaptcha' === WP_reCaptcha::instance()->get_option('recaptcha_flavor') ) {
+							
+								esc_html_e( __( 'Theme', 'wp-recaptcha-integration' ) ); ?><br /><?php
+								$this->_theme_select();
+								// cf7 does only allow literal <input> 
+							}
+						?></td></tr>
+					</table>
+					<div class="tg-tag">
+					<?php echo esc_html( __( "Copy this code and paste it into the form left.", 'contact-form-7' ) ); ?><br />
+					<input type="text" name="<?php echo $type; ?>" class="tag wp-ui-text-highlight code" readonly="readonly" onfocus="this.select()" />
+					</div>
+				</form>
+			</div>
+			<?php
+		}
+		?><script type="text/javascript">
+	(function($){
+		$(document).on('change','[name="recaptcha-theme-ui"]',function(){
+			$(this).next('[name="theme"]').val( $(this).val() ).trigger('change');
+		});
+	})(jQuery)
+		</script><?php
 	}
 
-
+	private function _theme_select() {
+		$themes = WP_reCaptcha::instance()->captcha_instance()->get_supported_themes();
+		?><select name="recaptcha-theme-ui"><?php
+			?><option value=""><?php _e('Use default','wp-recaptcha-integration') ?></option><?php
+		foreach ( $themes as $theme_name => $theme ) {
+			?><option value="<?php echo $theme_name; ?>"><?php echo $theme['label'] ?></option><?php
+		}
+		?></select><?php
+		?><input type="hidden" name="theme" class="idvalue option" value="" /><?php
+	}
 
 	function recaptcha_validation_filter( $result, $tag ) {
 		if ( ! WP_reCaptcha::instance()->is_required() )
