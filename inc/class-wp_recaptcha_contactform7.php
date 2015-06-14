@@ -207,7 +207,7 @@ class WP_reCaptcha_ContactForm7 {
 	function recaptcha_validation_filter( $result, $tag ) {
 		if ( ! WP_reCaptcha::instance()->is_required() )
 			return $result;
-	
+
 		$tag = new WPCF7_Shortcode( $tag );
 		$name = $tag->name;
 
@@ -222,6 +222,7 @@ class WP_reCaptcha_ContactForm7 {
 				$result['valid'] = false;
 				$result['reason'][$name] = $message;
 			}
+			// var_dump(WP_reCaptcha::instance()->captcha_instance()->get_last_result());
 		}
 		return $result;
 	}

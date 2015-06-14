@@ -254,7 +254,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 					$response_data = wp_remote_retrieve_body( $response );
 					$this->_last_result = json_decode($response_data);
 				} else {
-					$this->_last_result = (object) array( 'success' => false );
+					$this->_last_result = (object) array( 'success' => false , 'wp_error' => $response );
 				}
 			}
 			do_action( 'wp_recaptcha_checked' , $this->_last_result->success );
