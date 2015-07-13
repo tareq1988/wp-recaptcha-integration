@@ -41,7 +41,7 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 	 *	Prevent from creating more than one instance
 	 */
 	private function __construct() {
-		if ( ! defined( 'RECAPTCHA_API_SERVER' ) || ! function_exists( 'recaptcha_get_html' ) )
+		if ( ! function_exists( 'recaptcha_get_html' ) )
 			require_once dirname(__FILE__).'/recaptchalib.php';
 	}
 	
