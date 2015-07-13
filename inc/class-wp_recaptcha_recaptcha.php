@@ -197,5 +197,4 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 }
 
 
-WP_reCaptcha_Options::instance();
 
