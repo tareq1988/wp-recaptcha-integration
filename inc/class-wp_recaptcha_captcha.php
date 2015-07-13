@@ -92,6 +92,3 @@ abstract class WP_reCaptcha_Captcha {
 
 }
 
-
-WP_reCaptcha_Options::instance();
-
