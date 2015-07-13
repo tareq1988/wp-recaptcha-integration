@@ -265,7 +265,3 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 
 	
 }
-
-
-WP_reCaptcha_Options::instance();
-
