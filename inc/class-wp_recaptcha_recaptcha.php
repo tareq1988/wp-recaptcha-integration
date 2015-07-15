@@ -17,11 +17,17 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 		'es' =>	'Spanish',
 		'tr' =>	'Turkish',
 	);
+	
 
 	/**
 	 *	Holding the singleton instance
 	 */
 	private static $_instance = null;
+
+	/**
+	 *	Last error message.
+	 */
+	private $last_error = null;
 
 	/**
 	 *	@return WP_reCaptcha_Options The options manager instance
