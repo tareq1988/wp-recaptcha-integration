@@ -107,6 +107,11 @@ class WP_reCaptcha_ReCaptcha extends WP_reCaptcha_Captcha {
 				
 			};
 			</script><?php
+			?><style type="text/css">
+			.recaptchatable {
+				table-layout:auto;
+			}
+			</style><?php
 		}
 	}
 	/**
