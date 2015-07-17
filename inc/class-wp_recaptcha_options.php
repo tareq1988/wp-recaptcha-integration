@@ -267,6 +267,11 @@ class WP_reCaptcha_Options {
 				if ( function_exists('WC') )
 					register_setting( 'recaptcha_options', 'recaptcha_enable_wc_order' , 'intval');
 
+				if ( class_exists( 'Awesome_Support' ) ) {
+					register_setting( 'recaptcha_options', 'recaptcha_enable_as_login' , 'intval');
+					register_setting( 'recaptcha_options', 'recaptcha_enable_as_registration' , 'intval');
+				}
+
 				register_setting( 'recaptcha_options', 'recaptcha_disable_for_known_users' , 'intval');
 				
 				$protect_settings = array();
@@ -296,6 +301,23 @@ class WP_reCaptcha_Options {
 						'name'=>'recaptcha_enable_wc_order',
 						'label'=>__( 'woocommerce Checkout','wp-recaptcha-integration' ),
 						'class'	=> 'flavor-grecaptcha',
+					);
+				}
+
+				/**
+				 * Awesome Support protection options
+				 */
+				if ( class_exists( 'Awesome_Support' ) ) {
+					$protect_settings[] = array(
+						'name'=>'recaptcha_enable_as_login',
+						'label'=>__( 'Awesome Support Login','wp-recaptcha-integration' ),
+						'class'	=> '',
+					);
+
+					$protect_settings[] = array(
+						'name'=>'recaptcha_enable_as_registration',
+						'label'=>__( 'Awesome Support Registration','wp-recaptcha-integration' ),
+						'class'	=> '',
 					);
 				}
 				add_settings_field('recaptcha_protection', __('Forms to protect','wp-recaptcha-integration'), 
