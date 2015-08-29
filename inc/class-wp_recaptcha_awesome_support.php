@@ -43,7 +43,7 @@ class WP_reCaptcha_Awesome_Support {
 
 		$wp_recaptcha        = WP_reCaptcha::instance();
 		$require_recaptcha   = $wp_recaptcha->is_required();
-		$enable_login        = $wp_recaptcha->get_option( 'recaptcha_enable_as_login' );
+		$enable_login        = $wp_recaptcha->get_option( 'recaptcha_enable_login' );
 		$enable_registration = $wp_recaptcha->get_option( 'recaptcha_enable_as_registration' );
 
 		if ( $require_recaptcha ) {
