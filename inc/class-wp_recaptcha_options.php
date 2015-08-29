@@ -264,9 +264,12 @@ class WP_reCaptcha_Options {
 				register_setting( 'recaptcha_options', 'recaptcha_enable_lostpw' , 'intval');
 				register_setting( 'recaptcha_options', 'recaptcha_lockout' , 'intval');
 
-				if ( function_exists('WC') )
+				if ( function_exists('WC') ) {
 					register_setting( 'recaptcha_options', 'recaptcha_enable_wc_order' , 'intval');
-
+				}
+				if ( class_exists( 'Awesome_Support' ) ) {
+					register_setting( 'recaptcha_options', 'recaptcha_enable_as_registration' , 'intval');
+				}
 				if ( class_exists( 'bbPress' ) ) {
 					register_setting( 'recaptcha_options', 'recaptcha_enable_bbp_topic' , 'intval');
 					register_setting( 'recaptcha_options', 'recaptcha_enable_bbp_reply' , 'intval');
@@ -302,6 +305,15 @@ class WP_reCaptcha_Options {
 						'name'=>'recaptcha_enable_wc_order',
 						'label'=>__( 'woocommerce Checkout','wp-recaptcha-integration' ),
 						'class'	=> 'flavor-grecaptcha',
+					);
+				}
+
+				if ( class_exists( 'Awesome_Support' ) ) {
+
+					$protect_settings[] = array(
+						'name'=>'recaptcha_enable_as_registration',
+						'label'=>__( 'Awesome Support Registration','wp-recaptcha-integration' ),
+						'class'	=> '',
 					);
 				}
 

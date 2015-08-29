@@ -127,6 +127,9 @@ class WP_reCaptcha {
 			if ( function_exists('WC') || class_exists('WooCommerce') )
 				WP_reCaptcha_WooCommerce::instance();
 
+			if ( class_exists( 'Awesome_Support' ) )
+				WP_reCaptcha_Awesome_Support::instance();
+
 			if ( class_exists( 'bbPress' ) ) {
 				WP_reCaptcha_bbPress::instance();
 			}
