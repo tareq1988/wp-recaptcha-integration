@@ -237,7 +237,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		} else {
 			$return .= __('Please enable JavaScript to submit this form.','wp-recaptcha-integration');
 		}
-		$return .= '</noscript>';
+		$return .= '<br></noscript>';
 		return $return;
 	}
 	/**
