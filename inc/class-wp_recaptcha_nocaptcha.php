@@ -233,7 +233,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 													' margin: 10px 25px; padding: 0px; resize: none;" value="">' .
 								'</textarea>' .
 							'</div>' .
-						'</div>';
+						'</div><br>';
 		} else {
 			$return .= __('Please enable JavaScript to submit this form.','wp-recaptcha-integration');
 		}
