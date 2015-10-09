@@ -257,6 +257,8 @@ I will migrate all the translation stuff there.
 - Feature: Support bbPress new Topics and posts
 - L10n: italian
 - Fix: Layout issue on theme twenty fifteen (recaptcha)
+- Fix: Layout issues on recaptcha nojs fallback (thanks to [nurupo](https://github.com/nurupo))
+- Metadata: add plugin textdomain
 
 = 1.1.7 =
 - Fix: Compatibility with CF7 4.2 User Interface
