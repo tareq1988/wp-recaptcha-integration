@@ -101,8 +101,8 @@ You will either need one of the following:
 
 1. Look at source code of the login page.
 
-2. Find the part saying <code>data-sitekey="**XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX**"</code>
-   The part marked in bold is your sitekey.
+2. Find the part saying <code>data-sitekey="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"</code>
+   (The XXX-part should be your sitekey.)
 
 3. Go to the [Google reCaptcha API key administration](https://www.google.com/recaptcha/admin#list)
 
@@ -144,7 +144,8 @@ That's too bad...
 
 = I can't get it to work with my custom comments form. Will you fix for me? =
 
-No. Have a look at the project wiki
+Nope. I cannot give support on your individual projects for free, no matter how many one 
+star reviews you will give me. Have a look at the project wiki or find a WordPress coder. 
 
 
 = Privacy: Will the captcha send the visitors IP address to google? =
@@ -158,13 +159,17 @@ evaluated and stored forever.
 
 In other words: Google knows which (recaptcha protected) website is accessed from which IP. 
 
-If that's an issue for you, you should rather use a self hosted solution. 
+If that's an issue for you, you better use a self hosted solution. 
 
 
 = Will you support plugin XYZ? =
 
 If XYZ stands for a widely used free and OpenSource plugin in active development with some 
 100k+ downloads I will give it a try. Just ask. 
+
+If XYZ is some rarely used plugin (about 1k+ active installs or so), I will accept pull 
+requests on github and push it to the WP repository. Please note that in such cases I will 
+not feel responsible for code maintainance.
 
 
 = The captcha does not show up. What’s wrong? =
@@ -235,12 +240,8 @@ Either post it on [GitHub](https://github.com/mcguffin/wp-recaptcha-integration)
 
 = Will you accept translations? =
 
-Yep sure! (And a warm thankyou in advance.) It might take some time until your localization 
-will appear in an official plugin release, and it is not unlikely that I will have added 
-or removed some strings in the meantime. 
-
-As soon as there is a [public centralized repository for WordPress plugin translations](https://translate.wordpress.org/projects/wp-plugins) 
-I will migrate all the translation stuff there.
+Since late 2015 WordPress.org offers a plugin translation API. Just use the 
+"Translate this plugin" button in the right sidebar.
 
 
 == Screenshots ==
