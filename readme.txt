@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
 Requires at least: 3.8
 Tested up to: 4.3
-Stable tag: 1.1.8
+Stable tag: 1.1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -252,13 +252,15 @@ I will migrate all the translation stuff there.
 
 == Changelog ==
 
+= 1.1.9 =
+- Fix: Layout issues on recaptcha nojs fallback (thanks to [nurupo](https://github.com/nurupo))
+- Metadata: add plugin textdomain
+
 = 1.1.8 =
 - Feature: Support AwesomeSupport
 - Feature: Support bbPress new Topics and posts
 - L10n: italian
 - Fix: Layout issue on theme twenty fifteen (recaptcha)
-- Fix: Layout issues on recaptcha nojs fallback (thanks to [nurupo](https://github.com/nurupo))
-- Metadata: add plugin textdomain
 
 = 1.1.7 =
 - Fix: Compatibility with CF7 4.2 User Interface
