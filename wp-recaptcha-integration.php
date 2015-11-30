@@ -244,7 +244,7 @@ class WP_reCaptcha {
 	 *	@return bool
 	 */
 	function is_required() {
-		$is_required = ! ( $this->get_option('recaptcha_disable_for_known_users') && current_user_can( 'read' ) );
+		$is_required = ! ( $this->get_option('recaptcha_disable_for_known_users') && is_user_logged_in() );
 		return apply_filters( 'wp_recaptcha_required' , $is_required );
 	}
 
