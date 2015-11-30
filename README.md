@@ -19,9 +19,13 @@ Limitations
 
 - NoCaptcha only works with JavaScript enabled.
 
-- On a Contact Form 7 when the reCaptcha is disabled (e.g. for logged in users) the field
+- On a **Contact Form 7** when the reCaptcha is disabled (e.g. for logged in users) the field
   label will be still visible. This is due to CF7 Shortcode architecture, and can't be fixed.
-
+  
+  You should also leave the Contact Form 7 internal recaptcha unconfigured (since CF7 4.3). 
+  CF7 will fall back to WP recaptcha then. Having both recaptchas configured will result in 
+  conflicts.
+  
   To handle this there is a filter `recaptcha_disabled_html`. You can return a message for your logged-in 
   users here.
 

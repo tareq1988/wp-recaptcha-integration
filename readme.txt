@@ -63,6 +63,10 @@ running under his/her own domain name.
   To handle this there is a filter `recaptcha_disabled_html`. You can return a message for your logged-in 
   users here. Check out the [GitHub Repo](https://github.com/mcguffin/wp-recaptcha-integration) for details.
 
+- Please leave the **Contact Form 7** internal recaptcha unconfigured. Don't enter any 
+  keys under Contact / integration. 
+  CF7 will fall back to the WP Recaptcha. Two recaptchas together will not work.
+
 - Old style reCaptcha does not work together with **WooCommerce**. 
 
 - In **WooCommerce** the reset password form can not be protected by a captcha. Woocommerce does 
