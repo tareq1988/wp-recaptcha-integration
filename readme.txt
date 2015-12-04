@@ -4,17 +4,17 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
 Requires at least: 3.8
 Tested up to: 4.4
-Stable tag: 1.1.9
+Stable tag: 1.1.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-reCaptcha for login, signup, comment forms, Ninja Forms Contact Form 7 and woocommerce.
+reCaptcha for login, signup, comment forms, Ninja Forms and woocommerce.
 
 == Description ==
 
 Integrate reCaptcha in your blog. Supports no Captcha as well as old style recaptcha. 
-Provides of the box integration for signup, login, comment forms, Ninja Forms and contact 
-form 7 as well as a plugin API for your own integrations.
+Provides of the box integration for signup, login, comment formsand Ninja Forms as well 
+as a plugin API for your own integrations.
 
 = Features: =
 - Secures login, signup und comments with a recaptcha.
@@ -26,7 +26,6 @@ form 7 as well as a plugin API for your own integrations.
 	- AwesomeSupport (thanks to [Julien Liabeuf](http://julienliabeuf.com/)
 	- WooCommerce (Only checkout, registration and login form. Not password reset)
 	- [Ninja Forms](http://ninjaforms.com/)
-	- [Contact Form 7](https://wordpress.org/plugins/contact-form-7/)
 
 - For integration in your self-coded forms see this [wiki article](https://github.com/mcguffin/wp-recaptcha-integration/wiki/Custom-Themes-and-Forms) for details.
 
@@ -63,9 +62,9 @@ running under his/her own domain name.
   To handle this there is a filter `recaptcha_disabled_html`. You can return a message for your logged-in 
   users here. Check out the [GitHub Repo](https://github.com/mcguffin/wp-recaptcha-integration) for details.
 
-- Please leave the **Contact Form 7** internal recaptcha unconfigured. Don't enter any 
-  keys under Contact / integration. 
-  CF7 will fall back to the WP Recaptcha. Two recaptchas together will not work.
+- As of version 4.3 CF7 comes with its own recaptcha. Both are supposed to work together.
+  I you want to keep the WP ReCaptcha functionality, e.g. if you want to hide the captcha 
+  from known users, leave the integration in the CF7 settings unconfigured.
 
 - Old style reCaptcha does not work together with **WooCommerce**. 
 
@@ -256,6 +255,10 @@ Since late 2015 WordPress.org offers a plugin translation API. Just use the
 
 
 == Changelog ==
+
+= 1.1.10 =
+- Feature: Changed Contact Form 7 support: As of version 4.3 CF7 comes with its own recaptcha. The plugin now just makes sure both captchas work together. It also keeps the API keys in sync.
+- Fix: Disable Captcha for logged in users now respects custom roles without read capability. (Thanks, 
 
 = 1.1.9 =
 - Fix: Layout issues on recaptcha nojs fallback (thanks to [nurupo](https://github.com/nurupo))

@@ -3,7 +3,7 @@
 Plugin Name: WP reCaptcha Integration
 Plugin URI: https://wordpress.org/plugins/wp-recaptcha-integration/
 Description: Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha) as well as the old style reCaptcha. Provides of the box integration for signup, login, comment forms, lost password, Ninja Forms and contact form 7.
-Version: 1.1.9
+Version: 1.1.10
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 Text Domain: wp-recaptcha-integration
@@ -25,7 +25,11 @@ Text Domain: wp-recaptcha-integration
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
+/*
+ToDo:
+- CF7: 
+	
+*/
 
 /**
  *	Plugin base Class
@@ -38,8 +42,6 @@ class WP_reCaptcha {
 
 	private $last_error = '';
 	private $_last_result;
-
-	private $_counter = 0;
 
 	private $_captcha_instance = null;
 
@@ -98,7 +100,7 @@ class WP_reCaptcha {
 		if ( $this->has_api_key() ) {
 
 			add_action('init' , array(&$this,'init') , 9 );
-			add_action('plugins_loaded' , array(&$this,'plugins_loaded') );
+			add_action('plugins_loaded' , array(&$this,'plugins_loaded'), 9 );
 
 		}
 
@@ -591,6 +593,19 @@ class WP_reCaptcha {
 	 *	Fired on plugin activation
 	 */
 	public static function activate() {
+
+		if ( function_exists('wpcf7') ) {
+			// IF CF7 is active, try to configure plugin from cf7 options
+			if ( $wpcf7_options = get_option('wpcf7') ) {
+				if ( isset( $wpcf7_options['recaptcha'] ) && !self::instance()->has_api_key() ) {
+					foreach ( $wpcf7_options['recaptcha'] as $sitekey => $secretkey ) {
+						update_option('recaptcha_publickey',$sitekey);
+						update_option('recaptcha_privatekey',$secretkey);
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	/**

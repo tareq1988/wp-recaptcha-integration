@@ -56,6 +56,8 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		'vi' =>	'Vietnamese',
 	);
 	private $_counter = 0;
+	
+	
 	/**
 	 *	Holding the singleton instance
 	 */
@@ -140,18 +142,19 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		
 		?><script type="text/javascript">
 		var recaptcha_widgets={};
-		function recaptchaLoadCallback(){ 
+		function wp_recaptchaLoadCallback(){ 
 			try {
 				grecaptcha;
 			} catch(err){
 				return;
 			}
-			var e=document.querySelectorAll ? document.querySelectorAll('.g-recaptcha') : document.getElementsByClassName('g-recaptcha'),form_submits;
+			var e = document.querySelectorAll ? document.querySelectorAll('.g-recaptcha:not(.wpcf7-form-control)') : document.getElementsByClassName('g-recaptcha'),
+				form_submits;
 
 			for (var i=0;i<e.length;i++) {
 				(function(el){
 <?php if ( WP_reCaptcha::instance()->get_option( 'recaptcha_disable_submit' ) ) { ?>
-					var form_submits = get_form_submits(el).setEnabled(false),wid;
+					var form_submits = get_form_submits(el).setEnabled(false), wid;
 <?php } else { ?>
 					var wid;
 <?php } ?>
@@ -178,13 +181,13 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		if ( typeof jQuery !== 'undefined' )
 			jQuery(document).ajaxComplete( function(evt,xhr,set){
 				if( xhr.responseText && xhr.responseText.indexOf('<?php echo $sitekey ?>') !== -1)
-					recaptchaLoadCallback();
+					wp_recaptchaLoadCallback();
 			} );
 		
 		</script><?php
 		$recaptcha_api_url = "https://www.google.com/recaptcha/api.js";
 		$recaptcha_api_url = add_query_arg(array(
-				'onload' => 'recaptchaLoadCallback',
+				'onload' => 'wp_recaptchaLoadCallback',
 				'render' => 'explicit',
 			),$recaptcha_api_url);
 		if ( $language_code = apply_filters( 'wp_recaptcha_language' , WP_reCaptcha::instance()->get_option( 'recaptcha_language' ) ) )
@@ -209,6 +212,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 			'data-theme' 	=> $theme,
 		);
 		$attr = wp_parse_args( $attr , $default );
+		
 		$attr_str = '';
 		foreach ( $attr as $attr_name => $attr_val )
 			$attr_str .= sprintf( ' %s="%s"' , $attr_name , esc_attr( $attr_val ) );

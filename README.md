@@ -9,25 +9,28 @@ Features
 - Secures login, signup and comments with a recaptcha.
 - Supports old as well as new reCaptcha.
 - [Ninja Forms](http://ninjaforms.com/) integration
-- [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) integration
-- Tested with up to WP 4.2-alpha, Ninja Forms 2.8.7, Contact Form 7 4.1, WooCommerce 2.3.5
+- Tested with up to WP 4.2-alpha, Ninja Forms 2.8.7, Contact Form 7 4.3, WooCommerce 2.3.5
+- As of version 4.3 Contact Form 7 comes with its own recaptcha. This plugin now makes sure 
+  that both captchas will work together.
+  If you already have configured CF7 with your API Keys WP ReCaptcha will try to get these 
+  keys from the CF7 settings upon activation.
 
 Limitations
 -----------
-- You can't have more than one old style reCaptcha on a page. This is a limitiation of 
-  reCaptcha itself. If that's an issue for you, you should use the no Captcha Form.
+- You can't have more than one old style reCaptcha on a single page. This is a limitiation 
+  of reCaptcha itself. If that's an issue for you, you should use the no Captcha Form.
 
 - NoCaptcha only works with JavaScript enabled.
 
-- On a **Contact Form 7** when the reCaptcha is disabled (e.g. for logged in users) the field
-  label will be still visible. This is due to CF7 Shortcode architecture, and can't be fixed.
+- On a **Contact Form 7** when the reCaptcha is disabled (e.g. for logged in users) the 
+  field label will be still visible. This is due to CF7 Shortcode architecture, and can't 
+  be fixed.
   
-  To handle this there is a filter `recaptcha_disabled_html`. You can return a message for your logged-in 
-  users here.
+  To handle this, there is a filter `recaptcha_disabled_html`. You can return a message for 
+  your logged-in users here.
   
-- As of CF7 4.3+ you should leave the **Contact Form 7** internal recaptcha unconfigured. 
-  CF7 will fall back to WP recaptcha then. Having both recaptchas configured will result in 
-  conflicts.
+- CF7 4.3+ comes with its own recaptcha. The plugin just keeps its captcha rendering apart 
+  from the CF7 rendering to make both work together. 
 
 Plugin API
 ----------
@@ -105,7 +108,7 @@ HTML to be showed when entering a recaptcha is not required.
 ```
 // will disable recaptcha for nice spambots
 function my_recaptcha_disabled_html( $html ) {
-	return 'Not four you, my friend!';
+	return 'Not for you, my friend!';
 }
 add_filter('wp_recaptcha_disabled_html','my_recaptcha_disabled_html');
 ```
@@ -159,7 +162,7 @@ add_filter('wp_recaptcha_print_login_css','__return_false');
 
 I order to integrate recaptcha in your custom forms, there are six filters added in order 
 to get the recaptcha HTML:
- - `recaptcha_html`, 
+ - `recaptcha_html` 
  - `lostpassword_recaptcha_html`
  - `login_recaptcha_html`
  - `signup_recaptcha_html`

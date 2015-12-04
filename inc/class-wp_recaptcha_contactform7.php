@@ -29,14 +29,22 @@ class WP_reCaptcha_ContactForm7 {
 	 *	Prevent from creating more than one instance
 	 */
 	private function __construct() {
-		add_action( 'wpcf7_init', array( &$this , 'add_shortcode_recaptcha' ) );
-		add_action( 'wp_enqueue_scripts' , array( &$this , 'recaptcha_enqueue_script') );
-		add_action( 'admin_init', array( &$this , 'add_tag_generator_recaptcha' ), 45 );
-		add_filter( 'wpcf7_validate_recaptcha', array( &$this , 'recaptcha_validation_filter' ) , 10, 2 );
-		add_filter( 'wpcf7_validate_recaptcha*', array( &$this , 'recaptcha_validation_filter' ) , 10, 2 );
-		add_filter( 'wpcf7_messages' , array( &$this , 'add_error_message' ) );
-	}
 
+		$wpcf7_version = defined('WPCF7_VERSION') ? WPCF7_VERSION : '0';
+		$wpcf7_recaptcha_configured = class_exists('WPCF7_RECAPTCHA') && ($cf7_sitekey = WPCF7_RECAPTCHA::get_instance()->get_sitekey()) && WPCF7_RECAPTCHA::get_instance()->get_secret( $cf7_sitekey );
+		
+		// Skip WPCF7 reCaptcha 
+		if ( $wpcf7_recaptcha_configured || version_compare( $wpcf7_version , '4.3' , '<' ) ) {
+			add_action( 'wpcf7_init', array( &$this , 'add_shortcode_recaptcha' ) );
+			add_action( 'wp_enqueue_scripts' , array( &$this , 'recaptcha_enqueue_script') );
+			add_action( 'admin_init', array( &$this , 'add_tag_generator_recaptcha' ), 45 );
+			add_filter( 'wpcf7_validate_recaptcha', array( &$this , 'recaptcha_validation_filter' ) , 10, 2 );
+			add_filter( 'wpcf7_validate_recaptcha*', array( &$this , 'recaptcha_validation_filter' ) , 10, 2 );
+			add_filter( 'wpcf7_messages' , array( &$this , 'add_error_message' ) );
+		}
+	}
+	
+	
 	
 	function add_error_message( $messages ) {
 		$messages['wp_recaptcha_invalid'] = array(
@@ -222,7 +230,6 @@ class WP_reCaptcha_ContactForm7 {
 				$result['valid'] = false;
 				$result['reason'][$name] = $message;
 			}
-			// var_dump(WP_reCaptcha::instance()->captcha_instance()->get_last_result());
 		}
 		return $result;
 	}
