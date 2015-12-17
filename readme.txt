@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
 Requires at least: 3.8
 Tested up to: 4.4
-Stable tag: 1.1.10
+Stable tag: 1.1.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -255,6 +255,10 @@ Since late 2015 WordPress.org offers a plugin translation API. Just use the
 
 
 == Changelog ==
+
+= 1.1.11 =
+- Code: Move plugin main class to include directory
+- Update: Disable 2.0 updates on PHP < 5.4
 
 = 1.1.10 =
 - Feature: Changed Contact Form 7 support: As of version 4.3 CF7 comes with its own recaptcha. The plugin now just makes sure both captchas work together. It also keeps the API keys in sync.
