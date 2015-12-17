@@ -258,7 +258,7 @@ Since late 2015 WordPress.org offers a plugin translation API. Just use the
 
 = 1.1.10 =
 - Feature: Changed Contact Form 7 support: As of version 4.3 CF7 comes with its own recaptcha. The plugin now just makes sure both captchas work together. It also keeps the API keys in sync.
-- Fix: Disable Captcha for logged in users now respects custom roles without read capability. (Thanks, 
+- Fix: Disable Captcha for logged in users now respects custom roles without read capability. (Thanks to [@lainme](https://github.com/lainme))
 
 = 1.1.9 =
 - Fix: Layout issues on recaptcha nojs fallback (thanks to [nurupo](https://github.com/nurupo))
