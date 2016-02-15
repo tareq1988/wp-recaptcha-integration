@@ -223,7 +223,7 @@ class WP_reCaptcha_Options {
 						),
 					 ) );
 
-				add_settings_field('recaptcha_language', __( 'Language Settings' ), array(&$this,'select_language'), 'recaptcha', 'recaptcha_styling');
+				add_settings_field('recaptcha_language', __( 'Language Settings','wp-recaptcha-integration' ), array(&$this,'select_language'), 'recaptcha', 'recaptcha_styling');
 
 				add_settings_field('recaptcha_theme', __('Theme','wp-recaptcha-integration'), array(&$this,'select_theme'), 'recaptcha', 'recaptcha_styling');
 
@@ -610,7 +610,7 @@ class WP_reCaptcha_Options {
 				?><select class="flavor-<?php echo $flavor ?>" name="<?php echo $option_name ?>[<?php echo $flavor ?>]"><?php
 					?><option <?php selected($option_value,'',true); ?> value=""><?php _e( 'Automatic','wp-recaptcha-integration' ); ?></option><?php
 					?><option <?php selected($option_value,'WPLANG',true); ?> value="WPLANG"><?php _e( 'Site Language' ); ?></option><?php
-					?><optgroup label="<?php _e('Other') ?>"><?php
+					?><optgroup label="<?php _e('Other','wp-recaptcha-integration' ) ?>"><?php
 					foreach ( $available_langs as $lang => $lang_name ) {
 						?><option <?php selected($option_value,$lang,true); ?> value="<?php echo $lang; ?>"><?php _e( $lang_name ); ?></option><?php
 					}
@@ -758,5 +758,3 @@ class WP_reCaptcha_Options {
 	}
 
 }
-
-
