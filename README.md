@@ -9,7 +9,7 @@ Features
 - Secures login, signup and comments with a recaptcha.
 - Supports old as well as new reCaptcha.
 - [Ninja Forms](http://ninjaforms.com/) integration
-- Tested with up to WP 4.2-alpha, Ninja Forms 2.8.7, Contact Form 7 4.3, WooCommerce 2.3.5
+- Tested with up to WP 4.2-alpha, Ninja Forms 2.8.7, Contact Form 7 4.3, WooCommerce 2.3.5, cformsII 14.12
 - As of version 4.3 Contact Form 7 comes with its own recaptcha. This plugin now makes sure 
   that both captchas will work together.
   If you already have configured CF7 with your API Keys WP ReCaptcha will try to get these 
