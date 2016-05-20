@@ -1,0 +1,475 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WordPress ReCaptcha Integration\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-14 16:02+0000\n"
+"PO-Revision-Date: 2016-05-20 13:46+0200\n"
+"Language-Team: Pedro Mendonça <ped.gaspar@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Textdomain-Support: yes\n"
+"Last-Translator: \n"
+"Language: cs_CZ\n"
+"X-Poedit-SearchPath-0: .\n"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha.php:392 inc/class-wp_recaptcha.php:438
+#: inc/class-wp_recaptcha.php:452 inc/class-wp_recaptcha.php:464
+#: inc/class-wp_recaptcha_bbpress.php:71
+#: inc/class-wp_recaptcha_woocommerce.php:91
+#: inc/class-wp_recaptcha_woocommerce.php:100
+msgid "<strong>Error:</strong> the Captcha didn’t verify."
+msgstr "<strong>Chyba:</strong> ověření Captcha se nepovedlo."
+
+#: inc/class-wp_recaptcha_awesome_support.php:82
+msgid "The Captcha didn&#039;t verify"
+msgstr "The Captcha didn’t verify."
+
+#: inc/class-wp_recaptcha_contactform7.php:51
+#: inc/class-wp_recaptcha_ninjaforms.php:47
+msgid "Google reCaptcha does not validate."
+msgstr "Ověření Google reCaptcha se nepovedlo."
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_contactform7.php:52
+#: inc/class-wp_recaptcha_contactform7.php:225
+#: inc/class-wp_recaptcha_ninjaforms.php:38
+#: inc/class-wp_recaptcha_ninjaforms.php:155
+msgid "The Captcha didn’t verify."
+msgstr "Ověření Captcha se nepovedlo."
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_contactform7.php:97
+#: inc/class-wp_recaptcha_contactform7.php:110
+#: inc/class-wp_recaptcha_ninjaforms.php:53
+msgid "reCAPTCHA"
+msgstr "reCAPTCHA"
+
+#: inc/class-wp_recaptcha_contactform7.php:116
+#: inc/class-wp_recaptcha_contactform7.php:119
+msgid "Field type"
+msgstr "Typ pole"
+
+#: inc/class-wp_recaptcha_contactform7.php:120
+msgid "Required field"
+msgstr "Požadované pole"
+
+# @ contact-form-7
+#: inc/class-wp_recaptcha_contactform7.php:126
+#: inc/class-wp_recaptcha_contactform7.php:129
+#: inc/class-wp_recaptcha_contactform7.php:176
+msgid "Name"
+msgstr "Jméno"
+
+# @ contact-form-7
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_contactform7.php:137
+#: inc/class-wp_recaptcha_contactform7.php:140
+#: inc/class-wp_recaptcha_contactform7.php:181
+#: inc/class-wp_recaptcha_ninjaforms.php:89
+#: inc/class-wp_recaptcha_options.php:228
+msgid "Theme"
+msgstr "Vzhled"
+
+#: inc/class-wp_recaptcha_contactform7.php:156
+msgid "Insert Tag"
+msgstr "Vložit tag"
+
+# @ contact-form-7
+#: inc/class-wp_recaptcha_contactform7.php:174
+msgid "Required field?"
+msgstr "Požadované pole?"
+
+# @ contact-form-7
+#: inc/class-wp_recaptcha_contactform7.php:188
+msgid "Copy this code and paste it into the form left."
+msgstr "Zkopírujte tento kód a vložte jej na levou stranu formuláře."
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_contactform7.php:207
+#: inc/class-wp_recaptcha_ninjaforms.php:81
+msgid "Use default"
+msgstr "Použít výchozí"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_nocaptcha.php:89
+msgid "Light"
+msgstr "Světlý"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_nocaptcha.php:92
+msgid "Dark"
+msgstr "Tmavý"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_nocaptcha.php:242
+msgid "Please enable JavaScript to submit this form."
+msgstr "Pro odeslání formuláře prosím povolte JavaScript."
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:97 inc/class-wp_recaptcha_options.php:109
+msgid "reCaptcha Settings"
+msgstr "Nastavení reCaptcha"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:98
+msgid "reCaptcha"
+msgstr "reCaptcha"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:158
+#, php-format
+msgid ""
+"<strong>reCaptcha needs your attention:</strong> To make it work You need to "
+"enter an api key. <br />You can do so at the <a href=\"%s\">reCaptcha "
+"settings page</a>."
+msgstr ""
+"<strong>reCaptcha vyžaduje vaši pozornost:</strong> Ke správnému fungování "
+"musíte vyplnit klíče k api. <br /> Můžete tak učinit na stránce s natavením "
+"<a href=\"%s\">reCaptcha</a>."
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:176
+msgid "Protect"
+msgstr "Chránit"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:177
+msgid "Style"
+msgstr "Styl"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:179
+msgid "Connect"
+msgstr "Připojit"
+
+#: inc/class-wp_recaptcha_options.php:181
+msgid "Advanced"
+msgstr "Pokročilé"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:187
+msgid "Site key"
+msgstr "Klíč pro web"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:188
+msgid "Secret key"
+msgstr "Tajný klíč"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:210
+msgid "Flavor"
+msgstr "Styl"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:217
+msgid "No Captcha where you just click a button"
+msgstr "No Captcha, kde jen klikáte na tlačítko"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:221
+msgid "Old style reCAPTCHA where you type some cryptic text"
+msgstr "Stará reCAPTCHA, kde přepisujete nějaký \"zašifrovaný\" text"
+
+# @ default
+#: inc/class-wp_recaptcha_options.php:226
+msgid "Language Settings"
+msgstr "Jazykové nastavení"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:230
+msgid "Disable Submit Button"
+msgstr "Deaktivovat tlačítko pro odeslání"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:232
+msgid "Disable Form Submit Button until no-captcha is entered."
+msgstr "Skrýt tlačítko k odeslání formuláře, dokud není zadána no-captcha."
+
+#: inc/class-wp_recaptcha_options.php:234
+msgid "Noscript Fallback"
+msgstr "Záloha pro Noscript"
+
+#: inc/class-wp_recaptcha_options.php:238
+msgid "Provide a fallback for non javascript capable browsers."
+msgstr "Poskytuje alternativu pro prohlížeče bez podpory javascriptu."
+
+#: inc/class-wp_recaptcha_options.php:239
+msgid "Leave this unchecked when your site requires JavaScript anyway."
+msgstr "Zanechte to nezaškrtnuté, pokud vaše stránka vyžaduje JavaScript."
+
+#: inc/class-wp_recaptcha_options.php:247
+msgid "Comment Form rendering"
+msgstr "Vykreslování formuláře pro nový komentář"
+
+#: inc/class-wp_recaptcha_options.php:251
+msgid "My Comment Form is WordPress 4.2 compatible."
+msgstr ""
+"Formulář pro nový komentář je kompatibilní podle specifikace WordPress 4.2."
+
+#: inc/class-wp_recaptcha_options.php:252
+msgid ""
+"Enable this when your comment form uses the "
+"<code>comment_form_submit_button</code> filter. (Or just try if it works.)"
+msgstr ""
+"Povolte to, když váš formulář pro nový komentář používá filtr "
+"<code>comment_form_submit_button</code>. (A nebo jen zkuste, jestli to "
+"funguje.)"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:283
+msgid "Comment Form"
+msgstr "Formulář pro nový komentář"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:288
+msgid "Signup Form"
+msgstr "Registrační formulář"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:293
+msgid "Login Form"
+msgstr "Přihlašovací formulář"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:298
+msgid "Lost Password Form"
+msgstr "Formulář se zapomenutým heslem"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:306
+msgid "woocommerce Checkout"
+msgstr "Pokladna woocommerce"
+
+#: inc/class-wp_recaptcha_options.php:315
+msgid "Awesome Support Registration"
+msgstr "Registrace podpory Awesome"
+
+#: inc/class-wp_recaptcha_options.php:323
+msgid "bbPress New Topic"
+msgstr "Nové téma bbPress"
+
+#: inc/class-wp_recaptcha_options.php:329
+msgid "bbPress New Reply"
+msgstr "Nová odpověď bbPress"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:334
+msgid "Forms to protect"
+msgstr "Formulář k ochránění"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:339
+msgid "Disable for known users"
+msgstr "Deaktivovat pro známé uživatele"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:341
+msgid "Disable reCaptcha verification for logged in users."
+msgstr "Zakázat reCaptcha verifikaci pro přihlášené uživatele."
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:344
+msgid "Prevent lockout"
+msgstr "Zabránit uzamčení"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:348
+msgid "Allow administrator to log in if API keys do not work."
+msgstr "Povolit administrátorovi přihlášení i když klíče k API nefungují."
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:349
+msgid ""
+"When the captcha verification fails, and the private or public API key does "
+"not work the plugin will let you in anyway. Please note that with this "
+"option checked plus a broken keypair your site will be open to brute force "
+"attacks, that try to guess an administrator password."
+msgstr ""
+"Když selže ověření captcha a privátní/veřejný klíč k API nefunguje, tak vám "
+"plugin povolí vstup. Prosím, dejte pozor na to, že povolení této možnosti "
+"spolu s rozbitou sadou klíčů otevře cestu k útokům hrubou silou, které se "
+"snaží uhádnout vaše administrátorské heslo."
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:355
+msgid ""
+"Please configure the public and private key. <a href=\"http://www.google.com/"
+"recaptcha/whyrecaptcha\">What are you trying to tell me?</a>"
+msgstr ""
+"Prosím nastavte veřejný a privátní klíč. <a href=\"http://www.google.com/"
+"recaptcha/whyrecaptcha\">co to znamená?</a>"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:368
+#, php-format
+msgid ""
+"Please register your blog through the <a href=\"%s\">Google reCAPTCHA admin "
+"page</a> and enter the public and private key in the fields below. <a href="
+"\"%s\">What is this all about?</a>"
+msgstr ""
+"Prosím, registrujte svůj blog v <a href=\"%s\">administraci Google "
+"reCAPTCHA</a> a zadejte veřejné a privátní klíče do polí níže.  <a href=\"%s"
+"\">O čem to celé je?</a>"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:376
+msgid "You already entered an API Key. Use the button below to enter it again."
+msgstr ""
+"Už jste zadali klíč k API. Použijte tlačítko níže k jeho opětovnému zadání."
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:391
+msgid "New API Key"
+msgstr "Nový klíč k API"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:392
+msgid "Test API Key"
+msgstr "Test klíče k API"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:404
+msgid "Select which forms you want to protect with a captcha."
+msgstr "Zvolte, které formuláře mají být chráněny captchou."
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:421
+msgid ""
+"Choose a flavor and theme for your Captcha. Please note that with the old "
+"style reCaptcha you cannot have more than one captcha per page."
+msgstr ""
+"Zvolte si styl a vzhled pro vaši Captchu. Dejte prosím pozor na to, že stará "
+"verze reCaptcha neumožňuje mít více než jednu captchu na stránku."
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:453
+msgid "Test verfication"
+msgstr "Ověření testu"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:466
+msgid "The secret Key is missing."
+msgstr "Tajný klíč chybí"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:467
+msgid ""
+"The secret Key is invalid. You better check your domain configuration and "
+"enter it again."
+msgstr ""
+"Tajný klíč není správný. Ověřte prosím nastavení domény a zadejte jej znovu."
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:468
+msgid "The user response was missing"
+msgstr "Chybějící odpověď uživatele"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:469
+msgid "Invalid user response"
+msgstr "Špatná odpověď uživatele"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:478
+msgid "Works! All good!"
+msgstr "Vše funguje správně!"
+
+# @ default
+#: inc/class-wp_recaptcha_options.php:490
+msgid "Cancel"
+msgstr "Zrušit"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:611
+msgid "Automatic"
+msgstr "Automatické"
+
+# @ default
+#: inc/class-wp_recaptcha_options.php:612
+msgid "Site Language"
+msgstr "Jazyk webu"
+
+# @ default
+#: inc/class-wp_recaptcha_options.php:613
+msgid "Other"
+msgstr "Ostatní"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:651
+msgid "Unstyled HTML to apply your own Stylesheets."
+msgstr "Nenastylovaný HTML kód k aplikaci vašich vlastní stylů."
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_options.php:724
+#: inc/class-wp_recaptcha_options.php:749
+msgid "ReCaptcha"
+msgstr "ReCaptcha"
+
+# @ default
+#: inc/class-wp_recaptcha_options.php:747
+msgid "Settings"
+msgstr "Nastavení"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_recaptcha.php:60
+msgid "Red"
+msgstr "Červená"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_recaptcha.php:63
+msgid "White"
+msgstr "Bílá"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_recaptcha.php:66
+msgid "Black Glass"
+msgstr "Černé sklo"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_recaptcha.php:69
+msgid "Clean"
+msgstr "Čistá"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_recaptcha.php:72
+msgid "Custom"
+msgstr "Vlastní"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_recaptcha.php:181
+msgid "Incorrect please try again"
+msgstr "Špatně, zkuste to prosím znovu"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_recaptcha.php:183
+msgid "Enter the words above:"
+msgstr "Napište slova, která vidíte výše:"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_recaptcha.php:184
+msgid "Enter the numbers you hear:"
+msgstr "Napište čísla, která slyšíte:"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_recaptcha.php:188
+msgid "Get another CAPTCHA"
+msgstr "Chci jinou CAPTCHu"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_recaptcha.php:189
+msgid "Get an audio CAPTCHA"
+msgstr "Chci zvukovou CAPTCHu"
+
+# @ wp-recaptcha-integration
+#: inc/class-wp_recaptcha_recaptcha.php:190
+msgid "Get an image CAPTCHA"
+msgstr "Chci obrázkovou CAPTCHu"
