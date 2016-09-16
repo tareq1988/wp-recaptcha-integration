@@ -1,6 +1,9 @@
 WordPress reCaptcha Integration
 ===============================
 
+**Abandonware Notice:** Due to a pile of other projects, I am no longer capable of maintaining this plugin. 
+If somebody out there is willing to take over, I'd be glad to hand over the repository.
+
 This is the official github repository of the [WP reCaptcha integration plugin](https://wordpress.org/plugins/wp-recaptcha-integration/) 
 plugin. This repo might contain untested and possibly unstable or insecure code. So use it on your own risk. 
 
@@ -178,10 +181,3 @@ Use `apply_filters('feature_recaptcha_html','')` to retrieve the HTML.
     $recaptcha_html = apply_filters( 'comments_recaptcha_html' , '' );
 	
 
-Support
--------
-You like what you see? Maybe you already make some money with it? 
-Here are two ways to keep me rocking:
-
-[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=joern.lund&url=https://github.com/mcguffin/wp-recaptcha-integration&title=WP%20Recaptcha%20Integration&language=php&tags=github&category=software)
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=F8NKC6TCASUXE"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" /></a>
