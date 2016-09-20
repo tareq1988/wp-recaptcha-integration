@@ -374,7 +374,7 @@ class WP_reCaptcha {
 	 *
 	 *	@return bool false if check does not validate
 	 */
-	function recaptcha_check( ) {
+	function recaptcha_check( $valid=null ) {
 		if ( $this->is_required() )
 			return $this->captcha_instance()->check();
 		return true;
