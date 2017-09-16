@@ -26,6 +26,7 @@ as a plugin API for your own integrations.
 	- AwesomeSupport (thanks to [Julien Liabeuf](http://julienliabeuf.com/)
 	- WooCommerce (Only checkout, registration and login form. Not password reset)
 	- [Ninja Forms](http://ninjaforms.com/)
+	- cformsII
 
 - For integration in your self-coded forms see this [wiki article](https://github.com/mcguffin/wp-recaptcha-integration/wiki/Custom-Themes-and-Forms) for details.
 
