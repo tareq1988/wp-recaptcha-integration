@@ -3,8 +3,8 @@ Contributors: podpirate
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=F8NKC6TCASUXE
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
 Requires at least: 3.8
-Tested up to: 4.4
-Stable tag: 1.1.11
+Tested up to: 4.8
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -255,6 +255,12 @@ Since late 2015 WordPress.org offers a plugin translation API. Just use the
 
 
 == Changelog ==
+
+= 1.2.0 =
+- Support [cformsII](https://wordpress.org/plugins/cforms2/) (thanks to [Bastian Germann](https://github.com/bgermann))
+- Support for Password Reset Protection for older woocommerce Versions [ingomarent](https://github.com/ingomarent)
+- L10n: Czech (thanks to [František Zatloukal](https://github.com/frantisekz))
+- Fix potential PHP Warnngs (thanks to [Gennady Kovshenin](https://github.com/soulseekah))
 
 = 1.1.11 =
 - Code: Move plugin main class to include directory
