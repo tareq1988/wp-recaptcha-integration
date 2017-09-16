@@ -70,8 +70,67 @@ class WP_reCaptcha_WooCommerce {
 				if ( $enable_lostpw ) {
 					add_action( 'woocommerce_lostpassword_form' , array($wp_recaptcha,'print_recaptcha_html'),10,0);
 				}
+				if( version_compare( WC()->version , '2.4.0' ) === -1 ){
+					add_filter( 'woocommerce_locate_template', array($this,'locate_template'), 10, 3 );
+
+				}
 			}
 		}
+	}
+	function plugin_path() {
+
+		// gets the absolute path to this plugin directory
+
+		return untrailingslashit( plugin_dir_path( __FILE__ ) );
+
+	}
+
+	function locate_template( $template, $template_name, $template_path ) {
+
+		global $woocommerce;
+
+
+		$_template = $template;
+
+		if ( ! $template_path )
+			$template_path = $woocommerce->template_url;
+
+		$plugin_path = $this->plugin_path() . '/woocommerce/';
+
+
+		// Look within passed path within the theme - this is priority
+
+		$template = locate_template(
+
+			array(
+
+				$template_path . $template_name,
+
+				$template_name
+
+			)
+
+		);
+
+
+		// Modification: Get the template from this plugin, if it exists
+
+		if ( ! $template && file_exists( $plugin_path . $template_name ) )
+
+			$template = $plugin_path . $template_name;
+
+
+		// Use default template
+
+		if ( ! $template )
+
+			$template = $_template;
+
+
+		// Return what we found
+
+		return $template;
+
 	}
 	/*
 	function checkout_fields( $checkout_fields ) {
