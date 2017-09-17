@@ -106,6 +106,10 @@ class WP_reCaptcha {
 				WP_reCaptcha_bbPress::instance();
 			}
 
+			if ( class_exists( 'cforms2_captcha' ) ) {
+				WP_reCaptcha_cforms2::instance();
+			}
+
 		}
 	}
 	/**
