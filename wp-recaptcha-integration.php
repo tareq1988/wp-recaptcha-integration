@@ -26,7 +26,7 @@ Text Domain: wp-recaptcha-integration
 */
 
 /**
- * Autoload WPAA Classes
+ * Autoload Classes
  *
  * @param string $classname
  */
