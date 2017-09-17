@@ -6,4 +6,4 @@ README.md export-ignore
 gulpfile.js export-ignore
 package*.json export-ignore
 # misc
-composer.json
+/composer.json
