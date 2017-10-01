@@ -32,8 +32,8 @@ class WP_reCaptcha_ContactForm7 {
 
 		$wpcf7_version = defined('WPCF7_VERSION') ? WPCF7_VERSION : '0';
 		$wpcf7_recaptcha_configured = class_exists('WPCF7_RECAPTCHA') && ($cf7_sitekey = WPCF7_RECAPTCHA::get_instance()->get_sitekey()) && WPCF7_RECAPTCHA::get_instance()->get_secret( $cf7_sitekey );
-		
-		// Skip WPCF7 reCaptcha 
+
+		// Skip WPCF7 reCaptcha
 		if ( $wpcf7_recaptcha_configured || version_compare( $wpcf7_version , '4.3' , '<' ) ) {
 			add_action( 'wpcf7_init', array( &$this , 'add_shortcode_recaptcha' ) );
 			add_action( 'wp_enqueue_scripts' , array( &$this , 'recaptcha_enqueue_script') );
@@ -43,9 +43,9 @@ class WP_reCaptcha_ContactForm7 {
 			add_filter( 'wpcf7_messages' , array( &$this , 'add_error_message' ) );
 		}
 	}
-	
-	
-	
+
+
+
 	function add_error_message( $messages ) {
 		$messages['wp_recaptcha_invalid'] = array(
 			'description'	=> __( "Google reCaptcha does not validate.", 'wp-recaptcha-integration' ),
@@ -53,7 +53,7 @@ class WP_reCaptcha_ContactForm7 {
 		);
 		return $messages;
 	}
-	
+
 	function add_shortcode_recaptcha() {
 		wpcf7_add_shortcode(
 			array( 'recaptcha','recaptcha*'),
@@ -79,7 +79,7 @@ class WP_reCaptcha_ContactForm7 {
 		$html = sprintf(
 			apply_filters( 'wp_recaptcha_cf7_shortcode_wrap' ,'<span class="wpcf7-form-control-wrap %1$s">%2$s %3$s</span>' ),
 			$tag->name, $recaptcha_html, $validation_error );
-	
+
 		return $html;
 	}
 
@@ -111,7 +111,7 @@ class WP_reCaptcha_ContactForm7 {
 
 					<table class="form-table">
 						<tbody>
-							
+
 							<tr>
 								<th scope="row"><?php echo esc_html( __( 'Field type', 'contact-form-7' ) ); ?></th>
 								<td>
@@ -121,7 +121,7 @@ class WP_reCaptcha_ContactForm7 {
 									</fieldset>
 								</td>
 							</tr>
-							
+
 							<tr>
 								<th scope="row"><?php esc_html_e( __( 'Name', 'contact-form-7' ) ); ?></th>
 								<td>
@@ -131,20 +131,19 @@ class WP_reCaptcha_ContactForm7 {
 									</fieldset>
 								</td>
 							</tr><?php
-							
-							if ( 'grecaptcha' === WP_reCaptcha::instance()->get_option('recaptcha_flavor') ) {
-								?><tr>
-									<th scope="row"><?php esc_html_e( __( 'Theme', 'wp-recaptcha-integration' ) ); ?></th>
-									<td>
-										<fieldset>
-											<legend class="screen-reader-text"><?php esc_html_e( __( 'Theme', 'wp-recaptcha-integration' ) ); ?></legend>
-											<label><?php
-												$this->_theme_select();
-											?></label>
-										</fieldset>
-									</td>
-								</tr><?php
-							}
+
+							?><tr>
+								<th scope="row"><?php esc_html_e( __( 'Theme', 'wp-recaptcha-integration' ) ); ?></th>
+								<td>
+									<fieldset>
+										<legend class="screen-reader-text"><?php esc_html_e( __( 'Theme', 'wp-recaptcha-integration' ) ); ?></legend>
+										<label><?php
+											$this->_theme_select();
+										?></label>
+									</fieldset>
+								</td>
+							</tr><?php
+
 						?></tbody>
 					</table>
 				</fieldset>
@@ -176,12 +175,11 @@ class WP_reCaptcha_ContactForm7 {
 							<?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?><br />
 							<input type="text" name="name" class="tg-name oneline" />
 						</td><td><?php
-							if ( 'grecaptcha' === WP_reCaptcha::instance()->get_option('recaptcha_flavor') ) {
-							
-								esc_html_e( __( 'Theme', 'wp-recaptcha-integration' ) ); ?><br /><?php
-								$this->_theme_select();
-								// cf7 does only allow literal <input> 
-							}
+
+							esc_html_e( __( 'Theme', 'wp-recaptcha-integration' ) ); ?><br /><?php
+							$this->_theme_select();
+							// cf7 does only allow literal <input>
+
 						?></td></tr>
 					</table>
 					<div class="tg-tag">
@@ -221,9 +219,9 @@ class WP_reCaptcha_ContactForm7 {
 
 		if ( ! WP_reCaptcha::instance()->recaptcha_check() ) {
 			$message = wpcf7_get_message( 'wp_recaptcha_invalid' );
-			if ( ! $message ) 
+			if ( ! $message )
 				$message = __("The Captcha didn’t verify.",'wp-recaptcha-integration');
-			 
+
 			if ( method_exists($result, 'invalidate' ) ) { // since CF7 4.1
 				$result->invalidate( $tag , $message );
 			} else {
@@ -233,7 +231,6 @@ class WP_reCaptcha_ContactForm7 {
 		}
 		return $result;
 	}
-	
+
 
 }
-

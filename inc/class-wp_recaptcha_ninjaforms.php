@@ -40,14 +40,14 @@ class WP_reCaptcha_NinjaForms {
 	}
 	function late_init() {
 		global $ninja_forms_tabs_metaboxes;
-		
+
 		$ninja_forms_tabs_metaboxes['ninja-forms-settings']['label_settings']['label_labels']['settings'][] = array(
 			'name' => 'wp_recaptcha_invalid',
 			'type' => 'text',
 			'label' => __( "Google reCaptcha does not validate.", 'wp-recaptcha-integration' ),
 		);
 	}
-	
+
 	function register_field_recaptcha(){
 		$args = array(
 			'name' => __( 'reCAPTCHA', 'wp-recaptcha-integration' ),
@@ -75,31 +75,31 @@ class WP_reCaptcha_NinjaForms {
 			),
 			'req' => false,
 		);
-		if ( 'grecaptcha' === WP_reCaptcha::instance()->get_option('recaptcha_flavor') ) {
-			$themes = WP_reCaptcha::instance()->captcha_instance()->get_supported_themes();
-			$edit_options = array(
-				array( 'name' => __( 'Use default' , 'wp-recaptcha-integration' ) , 'value' => '' ),
-			);
-			foreach ( $themes as $theme_name => $theme )
-				$edit_options[] = array( 'name' => $theme['label'] , 'value' => $theme_name );
-			$args['edit_options'] = array(
-				array(
-					'type'    => 'select',
-					'name'    => 'theme',
-					'label'   => __( 'Theme', 'wp-recaptcha-integration' ),
-					'width'   => 'wide',
-					'class'   => 'widefat',
-					'options' => $edit_options,
-				),
-			);
-		}
-		
+
+		$themes = WP_reCaptcha::instance()->captcha_instance()->get_supported_themes();
+		$edit_options = array(
+			array( 'name' => __( 'Use default' , 'wp-recaptcha-integration' ) , 'value' => '' ),
+		);
+		foreach ( $themes as $theme_name => $theme )
+			$edit_options[] = array( 'name' => $theme['label'] , 'value' => $theme_name );
+
+		$args['edit_options'] = array(
+			array(
+				'type'    => 'select',
+				'name'    => 'theme',
+				'label'   => __( 'Theme', 'wp-recaptcha-integration' ),
+				'width'   => 'wide',
+				'class'   => 'widefat',
+				'options' => $edit_options,
+			),
+		);
+
 		ninja_forms_register_field('_recaptcha', $args);
 	}
-	
+
 	function recaptcha_field_data( $data, $field_id ) {
 		$field_row = ninja_forms_get_field_by_id($field_id);
-		if ( $field_row['type'] == '_recaptcha' ) 
+		if ( $field_row['type'] == '_recaptcha' )
 			$data['show_field'] = WP_reCaptcha::instance()->is_required();
 		return $data;
 	}
@@ -109,32 +109,19 @@ class WP_reCaptcha_NinjaForms {
 			/*
 			refresh captcha after form submission.
 			*/
-			$flavor = WP_reCaptcha::instance()->get_option( 'recaptcha_flavor' );
-			switch ( $flavor ) {
-				case 'recaptcha':
-					$html = '<script type="text/javascript"> 
-			// reload recaptcha after failed ajax form submit
-			jQuery(document).on("submitResponse.default", function(e, response){
-				Recaptcha.reload();
-			});
-		</script>';
-					break;
-				case 'grecaptcha':
-					$html = '<script type="text/javascript"> 
-			// reload recaptcha after failed ajax form submit
-			(function($){
-			$(document).on("submitResponse.default", function(e, response){
-				if ( typeof grecaptcha !== "undefined" ) {
-					var wid = $(\'#ninja_forms_form_\'+response.form_id).find(\'.g-recaptcha\').data(\'widget-id\');
-					grecaptcha.reset(wid);
-				}
-			});
-			})(jQuery);
-		</script>';
-					break;
-			}
+
 			WP_reCaptcha::instance()->begin_inject(false,', Ninja form integration');
-			echo $html;
+			echo '<script type="text/javascript">
+	// reload recaptcha after failed ajax form submit
+	(function($){
+	$(document).on("submitResponse.default", function(e, response){
+		if ( typeof grecaptcha !== "undefined" ) {
+			var wid = $(\'#ninja_forms_form_\'+response.form_id).find(\'.g-recaptcha\').data(\'widget-id\');
+			grecaptcha.reset(wid);
+		}
+	});
+	})(jQuery);
+</script>';
 			WP_reCaptcha::instance()->end_inject();
 		}
 	}
@@ -151,9 +138,9 @@ class WP_reCaptcha_NinjaForms {
 	function field_recaptcha_pre_process( $field_id, $user_value ){
 		global $ninja_forms_processing;
 		$plugin_settings = nf_get_settings();
-		
+
 		$recaptcha_error = __("The Captcha didn’t verify.",'wp-recaptcha-integration');
-		if ( isset( $plugin_settings['wp_recaptcha_invalid'] ) ) 
+		if ( isset( $plugin_settings['wp_recaptcha_invalid'] ) )
 			$recaptcha_error = $plugin_settings['wp_recaptcha_invalid'];
 
 		$field_row = ninja_forms_get_field_by_id($field_id);
@@ -162,10 +149,10 @@ class WP_reCaptcha_NinjaForms {
 		$form_id = $form_row['id'];
 
 		$require_recaptcha = WP_reCaptcha::instance()->is_required();
-	
+
 		if ( $ninja_forms_processing->get_action() != 'save' && $ninja_forms_processing->get_action() != 'mp_save' && $require_recaptcha && ! WP_reCaptcha::instance()->recaptcha_check() ){
 			$ninja_forms_processing->add_error('recaptcha-general', $recaptcha_error, 'general');
-			$ninja_forms_processing->add_error('recaptcha-'.$field_id, $recaptcha_error, $field_id);				
+			$ninja_forms_processing->add_error('recaptcha-'.$field_id, $recaptcha_error, $field_id);
 		}
 	}
 }

@@ -37,7 +37,6 @@ class WP_reCaptcha {
 	 *	Prevent from creating more than one instance
 	 */
 	private function __construct() {
-		add_option('recaptcha_flavor','grecaptcha'); // local
 		add_option('recaptcha_theme','light'); // local
 		add_option('recaptcha_disable_submit',false); // local
 		add_option('recaptcha_noscript',false); // local
@@ -193,25 +192,12 @@ class WP_reCaptcha {
 	 *	@return	object	WP_reCaptcha_Captcha
 	 */
 	public function captcha_instance() {
-		if ( is_null( $this->_captcha_instance ) )
-			$this->_captcha_instance = $this->captcha_instance_by_flavor( $this->get_option( 'recaptcha_flavor' ) );
+		if ( is_null( $this->_captcha_instance ) ) {
+			$this->_captcha_instance = WP_reCaptcha_NoCaptcha::instance();
+		}
 		return $this->_captcha_instance;
 	}
 
-	/**
-	 *	Set current captcha instance and return it.
-	 *
-	 *	@param	string	captcha flavor. 'grecaptcha' (noCaptcha) or 'recaptcha' (reCaptcha)
-	 *	@return	object	WP_reCaptcha_Captcha
-	 */
-	public function captcha_instance_by_flavor( $flavor ) {
-		switch( $flavor ) {
-			case 'grecaptcha':
-				return WP_reCaptcha_NoCaptcha::instance();
-			case 'recaptcha':
-				return WP_reCaptcha_ReCaptcha::instance();
-		}
-	}
 
 	/**
 	 *	returns if recaptcha is required.
@@ -579,6 +565,32 @@ class WP_reCaptcha {
 				}
 			}
 		}
+
+		if ( get_option('recaptcha_flavor') === 'recaptcha' ) {
+			delete_option( 'recaptcha_flavor' );
+		}
+
+		if ( get_option('recaptcha_flavor') === 'recaptcha' ) {
+			$inst = self::instance();
+			delete_option( 'recaptcha_flavor' );
+			update_option( 'recaptcha_theme', 'light' );
+			update_option( 'recaptcha_language', '' );
+			add_action( 'admin_notices', array( $inst, 'deprecated_v1_notice' ) );
+		}
+
+	}
+
+	/**
+	 *	Admin Notices hook to show up when the api keys heve not been entered.
+	 *	@action admin_notices
+	 */
+	function deprecated_v1_notice() {
+		?><div class="notice error above-h1"><p><?php
+			printf(
+				__( 'Google no longer supports the old-style reCaptcha. The <a href="%s">plugin settings</a> have been updated accordingly.' , 'wp-recaptcha-integration' ),
+				admin_url( add_query_arg( 'page' , 'recaptcha' , 'options-general.php' ) )
+			);
+		?></p></div><?php
 	}
 
 	/**

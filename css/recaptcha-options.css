@@ -92,16 +92,9 @@
 	padding-top:2px;
 }
 
-.flavor-grecaptcha .flavor-recaptcha,
-.flavor-recaptcha .flavor-grecaptcha {
-	display:none;
-}
 .warning {
 	color:red;
 }
-
-
-
 
 
 .recaptcha-explain .loading .spinner {

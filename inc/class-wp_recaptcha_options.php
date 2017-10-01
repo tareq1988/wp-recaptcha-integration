@@ -200,28 +200,10 @@ class WP_reCaptcha_Options {
 			if (  ! WP_reCaptcha::is_network_activated() ||  ! is_network_admin()  ) {
 				// local options
 				register_setting( 'recaptcha_options', 'recaptcha_language'  , array( &$this , 'sanitize_language' ) );
-				register_setting( 'recaptcha_options', 'recaptcha_flavor' , array( &$this , 'sanitize_flavor' ) );
 				register_setting( 'recaptcha_options', 'recaptcha_theme'  , array( &$this , 'sanitize_theme' ) );
 				register_setting( 'recaptcha_options', 'recaptcha_disable_submit' , 'intval');
 
 				register_setting( 'recaptcha_options', 'recaptcha_noscript' , 'intval');
-
-
-				add_settings_field('recaptcha_flavor', __('Flavor','wp-recaptcha-integration'),
-					array(&$this,'input_radio'), 'recaptcha', 'recaptcha_styling',
-					array(
-						'name' => 'recaptcha_flavor',
-						'items' => array(
-							array(
-								'value' => 'grecaptcha',
-								'label' => __( 'No Captcha where you just click a button' , 'wp-recaptcha-integration' ),
-							),
-							array(
-								'value' => 'recaptcha',
-								'label' => __( 'Old style reCAPTCHA where you type some cryptic text' , 'wp-recaptcha-integration' ),
-							),
-						),
-					 ) );
 
 				add_settings_field('recaptcha_language', __( 'Language Settings','wp-recaptcha-integration' ), array(&$this,'select_language'), 'recaptcha', 'recaptcha_styling');
 
@@ -237,7 +219,6 @@ class WP_reCaptcha_Options {
 						'name'=>'recaptcha_noscript',
 						'label'=>__( 'Provide a fallback for non javascript capable browsers.','wp-recaptcha-integration' ),
 						'description' => __( 'Leave this unchecked when your site requires JavaScript anyway.','wp-recaptcha-integration' ),
-						'class' => 'flavor-grecaptcha',
 					)
 				);
 
@@ -250,7 +231,6 @@ class WP_reCaptcha_Options {
 							'name'=>'recaptcha_comment_use_42_filter',
 							'label'=>__( 'My Comment Form is WordPress 4.2 compatible.','wp-recaptcha-integration' ),
 							'description' => __( 'Enable this when your comment form uses the <code>comment_form_submit_button</code> filter. (Or just try if it works.)','wp-recaptcha-integration' ),
-							'class' => 'flavor-grecaptcha',
 						)
 					);
 				}
@@ -300,11 +280,9 @@ class WP_reCaptcha_Options {
 				);
 
 				if ( function_exists('WC') ) {
-					$wc_warn =  WP_reCaptcha::instance()->get_option('recaptcha_enable_wc_order') && WP_reCaptcha::instance()->get_option('recaptcha_flavor') !== 'grecaptcha';
 					$protect_settings[] = array(
 						'name'=>'recaptcha_enable_wc_order',
 						'label'=>__( 'woocommerce Checkout','wp-recaptcha-integration' ),
-						'class'	=> 'flavor-grecaptcha',
 					);
 				}
 
@@ -321,13 +299,11 @@ class WP_reCaptcha_Options {
 					$protect_settings[] = array(
 						'name'  => 'recaptcha_enable_bbp_topic',
 						'label' => __( 'bbPress New Topic','wp-recaptcha-integration' ),
-						'class' => 'flavor-grecaptcha',
 					);
 
 					$protect_settings[] = array(
 						'name'  => 'recaptcha_enable_bbp_reply',
 						'label' => __( 'bbPress New Reply','wp-recaptcha-integration' ),
-						'class' => 'flavor-grecaptcha',
 					);
 				}
 
@@ -418,7 +394,7 @@ class WP_reCaptcha_Options {
 	public function explain_styling() {
 		?><div class="recaptcha-explain"><?php
 			?><p class="description"><?php
-				_e( 'Choose a flavor and theme for your Captcha. Please note that with the old style reCaptcha you cannot have more than one captcha per page.' , 'wp-recaptcha-integration' );
+				_e( 'Choose a theme for your Captcha.' , 'wp-recaptcha-integration' );
 			?></p><?php
 		?></div><?php
 	}
@@ -600,23 +576,19 @@ class WP_reCaptcha_Options {
 		$option_name = 'recaptcha_language';
 		$option_value = WP_reCaptcha::instance()->get_option( $option_name );
 
-		$all_available_langs = array(
-			'recaptcha'		=>	WP_reCaptcha_ReCaptcha::instance()->get_supported_languages(),
-			'grecaptcha'	=>	WP_reCaptcha_NoCaptcha::instance()->get_supported_languages(),
-		);
+		$available_langs = WP_reCaptcha_NoCaptcha::instance()->get_supported_languages();
 
-		?><div class="recaptcha-select-language flavor-<?php echo $option_flavor ?>"><?php
-			foreach( $all_available_langs as $flavor => $available_langs ) {
-				?><select class="flavor-<?php echo $flavor ?>" name="<?php echo $option_name ?>[<?php echo $flavor ?>]"><?php
-					?><option <?php selected($option_value,'',true); ?> value=""><?php _e( 'Automatic','wp-recaptcha-integration' ); ?></option><?php
-					?><option <?php selected($option_value,'WPLANG',true); ?> value="WPLANG"><?php _e( 'Site Language' ); ?></option><?php
-					?><optgroup label="<?php _e('Other','wp-recaptcha-integration' ) ?>"><?php
-					foreach ( $available_langs as $lang => $lang_name ) {
-						?><option <?php selected($option_value,$lang,true); ?> value="<?php echo $lang; ?>"><?php _e( $lang_name ); ?></option><?php
-					}
-					?></optgroup><?php
-				?></select><?php
-			}
+		?><div class="recaptcha-select-language">
+			<select name="<?php echo $option_name ?>">
+				<option <?php selected($option_value,'',true); ?> value=""><?php _e( 'Automatic','wp-recaptcha-integration' ); ?></option>
+				<option <?php selected($option_value,'WPLANG',true); ?> value="WPLANG"><?php _e( 'Site Language' ); ?></option>
+				<optgroup label="<?php _e('Other','wp-recaptcha-integration' ) ?>">
+				<?php
+				foreach ( $available_langs as $lang => $lang_name ) {
+					?><option <?php selected( $option_value, $lang, true ); ?> value="<?php echo $lang; ?>"><?php _e( $lang_name ); ?></option><?php
+				}
+				?></optgroup><?php
+			?></select><?php
 		?></div><?php
 	}
 	/**
@@ -626,94 +598,58 @@ class WP_reCaptcha_Options {
 		$option_name = 'recaptcha_theme';
 
 		$grecaptcha_themes = WP_reCaptcha_NoCaptcha::instance()->get_supported_themes();
-		$grecaptcha_themes = array_map( array( $this , '_map_grecaptcha' ) , $grecaptcha_themes );
 
-		$recaptcha_themes  = WP_reCaptcha_ReCaptcha::instance()->get_supported_themes();
-		$recaptcha_themes = array_map( array( $this , '_map_recaptcha' ) , $recaptcha_themes );
+		$themes = $grecaptcha_themes; // + $recaptcha_themes;
 
-		$themes = $grecaptcha_themes + $recaptcha_themes;
+		$option_theme = WP_reCaptcha::instance()->get_option( $option_name );
 
-		$option_theme = WP_reCaptcha::instance()->get_option($option_name);
-		$option_flavor = WP_reCaptcha::instance()->get_option( 'recaptcha_flavor' );
+		?>
+		<div class="recaptcha-select-theme">
+			<?php
 
-		?><div class="recaptcha-select-theme"><?php
+			foreach ( $themes as $value => $label ) {
+				?><div class="theme-item">
+					<?php
+					printf('<input type="radio" id="%s" name="%s" value="%s" %s />',
+						"$option_name-$value",
+						$option_name,
+						$value,
+						checked( $value, $option_theme, false )
+					);
 
-		foreach ( $themes as $value => $theme ) {
-			extract( $theme ); // label, flavor
-			?><div class="theme-item flavor-<?php echo $flavor ?>"><?php
-				?><input <?php checked($value,$option_theme,true); ?> id="<?php echo "$option_name-$value" ?>" type="radio" name="<?php echo $option_name ?>" value="<?php echo $value ?>" /><?php
-				?><label for="<?php echo "$option_name-$value" ?>"><?php
-					?><span class="title"><?php
-						echo $label;
-					?></span><?php
-					if ( $value == 'custom' ) {
-						?><span class="visual"><?php
-							_e( 'Unstyled HTML to apply your own Stylesheets.' , 'wp-recaptcha-integration' );
-						?></span><?php
-					} else {
-						$src = plugins_url( "images/{$flavor}-theme-{$value}.png" , dirname(__FILE__));
-						printf( '<img src="%s" alt="%s" />' , $src , $label );
-					}
-				?></label><?php
-			?></div><?php
+					 ?>
+					<label for="<?php echo "$option_name-$value" ?>">
+						<span class="title"><?php echo $label; ?></span>
+						<?php
+							printf( '<img src="%s" alt="%s" />',
+								plugins_url( "images/grecaptcha-theme-{$value}.png" , dirname(__FILE__) ),
+								$label
+							);
+					?></label>
+				</div><?php
 
-			}
-			?></div><?php
-		?></div><?php
+				}
+			?></div>
+		</div>
+		<?php
 	}
 
 	/**
-	 *	@usage select_theme()
-	 */
-	private function _map_grecaptcha( $val ) {
-		$val['flavor'] = 'grecaptcha';
-		return $val;
-	}
-	/**
-	 *	@usage select_theme()
-	 */
-	private function _map_recaptcha( $val ) {
-		$val['flavor'] = 'recaptcha';
-		return $val;
-	}
-
-	/**
-	 *	Check if language is supported by current recaptcha flavor
+	 *	return supported language
 	 */
 	public function sanitize_language( $language ) {
-		$flavor = isset($_REQUEST['recaptcha_flavor']) ? $_REQUEST['recaptcha_flavor'] : WP_reCaptcha::instance()->get_option('recaptcha_flavor');
-
-		if ( isset( $language[$flavor] ) )
-			$language = $language[$flavor];
-
-		if ( $language != 'WPLANG' )
-			$language = WP_reCaptcha::instance()->captcha_instance_by_flavor( $flavor )->get_language( $language );
-		return $language;
+		return WP_reCaptcha_NoCaptcha::instance()->get_language( $language );
 	}
 	/**
-	 *	Check valid recaptcha theme, check if theme fits to flavor
+	 *	Check valid recaptcha theme
 	 */
 	public function sanitize_theme( $theme ) {
-		$themes_available = array(
-			'recaptcha' => array( 'white','red','blackglass','clean','custom' ),
-			'grecaptcha' => array( 'light','dark' ),
-		);
-		$flavor = WP_reCaptcha::instance()->get_option('recaptcha_flavor');
+		$themes = WP_reCaptcha_NoCaptcha::instance()->get_supported_themes();
 
-		if ( isset($themes_available[$flavor] ) && in_array($theme,$themes_available[$flavor]) )
+		if ( isset( $themes[ $theme ] ) ) {
 			return $theme;
-		else if ( isset($themes_available[$flavor] ) )
-			return $themes_available[$flavor][0];
+		}
 		return 'light';
-	}
-
-	/**
-	 *	Check valid flavor
-	 */
-	public function sanitize_flavor( $flavor ) {
-		if ( in_array($flavor,array('recaptcha','grecaptcha')) )
-			return $flavor;
-		return 'grecaptcha';
 	}
 
 	/**
@@ -741,8 +677,7 @@ class WP_reCaptcha_Options {
 	 *	Rendering the options page
 	 */
 	public function render_options_page() {
-		$option_flavor = WP_reCaptcha::instance()->get_option( 'recaptcha_flavor' );
-		?><div class="wrap flavor-<?php echo $option_flavor ?>"><?php
+		?><div class="wrap"><?php
 			?><h2><?php /*icon*/
 				_e('Settings');
 				echo ' › ';

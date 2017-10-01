@@ -6,7 +6,7 @@
  *	Class to manage the recaptcha options.
  */
 class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
-	
+
 	protected $supported_languages = array(
 		'ar' =>	'Arabic',
 		'bg' =>	'Bulgarian',
@@ -56,8 +56,8 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		'vi' =>	'Vietnamese',
 	);
 	private $_counter = 0;
-	
-	
+
+
 	/**
 	 *	Holding the singleton instance
 	 */
@@ -85,21 +85,17 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 
 	public function get_supported_themes() {
 		return array(
-			'light' => array(
-				'label' => __('Light','wp-recaptcha-integration') ,
-			),
-			'dark' => array(
-				'label' => __('Dark','wp-recaptcha-integration') ,
-			),
+			'light' => __('Light','wp-recaptcha-integration'),
+			'dark' => __('Dark','wp-recaptcha-integration'),
 		);
 	}
 	/**
 	 *	Override method
 	 *	Get recaptcha language code that matches input language code
-	 *	Sometimes WP uses different locales the the ones supported by nocaptcha. 
-	 *	
+	 *	Sometimes WP uses different locales the the ones supported by nocaptcha.
+	 *
 	 *	@param	$lang	string language code
-	 *	@return	string	recaptcha language code if supported by current flavor, empty string otherwise
+	 *	@return	string	recaptcha language code if supported, empty string otherwise
 	 */
 	public function get_language( $lang ) {
 		/*
@@ -138,11 +134,11 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	public function print_foot() {
 		$sitekey = WP_reCaptcha::instance()->get_option('recaptcha_publickey');
 		$language_param = '';
-		
-		
+
+
 		?><script type="text/javascript">
 		var recaptcha_widgets={};
-		function wp_recaptchaLoadCallback(){ 
+		function wp_recaptchaLoadCallback(){
 			try {
 				grecaptcha;
 			} catch(err){
@@ -163,7 +159,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 						wid = grecaptcha.render(el,{
 							'sitekey':'<?php echo $sitekey ?>',
 							'theme':el.getAttribute('data-theme') || '<?php echo WP_reCaptcha::instance()->get_option('recaptcha_theme'); ?>'
-<?php if ( WP_reCaptcha::instance()->get_option( 'recaptcha_disable_submit' ) ) { 
+<?php if ( WP_reCaptcha::instance()->get_option( 'recaptcha_disable_submit' ) ) {
 ?>							,
 							'callback' : function(r){ get_form_submits(el).setEnabled(true); /* enable submit buttons */ }
 <?php } ?>
@@ -176,14 +172,14 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 				})(e[i]);
 			}
 		}
-		
-		// if jquery present re-render jquery/ajax loaded captcha elements 
+
+		// if jquery present re-render jquery/ajax loaded captcha elements
 		if ( typeof jQuery !== 'undefined' )
 			jQuery(document).ajaxComplete( function(evt,xhr,set){
 				if( xhr.responseText && xhr.responseText.indexOf('<?php echo $sitekey ?>') !== -1)
 					wp_recaptchaLoadCallback();
 			} );
-		
+
 		</script><?php
 		$recaptcha_api_url = "https://www.google.com/recaptcha/api.js";
 		$recaptcha_api_url = add_query_arg(array(
@@ -192,12 +188,12 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 			),$recaptcha_api_url);
 		if ( $language_code = apply_filters( 'wp_recaptcha_language' , WP_reCaptcha::instance()->get_option( 'recaptcha_language' ) ) )
 			$recaptcha_api_url = add_query_arg('hl',$language_code,$recaptcha_api_url);
-		
+
 		?><script src="<?php echo esc_url( $recaptcha_api_url ) ?>" async defer></script><?php
 	}
-	
-	
-	
+
+
+
 	/**
 	 * @inheritdoc
 	 */
@@ -212,7 +208,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 			'data-theme' 	=> $theme,
 		);
 		$attr = wp_parse_args( $attr , $default );
-		
+
 		$attr_str = '';
 		foreach ( $attr as $attr_name => $attr_val )
 			$attr_str .= sprintf( ' %s="%s"' , $attr_name , esc_attr( $attr_val ) );
@@ -268,5 +264,5 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		return false;
 	}
 
-	
+
 }
