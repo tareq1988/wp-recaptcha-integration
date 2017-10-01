@@ -257,6 +257,9 @@ Since late 2015 WordPress.org offers a plugin translation API. Just use the
 
 == Changelog ==
 
+= 1.2.1 =
+- Register Form compatibility with WooCommerce 3.0+ [ywatt](https://github.com/ingomarent) & [MrFent37](https://wordpress.org/support/users/mrfent37/)
+
 = 1.2.0 =
 - Support [cformsII](https://wordpress.org/plugins/cforms2/) (thanks to [Bastian Germann](https://github.com/bgermann))
 - Support for Password Reset Protection for older woocommerce Versions [ingomarent](https://github.com/ingomarent)
