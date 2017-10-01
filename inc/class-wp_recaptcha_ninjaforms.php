@@ -124,7 +124,7 @@ class WP_reCaptcha_NinjaForms {
 			// reload recaptcha after failed ajax form submit
 			(function($){
 			$(document).on("submitResponse.default", function(e, response){
-				if ( grecaptcha ) {
+				if ( typeof grecaptcha !== "undefined" ) {
 					var wid = $(\'#ninja_forms_form_\'+response.form_id).find(\'.g-recaptcha\').data(\'widget-id\');
 					grecaptcha.reset(wid);
 				}
