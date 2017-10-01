@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
 Requires at least: 3.8
 Tested up to: 4.8
-Stable tag: 1.2.1
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,7 +154,7 @@ star reviews you will give me. Have a look at the project wiki or find a WordPre
 
 = Privacy: Will the captcha send the visitors IP address to google? =
 
-Yes and no. The captcha verification process, comming into effect after the user has solved
+Yes and no. The captcha verification process, coming into effect after the user has solved
 the challenge does not require the disclosure of the visitors IP address, so it is omitted.
 
 But everything related to the displaying of the captcha widget like the challenge image,
@@ -198,7 +198,7 @@ If the problem still persist, Houston really has a problem, and you are welcome 
 
 = Disabled submit buttons should be grey! Why aren't they? =
 
-Very likely the Author of your Theme didn't care that a non functinal form element should
+Very likely the Author of your Theme didn't care that a diabled form element should
 look different than a functional one. This how you can overcome that issue:
 
 - Go to (https://gist.github.com/mcguffin/7cbfb0dab73eb32cb4a2)
@@ -237,15 +237,10 @@ concerning stability or security (like crashes, vulnerabilities and alike) are m
 the official WP plugin repository first.
 
 
-= I found a bug and fixed it. How can I contribute? =
-
-Either post it on [GitHub](https://github.com/mcguffin/wp-recaptcha-integration) or—if you are working on a forked repository—send me a pull request.
-
-
 = Will you accept translations? =
 
-Since late 2015 WordPress.org offers a plugin translation API. Just head over to
-()[https://translate.wordpress.org/projects/wp-plugins/wp-recaptcha-integration]
+Please contribute to the official (translation Project for the ReCaptcha Plugin)[https://translate.wordpress.org/projects/wp-plugins/wp-recaptcha-integration].
+
 
 
 == Screenshots ==
@@ -257,9 +252,10 @@ Since late 2015 WordPress.org offers a plugin translation API. Just head over to
 
 == Changelog ==
 
-= 1.2.1 =
-- Deprecated old recaptcha.
-- Register Form compatibility with WooCommerce 3.0+ [ywatt](https://github.com/ingomarent) & [MrFent37](https://wordpress.org/support/users/mrfent37/)
+= 1.3.0 =
+- Deprecate old-style recaptcha.
+- New Option: size
+- Register Form compatibility with WooCommerce 3.0+ Thanks to [ywatt](https://github.com/ingomarent) and [MrFent37](https://wordpress.org/support/users/mrfent37/)
 
 = 1.2.0 =
 - Support [cformsII](https://wordpress.org/plugins/cforms2/) (thanks to [Bastian Germann](https://github.com/bgermann))

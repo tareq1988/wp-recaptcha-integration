@@ -265,6 +265,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		$return .= '<br></noscript>';
 		return $return;
 	}
+
 	/**
 	 * @inheritdoc
 	 */
@@ -273,8 +274,8 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		$user_response = isset( $_REQUEST['g-recaptcha-response'] ) ? $_REQUEST['g-recaptcha-response'] : false;
 		if ( $user_response !== false ) {
 			if (  ! $this->_last_result ) {
-				$remote_ip = $_SERVER['REMOTE_ADDR'];
-				$url = "https://www.google.com/recaptcha/api/siteverify?secret=$private_key&response=$user_response&remoteip=$remote_ip";
+//				$remote_ip = $_SERVER['REMOTE_ADDR'];
+				$url = "https://www.google.com/recaptcha/api/siteverify?secret=$private_key&response=$user_response";
 				$response = wp_remote_get( $url );
 				if ( ! is_wp_error($response) ) {
 					$response_data = wp_remote_retrieve_body( $response );
