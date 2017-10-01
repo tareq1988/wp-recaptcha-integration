@@ -7,3 +7,5 @@
 *.psd
 .svn/
 .svnignore
+.sass-cache
+node_modules/

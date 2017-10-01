@@ -38,6 +38,7 @@ class WP_reCaptcha {
 	 */
 	private function __construct() {
 		add_option('recaptcha_theme','light'); // local
+		add_option('recaptcha_size','normal'); // local
 		add_option('recaptcha_disable_submit',false); // local
 		add_option('recaptcha_noscript',false); // local
 		add_option('recaptcha_comment_use_42_filter',false); // local

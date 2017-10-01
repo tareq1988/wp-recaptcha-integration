@@ -85,7 +85,8 @@ class WP_reCaptcha_ContactForm7 {
 
 	function recaptcha_enqueue_script() {
 		if ( apply_filters( 'wp_recaptcha_do_scripts' , true ) ) {
-			wp_enqueue_script('wpcf7-recaptcha-integration',plugins_url('/js/wpcf7.js',dirname(__FILE__)),array('contact-form-7'));
+			$suffix = WP_DEBUG ? '' : '.min';
+			wp_enqueue_script('wpcf7-recaptcha-integration',plugins_url("/js/wpcf7{$suffix}.js",dirname(__FILE__)),array('contact-form-7'));
 		}
 	}
 

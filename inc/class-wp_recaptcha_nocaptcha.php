@@ -114,6 +114,15 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 			'dark' => __('Dark','wp-recaptcha-integration'),
 		);
 	}
+
+	public function get_supported_sizes() {
+		return array(
+			'normal'	=> __('Normal','wp-recaptcha-integration'),
+			'compact'	=> __('Compact','wp-recaptcha-integration'),
+			'invisible'	=> __('Invisible','wp-recaptcha-integration'),
+		);
+	}
+
 	/**
 	 *	Override method
 	 *	Get recaptcha language code that matches input language code
@@ -136,6 +145,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 			$lang = $mapping[$lang];
 		return parent::get_language( $lang );
 	}
+
 	/**
 	 * @inheritdoc
 	 */
@@ -163,13 +173,13 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 
 		?><script type="text/javascript">
 		var recaptcha_widgets={};
-		function wp_recaptchaLoadCallback(){
+		function wp_recaptchaLoadCallback() {
 			try {
 				grecaptcha;
 			} catch(err){
 				return;
 			}
-			var e = document.querySelectorAll ? document.querySelectorAll('.g-recaptcha:not(.wpcf7-form-control)') : document.getElementsByClassName('g-recaptcha'),
+			var e = document.querySelectorAll('.g-recaptcha:not(.wpcf7-form-control)'),
 				form_submits;
 
 			for (var i=0;i<e.length;i++) {
@@ -211,10 +221,12 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 				'onload' => 'wp_recaptchaLoadCallback',
 				'render' => 'explicit',
 			),$recaptcha_api_url);
-		if ( $language_code = apply_filters( 'wp_recaptcha_language' , WP_reCaptcha::instance()->get_option( 'recaptcha_language' ) ) )
-			$recaptcha_api_url = add_query_arg('hl',$language_code,$recaptcha_api_url);
 
-		?><script src="<?php echo esc_url( $recaptcha_api_url ) ?>" async defer></script><?php
+		if ( $language_code = apply_filters( 'wp_recaptcha_language' , WP_reCaptcha::instance()->get_option( 'recaptcha_language' ) ) ) {
+			$recaptcha_api_url = add_query_arg('hl',$language_code,$recaptcha_api_url);
+		}
+
+		printf('<script src="%s" async defer></script>', esc_url( $recaptcha_api_url ) );
 	}
 
 
