@@ -606,11 +606,11 @@ class WP_reCaptcha_Options {
 		$option_theme = WP_reCaptcha::instance()->get_option( $option_name );
 
 		?>
-		<div class="recaptcha-select-theme">
+		<div class="recaptcha-select-visual">
 			<?php
 
 			foreach ( $themes as $value => $label ) {
-				?><div class="theme-item">
+				?><div class="visual-item">
 					<?php
 					printf('<input type="radio" id="%s" name="%s" value="%s" %s />',
 						"$option_name-$value",
@@ -647,11 +647,11 @@ class WP_reCaptcha_Options {
 		$option_value = WP_reCaptcha::instance()->get_option( $option_name );
 
 		?>
-		<div class="recaptcha-select-size">
+		<div class="recaptcha-select-visual">
 			<?php
 
 			foreach ( $sizes as $value => $label ) {
-				?><div class="size-item">
+				?><div class="visual-item">
 					<?php
 					printf('<input type="radio" id="%s" name="%s" value="%s" %s />',
 						"$option_name-$value",
@@ -698,7 +698,7 @@ class WP_reCaptcha_Options {
 	 *	Check valid recaptcha theme
 	 */
 	public function sanitize_size( $size ) {
-		$size = WP_reCaptcha_NoCaptcha::instance()->get_supported_sizes();
+		$sizes = WP_reCaptcha_NoCaptcha::instance()->get_supported_sizes();
 
 		if ( isset( $sizes[ $size ] ) ) {
 			return $size;

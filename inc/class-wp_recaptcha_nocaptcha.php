@@ -119,7 +119,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		return array(
 			'normal'	=> __('Normal','wp-recaptcha-integration'),
 			'compact'	=> __('Compact','wp-recaptcha-integration'),
-			'invisible'	=> __('Invisible','wp-recaptcha-integration'),
+//			'invisible'	=> __('Invisible','wp-recaptcha-integration'),
 		);
 	}
 
@@ -193,7 +193,8 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 					if ( ! el.childNodes.length) {
 						wid = grecaptcha.render(el,{
 							'sitekey':'<?php echo $sitekey ?>',
-							'theme':el.getAttribute('data-theme') || '<?php echo WP_reCaptcha::instance()->get_option('recaptcha_theme'); ?>'
+							'theme':el.getAttribute('data-theme') || '<?php echo WP_reCaptcha::instance()->get_option('recaptcha_theme'); ?>',
+							'size':el.getAttribute('data-size') || '<?php echo WP_reCaptcha::instance()->get_option('recaptcha_size'); ?>'
 <?php if ( WP_reCaptcha::instance()->get_option( 'recaptcha_disable_submit' ) ) {
 ?>							,
 							'callback' : function(r){ get_form_submits(el).setEnabled(true); /* enable submit buttons */ }
@@ -237,12 +238,14 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	public function get_html( $attr = array() ) {
 		$public_key = WP_reCaptcha::instance()->get_option( 'recaptcha_publickey' );
 		$theme = WP_reCaptcha::instance()->get_option('recaptcha_theme');
+		$size = WP_reCaptcha::instance()->get_option('recaptcha_size');
 
 		$default = array(
 			'id'			=> 'g-recaptcha-'.$this->_counter++,
 			'class'			=> "g-recaptcha",
 			'data-sitekey'	=> $public_key,
 			'data-theme' 	=> $theme,
+			'data-size' 	=> $size,
 		);
 		$attr = wp_parse_args( $attr , $default );
 

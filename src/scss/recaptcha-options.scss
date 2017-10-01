@@ -1,5 +1,5 @@
-.recaptcha-select-theme {
-	.theme-item {
+.recaptcha-select-visual {
+	.visual-item {
 		display:inline-block;
 	}
 	label {
@@ -8,7 +8,8 @@
 		padding:0px;
 		background-color:transparent;
 		border-radius:10px;
-		max-width:200px;
+		width:250px;
+		height:100px;
 		transition: all 0.125s ease-in-out;
 	}
 	input[type="radio"] {
@@ -32,7 +33,8 @@
 	.visual,
 	img {
 		width:100%;
-		height:auto;
+		height:100%;
+		object-fit:contain;
 	}
 	.visual {
 		display:block;
@@ -83,7 +85,7 @@
 		border-style:solid;
 		color:#333;
 	    box-shadow: rgba(0,0,0,.5) 0 0 5px 0px;
-		&:checked + label .dashicons-lock {
+		.dashicons-lock {
 			color:#0074A2;
 			font-size:2em;
 			padding-left:4px;

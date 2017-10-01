@@ -1,20 +1,21 @@
-.recaptcha-select-theme .theme-item {
+.recaptcha-select-visual .visual-item {
   display: inline-block; }
 
-.recaptcha-select-theme label {
+.recaptcha-select-visual label {
   display: inline-block;
   margin: 30px;
   padding: 0px;
   background-color: transparent;
   border-radius: 10px;
-  max-width: 200px;
+  width: 250px;
+  height: 100px;
   -webkit-transition: all 0.125s ease-in-out;
   -o-transition: all 0.125s ease-in-out;
   transition: all 0.125s ease-in-out; }
 
-.recaptcha-select-theme input[type="radio"] {
+.recaptcha-select-visual input[type="radio"] {
   display: none; }
-  .recaptcha-select-theme input[type="radio"]:checked + label {
+  .recaptcha-select-visual input[type="radio"]:checked + label {
     background-color: #0074A2;
     color: #fff;
     margin: 15px;
@@ -22,18 +23,20 @@
     -webkit-box-shadow: rgba(0, 0, 0, 0.3) 0 0 15px 5px;
     box-shadow: rgba(0, 0, 0, 0.3) 0 0 15px 5px; }
 
-.recaptcha-select-theme .title {
+.recaptcha-select-visual .title {
   display: block;
   font-weight: 600;
   text-align: center;
   padding-bottom: 0.5em; }
 
-.recaptcha-select-theme .visual,
-.recaptcha-select-theme img {
+.recaptcha-select-visual .visual,
+.recaptcha-select-visual img {
   width: 100%;
-  height: auto; }
+  height: 100%;
+  -o-object-fit: contain;
+  object-fit: contain; }
 
-.recaptcha-select-theme .visual {
+.recaptcha-select-visual .visual {
   display: block;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -80,7 +83,7 @@
   color: #333;
   -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0 0 5px 0px;
   box-shadow: rgba(0, 0, 0, 0.5) 0 0 5px 0px; }
-  .recaptcha-onoff input[type="checkbox"]:checked + label:checked + label .dashicons-lock {
+  .recaptcha-onoff input[type="checkbox"]:checked + label .dashicons-lock {
     color: #0074A2;
     font-size: 2em;
     padding-left: 4px;
