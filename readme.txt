@@ -157,7 +157,7 @@ requests on github and push it to the WP repository. Please note that in such ca
 not feel responsible for code maintainance.
 
 
-= The captcha does not show up. What’s wrong? =
+= The captcha is not show up. What’s wrong? =
 
 On the plugin settings page check out if the option “Disable for known users” is activated (it is by default).
 Then log out (or open your page in a private browser window) and try again.
@@ -179,12 +179,12 @@ If the problem still persist, Houston really has a problem, and you are welcome 
 
 = Disabled submit buttons should be grey! Why aren't they? =
 
-Very likely the Author of your Theme didn't care that a diabled form element should
+Very likely the Author of your Theme didn't care that a disabled form element should
 look different than a functional one. This how you can overcome that issue:
 
 - Go to (https://gist.github.com/mcguffin/7cbfb0dab73eb32cb4a2)
-- Click the "Download Gist" button
-- Unpack the `.tar.gz` file.
+- Click the "Download ZIP" button
+- Unpack the file.
 - Create a zip Archive out of the included file `grey-out-disabled.php` and name it `grey-out-disabled.zip`.
 - Install and activate it like any other WordPress plugin
 
@@ -198,7 +198,7 @@ for a code example.
 
 = I found a bug. Where should I post it? =
 
-I personally prefer GitHub but you can post it in the forum as well. The plugin code is here: [GitHub](https://github.com/mcguffin/wp-recaptcha-integration)
+I personally prefer GitHub. The plugin code is here: [GitHub](https://github.com/mcguffin/wp-recaptcha-integration)
 
 
 = I want to use the latest files. How can I do this? =
@@ -213,9 +213,9 @@ Use the GitHub Repo rather than the WordPress Plugin. Do as follows:
 
 4. If you want to update to the latest files (be careful, might be untested with your WP-Version) type `git pull.
 
-Please note that the GitHub repository is more likely to contain unstable and untested code. Urgent fixes
-concerning stability or security (like crashes, vulnerabilities and alike) are more likely to be fixed in
-the official WP plugin repository first.
+The GitHub master branch is likely to contain unstable and untested code. Use it
+on your own risk. The stable versions are under [releases](https://github.com/mcguffin/wp-recaptcha-integration/releases)
+which are in sync with the WordPress Plugin Repository.
 
 
 = Will you accept translations? =
@@ -229,6 +229,10 @@ Please contribute to the official (translation Project for the ReCaptcha Plugin)
 1. Plugin Settings (v 1.1.4)
 
 == Upgrade Notice ==
+
+- Support for old style recaptcha v1 has been dropped. If you still use v1, the
+  login and lost password captcha will be disabled upon update. Otherwise you
+  might be locked out of your WP-Admin. Please check the settings after upgrading
 
 == Changelog ==
 

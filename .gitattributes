@@ -2,8 +2,10 @@
 .gitignore export-ignore
 .gitattributes export-ignore
 README.md export-ignore
+TODO.md export-ignore
 # gulp
 gulpfile.js export-ignore
 package*.json export-ignore
 # misc
-/composer.json export-ignore
+composer.json export-ignore
+src/* export-ignore

@@ -522,6 +522,8 @@ class WP_reCaptcha {
 			delete_option( 'recaptcha_flavor' );
 			update_option( 'recaptcha_theme', 'light' );
 			update_option( 'recaptcha_language', '' );
+			update_option( 'recaptcha_enable_login', 0 );
+			update_option( 'recaptcha_enable_lostpw', 0 );
 			add_action( 'admin_notices', array( $inst, 'deprecated_v1_notice' ) );
 		}
 
@@ -539,12 +541,18 @@ class WP_reCaptcha {
 	 *	@action admin_notices
 	 */
 	function deprecated_v1_notice() {
-		?><div class="notice error above-h1"><p><?php
+		?><div class="notice error above-h1">
+			<p><?php
 			printf(
 				__( 'Google no longer supports the old-style reCaptcha. The <a href="%s">plugin settings</a> have been updated accordingly.' , 'wp-recaptcha-integration' ),
 				admin_url( add_query_arg( 'page' , 'recaptcha' , 'options-general.php' ) )
 			);
-		?></p></div><?php
+			?></p>
+			<p><?php
+				_e( 'The Login and Lost password protection have been disabled. Please test if the captcha still works, an re-enable it, if you like.' , 'wp-recaptcha-integration' );
+			?></p>
+
+		</div><?php
 	}
 
 	/**
