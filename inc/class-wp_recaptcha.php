@@ -67,8 +67,8 @@ class WP_reCaptcha {
 
 		if ( $this->has_api_key() ) {
 
-			add_action('init' , array(&$this,'init') , 9 );
-			add_action('plugins_loaded' , array(&$this,'plugins_loaded'), 9 );
+			add_action('init' , array( $this,'init') , 9 );
+			add_action('plugins_loaded' , array( $this,'plugins_loaded'), 9 );
 
 		}
 
@@ -137,47 +137,50 @@ class WP_reCaptcha {
 				//*/
 				add_action('pre_comment_on_post',array($this,'recaptcha_check_or_die'));
 
-				add_action( 'print_comments_recaptcha' , array( &$this , 'print_recaptcha_html' ) );
-				add_filter( 'comments_recaptcha_html' , array( &$this , 'recaptcha_html' ) );
+				add_action( 'print_comments_recaptcha' , array( $this , 'print_recaptcha_html' ) );
+				add_filter( 'comments_recaptcha_html' , array( $this , 'recaptcha_html' ) );
 			}
 			if ( $this->get_option('recaptcha_enable_signup') ) {
+				$this->captcha_instance();
 				// buddypress suuport.
 				if ( function_exists('buddypress') ) {
-					add_action('bp_account_details_fields',array($this,'print_recaptcha_html'));
-					add_action('bp_signup_pre_validate',array(&$this,'recaptcha_check_or_die'),99 );
+					add_action('bp_account_details_fields',array( $this,'print_recaptcha_html'));
+					add_action('bp_signup_pre_validate',array( $this,'recaptcha_check_or_die'),99 );
 				} else {
-					add_action('register_form',array($this,'print_recaptcha_html'));
-					add_filter('registration_errors',array(&$this,'registration_errors'));
+					add_action('register_form',array( $this,'print_recaptcha_html'));
+					add_filter('registration_errors',array( $this,'registration_errors'));
 				}
 				if ( is_multisite() ) {
 					add_action( 'signup_extra_fields' , array($this,'print_recaptcha_html'));
-					add_filter('wpmu_validate_user_signup',array(&$this,'wpmu_validate_user_signup'));
+					add_filter('wpmu_validate_user_signup',array( $this,'wpmu_validate_user_signup'));
 				}
-				add_filter( 'signup_recaptcha_html' , array( &$this , 'recaptcha_html' ) );
+				add_filter( 'signup_recaptcha_html' , array(  $this , 'recaptcha_html' ) );
 
 			}
 			if ( $this->get_option('recaptcha_enable_login') ) {
-				add_action('login_form',array(&$this,'print_recaptcha_html'));
-				add_filter('wp_authenticate_user',array(&$this,'deny_login'),99 );
-				add_filter( 'login_recaptcha_html' , array( &$this , 'recaptcha_html' ) );
+				$this->captcha_instance();
+				add_action( 'login_form', array( $this, 'print_recaptcha_html' ) );
+				add_filter( 'wp_authenticate_user', array( $this, 'deny_login'), 99 );
+				add_filter( 'login_recaptcha_html', array( $this , 'recaptcha_html' ) );
 			}
 			if ( $this->get_option('recaptcha_enable_lostpw') ) {
-				add_action('lostpassword_form' , array($this,'print_recaptcha_html') );
+				$this->captcha_instance();
+				add_action('lostpassword_form' , array( $this, 'print_recaptcha_html') );
 //*
-				add_action('lostpassword_post' , array(&$this,'recaptcha_check_or_die') , 99 );
+				add_action('lostpassword_post' , array( $this, 'recaptcha_check_or_die') , 99 );
 /*/ // switch this when pull request accepted and included in official WC release.
-				add_filter('allow_password_reset' , array(&$this,'wp_error') );
+				add_filter('allow_password_reset' , array( $this,'wp_error') );
 //*/
-				add_filter( 'lostpassword_recaptcha_html' , array( &$this , 'recaptcha_html' ) );
+				add_filter( 'lostpassword_recaptcha_html' , array( $this, 'recaptcha_html' ) );
 			}
 			if ( 'WPLANG' === $this->get_option( 'recaptcha_language' ) )
-				add_filter( 'wp_recaptcha_language' , array( &$this,'recaptcha_wplang' ) , 5 );
+				add_filter( 'wp_recaptcha_language' , array( $this, 'recaptcha_wplang' ) , 5 );
 
-			add_action( 'recaptcha_print' , array( &$this , 'print_recaptcha_html' ) );
-			add_filter( 'recaptcha_error' , array( &$this , 'wp_error' ) );
-			add_filter( 'recaptcha_html' , array( &$this , 'recaptcha_html' ) );
+			add_action( 'recaptcha_print' , array( $this, 'print_recaptcha_html' ) );
+			add_filter( 'recaptcha_error' , array( $this, 'wp_error' ) );
+			add_filter( 'recaptcha_html' , array( $this, 'recaptcha_html' ) );
 		}
-		add_filter( 'recaptcha_valid' , array( &$this , 'recaptcha_check' ) );
+		add_filter( 'recaptcha_valid' , array( $this , 'recaptcha_check' ) );
 	}
 
 	/**

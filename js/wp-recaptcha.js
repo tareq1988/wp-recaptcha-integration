@@ -1,5 +1,17 @@
 (function($){
-	var $captchas = $('.wp-recaptcha');
+	var $captchas = $('.wp-recaptcha'),
+		$other_captchas = $('.g-recaptcha'),
+		loadedInterval;
+
+	function init() {
+		$other_captchas.removeClass('g-recaptcha');
+		$captchas = $('.wp-recaptcha').addClass('g-recaptcha');
+
+		$('<script></script>')
+			.attr( 'src', wp_recaptcha.recaptcha_url )
+			.appendTo('body');
+	}
+
 	window.wp_recaptcha_loaded = function(){
 		if ( ! grecaptcha ) {
 			return;
@@ -41,15 +53,37 @@
 
 			grecaptcha.render( el, opts );
 		});
+
+		$other_captchas.addClass('g-recaptcha');
 	}
+
+	function captchas_rendered() {
+		var rendered = true;
+		$other_captchas.each( function(i,el) {
+			rendered = captchas_rendered && $(el).html() !== '';
+		});
+		return rendered;
+	}
+
 	// load google recaptcha
 	if ( $captchas.length ) {
-
+		if ( $other_captchas.length || $('.nf-form-cont').length ) {
+			if ( 'undefined' !== typeof grecaptcha ) {
+				wp_recaptcha_loaded();
+			} else {
+				loadedInterval = setInterval(function(){
+					if ( 'undefined' !== typeof grecaptcha ) {
+						clearInterval( loadedInterval );
+						wp_recaptcha_loaded();
+					}
+				},333);
+			}
+		} else {
+			init();
+		}
 		// load recaptcha script
-		$('<script></script>')
-			.attr( 'src', wp_recaptcha.recaptcha_url )
-			.appendTo('body');
+	} else {
+		$(document).ready( init );
 	}
-
 
 })(jQuery);

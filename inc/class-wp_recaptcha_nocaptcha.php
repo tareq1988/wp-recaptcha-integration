@@ -106,13 +106,17 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	 *	Prevent from creating more than one instance
 	 */
 	private function __construct() {
+
 		if ( did_action( 'wp_enqueue_scripts' ) ) {
 			$this->register_assets();
 		} else {
 			add_action( 'wp_enqueue_scripts', array( $this, 'register_assets') );
+			add_action( 'admin_enqueue_scripts', array( $this, 'register_assets') );
+			add_action( 'login_enqueue_scripts', array( $this, 'register_assets') );
 		}
 	}
 	public function register_assets() {
+		$is_login = current_filter() === 'login_enqueue_scripts';
 
 		$recaptcha_api_url = "https://www.google.com/recaptcha/api.js";
 		$recaptcha_api_url = add_query_arg( array(
@@ -124,11 +128,28 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 			$recaptcha_api_url = add_query_arg( 'hl', $language_code, $recaptcha_api_url );
 		}
 		$suffix = WP_DEBUG ? '' : '.min';
-		wp_register_script( 'wp-recaptcha', plugins_url( "js/wp-recaptcha{$suffix}.js" , dirname(__FILE__)) , array( 'jquery' ), false, true );
+		wp_register_script( 'wp-recaptcha', plugins_url( "js/wp-recaptcha{$suffix}.js" , dirname(__FILE__)) , array( 'jquery' ), false, ! $is_login );
 		wp_localize_script( 'wp-recaptcha', 'wp_recaptcha', array(
 			'recaptcha_url'	=> $recaptcha_api_url,
 			'site_key'		=> WP_reCaptcha::instance()->get_option( 'recaptcha_publickey' ),
 		) );
+
+		if ( $is_login ) {
+			wp_enqueue_script( 'wp-recaptcha' );
+			?>
+			<style type="text/css">
+			.wp-recaptcha[data-size="normal"] {
+				width:304px;
+				margin-left:-15px;
+				margin-bottom:15px;
+			}
+			.wp-recaptcha[data-size="compact"] {
+				width:164px;
+				margin-bottom:15px;
+			}
+			</style>
+			<?php
+		}
 	}
 
 	public function get_supported_themes() {

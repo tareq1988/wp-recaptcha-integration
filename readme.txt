@@ -49,13 +49,6 @@ running under his/her own domain name.
 
 
 = Known Limitations =
-- A No Captcha definitely requires client side JavaScript enabled. That's how it does its
-  sophisticated bot detection magic. There is no fallback. If your visitor does not have
-  JS enabled the captcha test will not let him through.
-
-- As of version 4.3 CF7 comes with its own recaptcha. Both are supposed to work together.
-  I you want to keep the WP ReCaptcha functionality, e.g. if you want to hide the captcha
-  from known users, leave the integration in the CF7 settings unconfigured.
 
 - In **WooCommerce** the reset password form can not be protected by a captcha. Woocommerce does
   not fire any action in the lost password form, so there is no way for the plugin to hook in.
