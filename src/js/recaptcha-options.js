@@ -1,5 +1,8 @@
 (function($){
-
+	$(document).on('change','[name="recaptcha_theme"],[name="recaptcha_size"]',function(e){
+		$('.recaptcha-preview').attr('data-size',$('[name="recaptcha_size"]:checked').first().val())
+		$('.recaptcha-preview').attr('data-theme',$('[name="recaptcha_theme"]:checked').first().val())
+	});
 
 	$(document).on('click','#test-api-key' , function(e){
 		if ( ! $('#recaptcha-test-head').length )

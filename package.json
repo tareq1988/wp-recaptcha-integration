@@ -16,9 +16,11 @@
   },
   "homepage": "https://github.com/mcguffin/wp-recaptcha-integration#readme",
   "devDependencies": {
+    "btoa": "^1.1.2",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.0.0",
     "gulp-concat": "^2.6.1",
+    "gulp-pngquant": "^1.0.12",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^1.12.0",

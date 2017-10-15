@@ -1,56 +1,59 @@
-.recaptcha-select-visual {
-	.visual-item {
-		display:inline-block;
+.recaptcha-select-language {
+	width:100%;
+}
+.recaptcha-preview-container {
+	// width:100%;
+	@media only screen and (min-width: 600px) {
+		position:relative;
+		float:right;
 	}
-	label {
-		display:inline-block;
-		margin:30px;
-		padding:0px;
-		background-color:transparent;
-		border-radius:10px;
-		width:250px;
-		height:100px;
-		transition: all 0.125s ease-in-out;
+}
+.recaptcha-preview {
+	//display:none;
+//	transform: scale(.5);
+	// margin:0 auto;
+	// transform-origin:center center;
+	// position:absolute;
+	margin:1em auto;
+	border-radius:4px;
+	box-shadow:rgba(0, 0, 0, 0.08) 0px 0px 4px 1px;
+	@media only screen and (min-width: 600px) {
+		position:absolute;
+		bottom:0;
+		right:0;
+		margin:0;
 	}
-	input[type="radio"] {
-		display:none;
-		&:checked {
-			& + label {
-				background-color:#0074A2;
-				color:#fff;
-				margin:15px;
-				padding:15px;
-			    box-shadow: rgba(0,0,0,.3) 0 0 15px 5px;
-			}
+
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-size:100%;
+	&[data-size="normal"] {
+		width:302px;
+		height:76px;
+		&[data-theme="light"] {
+			background-image:url( inline-image( 'images/grecaptcha-light-normal.png' ));
+		}
+		&[data-theme="dark"] {
+			background-image:url( inline-image( 'images/grecaptcha-dark-normal.png' ));
 		}
 	}
-	.title {
-		display:block;
-		font-weight:600;
-		text-align:center;
-		padding-bottom:0.5em;
-	}
-	.visual,
-	img {
-		width:100%;
-		height:100%;
-		object-fit:contain;
-	}
-	.visual {
-		display:block;
-		box-sizing:border-box;
-		background-color:#888;
-		color:#fff;
-		font-weight:bold;
-		padding:1em;
-		text-align:center;
-		border-radius:10px;
-		border:5px dashed #444;
+	&[data-size="compact"] {
+		width:158px;
+		height:138px;
+		&[data-theme="light"] {
+			background-image:url( inline-image( 'images/grecaptcha-light-compact.png' ));
+		}
+		&[data-theme="dark"] {
+			background-image:url( inline-image( 'images/grecaptcha-dark-compact.png' ));
+		}
 	}
 }
 
-
-
+.radio-horizontal {
+	label {
+		margin-right:1em;
+	}
+}
 
 .recaptcha-onoff {
 	input[type="checkbox"] {
