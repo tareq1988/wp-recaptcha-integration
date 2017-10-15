@@ -10,20 +10,6 @@ abstract class WP_reCaptcha_Captcha {
 	protected $_last_result = false;
 
 	/**
-	 * Print Head scripts.
-	 */
-	abstract function print_head();
-
-	/**
-	 * Print Head scripts on login page.
-	 */
-	abstract function print_login_head();
-
-	/**
-	 * Print footer scripts
-	 */
-	abstract function print_foot();
-	/**
 	 * Get the captcha HTML
 	 *
 	 * @param	$attr	array	HTML attributes as key => value association
@@ -38,6 +24,7 @@ abstract class WP_reCaptcha_Captcha {
 	 * @return	bool	true when the captcha test verifies.
 	 */
 	abstract function check();
+
 	/**
 	 * Get supported theme names
 	 *

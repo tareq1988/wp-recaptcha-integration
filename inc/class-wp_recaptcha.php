@@ -39,7 +39,6 @@ class WP_reCaptcha {
 	private function __construct() {
 		add_option('recaptcha_theme','light'); // local
 		add_option('recaptcha_size','normal'); // local
-		add_option('recaptcha_disable_submit',false); // local
 		add_option('recaptcha_noscript',false); // local
 		add_option('recaptcha_comment_use_42_filter',false); // local
 		add_option('recaptcha_publickey',''); // 1st global -> then local
@@ -73,9 +72,10 @@ class WP_reCaptcha {
 
 		}
 
-		register_activation_hook( __FILE__ , array( __CLASS__ , 'activate' ) );
-		register_deactivation_hook( __FILE__ , array( __CLASS__ , 'deactivate' ) );
-		register_uninstall_hook( __FILE__ , array( __CLASS__ , 'uninstall' ) );
+
+		register_activation_hook( WP_RECAPTCHA_FILE, array( __CLASS__ , 'activate' ) );
+		register_deactivation_hook( WP_RECAPTCHA_FILE, array( __CLASS__ , 'deactivate' ) );
+		register_uninstall_hook( WP_RECAPTCHA_FILE, array( __CLASS__ , 'uninstall' ) );
 	}
 
 	/**
@@ -121,14 +121,7 @@ class WP_reCaptcha {
 		$require_recaptcha = $this->is_required();
 
 		if ( $require_recaptcha ) {
-			add_action( 'wp_head' , array($this,'recaptcha_head') );
-			add_action( 'wp_footer' , array($this,'recaptcha_foot') );
 
-			if ( $this->get_option('recaptcha_enable_signup') || $this->get_option('recaptcha_enable_login')  || $this->get_option('recaptcha_enable_lostpw') ) {
-				add_action( 'login_head' , array(&$this,'recaptcha_head') );
-				add_action( 'login_head' , array(&$this,'recaptcha_login_head') );
-				add_action( 'login_footer' , array(&$this,'recaptcha_foot') );
-			}
 			if ( $this->get_option('recaptcha_enable_comments') ) {
 				/*
 				add_filter('comment_form_defaults',array($this,'comment_form_defaults'),10);
@@ -216,72 +209,6 @@ class WP_reCaptcha {
 	//////////////////////////////////
 	// 	Displaying
 	//
-
-	/**
-	 *	print recaptcha stylesheets
-	 *	hooks into `wp_head`
-	 */
-	function recaptcha_head( ) {
-		if ( apply_filters( 'wp_recaptcha_do_scripts' , true ) ) {
-			$this->begin_inject( );
-			$this->captcha_instance()->print_head();
-			$this->end_inject( );
-		}
- 	}
-
-	/**
-	 *	print recaptcha login form stylesheets
-	 *	hooks into `wp_head`
-	 */
-	function recaptcha_login_head( ) {
-		if ( apply_filters( 'wp_recaptcha_print_login_css' , true ) ) {
-			$this->begin_inject( );
-			$this->captcha_instance()->print_login_head();
-			$this->end_inject( );
-		}
- 	}
-
-	/**
-	 *	Print recaptcha scripts
-	 *	hooks into `wp_footer`
-	 *
-	 */
-	function recaptcha_foot( ) {
-		if ( apply_filters( 'wp_recaptcha_do_scripts' , true ) ) {
-			$this->begin_inject( );
-
-			// getting submit buttons of an elements form
-			if ( $this->get_option( 'recaptcha_disable_submit' ) ) {
-				?><script type="text/javascript">
-				function get_form_submits(el){
-					var form,current=el,ui,type,slice = Array.prototype.slice,self=this;
-					this.submits=[];
-					this.form=false;
-
-					this.setEnabled=function(e){
-						for ( var s=0;s<self.submits.length;s++ ) {
-							if (e) self.submits[s].removeAttribute('disabled');
-							else  self.submits[s].setAttribute('disabled','disabled');
-						}
-						return this;
-					};
-					while ( current && current.nodeName != 'BODY' && current.nodeName != 'FORM' ) {
-						current = current.parentNode;
-					}
-					if ( !current || current.nodeName != 'FORM' )
-						return false;
-					this.form=current;
-					ui=slice.call(this.form.getElementsByTagName('input')).concat(slice.call(this.form.getElementsByTagName('button')));
-					for (var i = 0; i < ui.length; i++) if ( (type=ui[i].getAttribute('TYPE')) && type=='submit' ) this.submits.push(ui[i]);
-					return this;
-				}
-				</script><?php
-			}
-			$this->captcha_instance()->print_foot();
-
-			$this->end_inject( );
-		}
-	}
 
 	/**
 	 *	Print recaptcha HTML. Use inside a form.
@@ -582,20 +509,7 @@ class WP_reCaptcha {
 	 *	Fired on plugin activation
 	 */
 	public static function activate() {
-
-		if ( function_exists('wpcf7') ) {
-			// IF CF7 is active, try to configure plugin from cf7 options
-			if ( $wpcf7_options = get_option('wpcf7') ) {
-				if ( isset( $wpcf7_options['recaptcha'] ) && !self::instance()->has_api_key() ) {
-					foreach ( $wpcf7_options['recaptcha'] as $sitekey => $secretkey ) {
-						update_option('recaptcha_publickey',$sitekey);
-						update_option('recaptcha_privatekey',$secretkey);
-						break;
-					}
-				}
-			}
-		}
-
+		// flavor option is deprecated
 		if ( get_option('recaptcha_flavor') === 'recaptcha' ) {
 			delete_option( 'recaptcha_flavor' );
 		}
@@ -607,6 +521,13 @@ class WP_reCaptcha {
 			update_option( 'recaptcha_language', '' );
 			add_action( 'admin_notices', array( $inst, 'deprecated_v1_notice' ) );
 		}
+
+		// disable submit option deprecated in favor of recaptcha_solved_callback
+		if ( get_option('recaptcha_disable_submit') ) {
+			update_option( 'recaptcha_solved_callback', 'enable' );
+			delete_option( 'recaptcha_disable_submit' );
+		}
+
 
 	}
 
