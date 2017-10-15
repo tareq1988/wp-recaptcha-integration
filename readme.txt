@@ -169,8 +169,8 @@ right before the submit button.) You will have to use another hook, e.g. `commen
 Here is some code that will fix it:
 
 - Go to (https://gist.github.com/mcguffin/97d7f442ee3e92b7412e)
-- Click the "Download Gist" button
-- Unpack the `.tar.gz` file.
+- Click the "Download ZIP" button
+- Unpack the file.
 - Create a zip Archive out of the included file `recaptcha-comment-form-fix.php` and name it `recaptcha-comment-form-fix.zip`.
 - Install and activate it like any other WordPress plugin
 
