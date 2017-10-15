@@ -115,10 +115,10 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	public function register_assets() {
 
 		$recaptcha_api_url = "https://www.google.com/recaptcha/api.js";
-		$recaptcha_api_url = add_query_arg(array(
-				'onload' => 'wp_recaptcha_loaded',
-				'render' => 'explicit',
-			),$recaptcha_api_url);
+		$recaptcha_api_url = add_query_arg( array(
+			'onload' => 'wp_recaptcha_loaded',
+			'render' => 'explicit',
+		),$recaptcha_api_url);
 
 		if ( $language_code = apply_filters( 'wp_recaptcha_language' , WP_reCaptcha::instance()->get_option( 'recaptcha_language' ) ) ) {
 			$recaptcha_api_url = add_query_arg( 'hl', $language_code, $recaptcha_api_url );
@@ -180,13 +180,15 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 
 		$default = array(
 			'id'			=> 'g-recaptcha-'.$this->_counter++,
-			'class'			=> "g-recaptcha wp-recaptcha",
+			'class'			=> "wp-recaptcha",
 			'data-theme' 	=> $theme,
 			'data-size' 	=> $size,
 			'data-callback'	=> $inst->get_option( 'recaptcha_solved_callback'),
 		);
 		$attr = wp_parse_args( $attr , $default );
-
+		if ( WP_reCaptcha::instance()->get_option('recaptcha_noscript') ) {
+			$attr['class'] .= ' g-recaptcha';
+		}
 
 		$attr_str = '';
 		foreach ( $attr as $attr_name => $attr_val ) {

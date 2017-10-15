@@ -49,24 +49,13 @@ running under his/her own domain name.
 
 
 = Known Limitations =
-- You can't have more than one old style reCaptcha on a page. This is a limitiation of
-  reCaptcha itself. If that's an issue for you, you should use the no Captcha Form.
-
 - A No Captcha definitely requires client side JavaScript enabled. That's how it does its
   sophisticated bot detection magic. There is no fallback. If your visitor does not have
   JS enabled the captcha test will not let him through.
 
-- On a **Contact Form 7** when the reCaptcha is disabled (e.g. for logged in users) the field
-  label will be still visible. This is due to CF7 Shortcode architecture, and can't be fixed.
-
-  To handle this there is a filter `recaptcha_disabled_html`. You can return a message for your logged-in
-  users here. Check out the [GitHub Repo](https://github.com/mcguffin/wp-recaptcha-integration) for details.
-
 - As of version 4.3 CF7 comes with its own recaptcha. Both are supposed to work together.
   I you want to keep the WP ReCaptcha functionality, e.g. if you want to hide the captcha
   from known users, leave the integration in the CF7 settings unconfigured.
-
-- Old style reCaptcha does not work together with **WooCommerce**.
 
 - In **WooCommerce** the reset password form can not be protected by a captcha. Woocommerce does
   not fire any action in the lost password form, so there is no way for the plugin to hook in.
@@ -246,13 +235,15 @@ Please contribute to the official (translation Project for the ReCaptcha Plugin)
 
 1. Plugin Settings (v 1.1.4)
 
+== Upgrade Notice ==
 
 == Changelog ==
 
 = 1.3.0 =
-- Drop most of Contact form 7 and Ninja Forms support. (Both have thir own recaptcha now)
+- Drop most of Contact form 7 and Ninja Forms support. (Both have their own recaptcha now)
 - Deprecate recaptcha v1.
-- New Option: size
+- New Option: Size
+- New Option: Submit form when captcha is solved
 - Cleanup options page
 - Register Form compatibility with WooCommerce 3.0+ Thanks to [ywatt](https://github.com/ingomarent) and [MrFent37](https://wordpress.org/support/users/mrfent37/)
 
