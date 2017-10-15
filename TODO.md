@@ -1,6 +1,8 @@
 WordPress reCaptcha Integration TODO
 ====================================
 
+- add settings link in plugin list table #75
+- 
 - select size (should support invisible captcha)
 - make send client ip optional
 - new lockout feature:

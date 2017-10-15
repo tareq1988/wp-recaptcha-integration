@@ -1,19 +1,19 @@
 === WordPress ReCaptcha Integration ===
 Contributors: podpirate
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=F8NKC6TCASUXE
-Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
+Tags: security, recaptcha, login, signup, woocommerce
 Requires at least: 3.8
 Tested up to: 4.8
 Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-reCaptcha for login, signup, comment forms, Ninja Forms and woocommerce.
+reCaptcha for login, signup, comment forms and woocommerce.
 
 == Description ==
 
 Integrate reCaptcha in your blog. Supports no Captcha as well as old style recaptcha.
-Provides of the box integration for signup, login, comment formsand Ninja Forms as well
+Provides of the box integration for signup, login, comment forms as well
 as a plugin API for your own integrations.
 
 = Features: =
@@ -25,7 +25,6 @@ as a plugin API for your own integrations.
 	- BuddyPress
 	- AwesomeSupport (thanks to [Julien Liabeuf](http://julienliabeuf.com/)
 	- WooCommerce (Only checkout, registration and login form. Not password reset)
-	- [Ninja Forms](http://ninjaforms.com/)
 	- cformsII
 
 - For integration in your self-coded forms see this [wiki article](https://github.com/mcguffin/wp-recaptcha-integration/wiki/Custom-Themes-and-Forms) for details.
@@ -246,13 +245,12 @@ Please contribute to the official (translation Project for the ReCaptcha Plugin)
 == Screenshots ==
 
 1. Plugin Settings (v 1.1.4)
-2. Ninja Form Integration
-3. Contact Form 7 Integration
 
 
 == Changelog ==
 
 = 1.3.0 =
+- Drop most of Contact form 7 and Ninja Forms support. (Both have thir own recaptcha now)
 - Deprecate recaptcha v1.
 - New Option: size
 - Cleanup options page

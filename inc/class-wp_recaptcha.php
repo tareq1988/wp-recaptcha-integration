@@ -86,12 +86,12 @@ class WP_reCaptcha {
 		if ( $this->has_api_key() ) {
 			// NinjaForms support
 			// check if ninja forms is present
-			if ( class_exists('Ninja_Forms') || function_exists('ninja_forms_register_field') )
+			if ( function_exists( 'Ninja_Forms') )
 				WP_reCaptcha_NinjaForms::instance();
 
 			// CF7 support
 			// check if contact form 7 forms is present
-			if ( function_exists('wpcf7') )
+			if ( class_exists('WPCF7') )
 				WP_reCaptcha_ContactForm7::instance();
 
 			// WooCommerce support
@@ -487,6 +487,35 @@ class WP_reCaptcha {
 				return get_option( $option_name );
 			default: // always local
 				return get_option($option_name);
+		}
+	}
+
+	/**
+	 *	Get plugin option by name.
+	 *
+	 *	@param $option_name string
+	 *	@return bool false if check does not validate
+	 */
+	public function update_option( $option_name, $value ) {
+		switch ( $option_name ) {
+			case 'recaptcha_publickey': // first try local, then global
+			case 'recaptcha_privatekey':
+				$option_value = update_option( $option_name, $value );
+				if ( WP_reCaptcha::is_network_activated() )
+					return update_site_option( $option_name, $value );
+				else
+					return update_option( $option_name, $value );
+			case 'recaptcha_enable_comments': // global on network. else local
+			case 'recaptcha_enable_signup':
+			case 'recaptcha_enable_login':
+			case 'recaptcha_enable_lostpw':
+			case 'recaptcha_disable_for_known_users':
+			case 'recaptcha_enable_wc_order':
+				if ( WP_reCaptcha::is_network_activated() )
+					return update_site_option( $option_name, $value );
+				return update_option( $option_name, $value );
+			default: // always local
+				return update_option( $option_name, $value );
 		}
 	}
 

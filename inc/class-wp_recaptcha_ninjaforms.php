@@ -31,12 +31,16 @@ class WP_reCaptcha_NinjaForms {
 	}
 
 	function update_nf_settings( ) {
-		if ( WP_reCaptcha::instance()->has_api_key() && function_exists( 'Ninja_Forms') ) {
-			$nf = Ninja_Forms();
-			if ( false === $nf->get_setting('recaptcha_site_key') && false === $nf->get_setting('recaptcha_secret_key') ) {
-				$nf->update_setting( 'recaptcha_site_key', WP_reCaptcha::instance()->get_option( 'recaptcha_publickey' ) );
-				$nf->update_setting( 'recaptcha_secret_key', WP_reCaptcha::instance()->get_option( 'recaptcha_privatekey' ) );
-			}
+		$nf = Ninja_Forms();
+		$wr = WP_reCaptcha::instance();
+		$wr_configured = $wr->has_api_key();
+		$nf_configured = false !== $nf->get_setting('recaptcha_site_key') && false !== $nf->get_setting('recaptcha_secret_key');
+		if ( $wr_configured && ! $nf_configured ) {
+			$nf->update_setting( 'recaptcha_site_key', $wr->get_option( 'recaptcha_publickey' ) );
+			$nf->update_setting( 'recaptcha_secret_key', $wr->get_option( 'recaptcha_privatekey' ) );
+		} else if ( ! $wr_configured && $nf_configured ) {
+			$wr->update_option( 'recaptcha_publickey' , $nf->get_setting('recaptcha_site_key') );
+			$wr->update_option( 'recaptcha_privatekey' , $nf->get_setting('recaptcha_secret_key') );
 		}
 	}
 

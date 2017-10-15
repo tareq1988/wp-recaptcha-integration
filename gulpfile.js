@@ -65,13 +65,14 @@ gulp.task('scripts-admin', function() {
 		.pipe( sourcemaps.write() )
 		.pipe( gulp.dest( './js/' ) );
 
-	gulp.src( './src/js/wpcf7.js' )
+	gulp.src( './src/js/wp-recaptcha.js' )
 		.pipe( gulp.dest( './js/' ) )
 		.pipe( sourcemaps.init() )
 		.pipe( uglify().on('error', gulputil.log ) )
 		.pipe( rename( { suffix:'.min' } ) )
 		.pipe( sourcemaps.write() )
 		.pipe( gulp.dest( './js/' ) );
+
 });
 
 

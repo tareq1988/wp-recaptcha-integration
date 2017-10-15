@@ -31,12 +31,22 @@ class WP_reCaptcha_ContactForm7 {
 	private function __construct() {
 		add_action('init',array( $this, 'update_cf7_settings' ) );
 	}
+
 	public function update_cf7_settings() {
-		if ( class_exists('WPCF7') ) {
-			if ( ! $option = WPCF7::get_option( 'recaptcha' ) ) {
-				$option = array();
-				$option[ WP_reCaptcha::instance()->get_option( 'recaptcha_publickey' ) ] = WP_reCaptcha::instance()->get_option( 'recaptcha_privatekey' );
-				WPCF7::update_option( 'recaptcha', $option );
+		$wr = WP_reCaptcha::instance();
+		$wr_configured = $wr->has_api_key();
+		$cf7_opt = WPCF7::get_option( 'recaptcha' );
+		$cf7_configured = is_array( $cf7_opt );
+
+		if ( $wr_configured && ! $cf7_configured ) {
+			$cf7_opt = array();
+			$cf7_opt[ $wr->get_option( 'recaptcha_publickey' ) ] = $wr->get_option( 'recaptcha_privatekey' );
+			WPCF7::update_option( 'recaptcha', $cf7_opt );
+		} else if ( ! $wr_configured && $cf7_configured ) {
+			foreach ( $cf7_opt as $pub => $priv ) {
+				$wr->update_option( 'recaptcha_publickey' , $pub );
+				$wr->update_option( 'recaptcha_privatekey' , $priv );
+				break;
 			}
 		}
 	}
