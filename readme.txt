@@ -253,8 +253,9 @@ Please contribute to the official (translation Project for the ReCaptcha Plugin)
 == Changelog ==
 
 = 1.3.0 =
-- Deprecate old-style recaptcha.
+- Deprecate recaptcha v1.
 - New Option: size
+- Cleanup options page
 - Register Form compatibility with WooCommerce 3.0+ Thanks to [ywatt](https://github.com/ingomarent) and [MrFent37](https://wordpress.org/support/users/mrfent37/)
 
 = 1.2.0 =

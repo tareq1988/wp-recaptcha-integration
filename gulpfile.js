@@ -11,30 +11,21 @@ var pngquant = require('gulp-pngquant');
 var fs = require("fs");
 var btoa = require('btoa');
 
-
+// handle scss inline-image
 var sassFunctions = {
 	'inline-image'	: function( src, mime, b64, done ) {
 		var src = src.getValue();
-			mime = ('object' === typeof mime) ? mime.getValue() : 'image/'+src.split('.').pop();
-			b64	= ('object' === typeof b64) ? b64.getValue() : true;
-			content = fs.readFileSync(src);
-			ret = 'data:' + mime + ';';
-			if ( b64 ) {
-				ret += 'base64,';
-				ret += btoa(content);
-			} else {
-				ret += content;
-			}
-		return new nodesass.types.String(ret);
-//		data:image/gif;base64,
-		return ret;
-		for ( s in a ){
-			console.log(s);
-			console.log(a[s]);
+		var mime = ('object' === typeof mime) ? mime.getValue() : 'image/'+src.split('.').pop();
+		var b64	= ('object' === typeof b64) ? b64.getValue() : true;
+		var content = fs.readFileSync(src);
+		var ret = 'data:' + mime + ';';
+		if ( b64 ) {
+			ret += 'base64,';
+			ret += btoa(content);
+		} else {
+			ret += content;
 		}
-		console.log(a.getValue())
-		console.log(b);
-		console.log(c);
+		return new nodesass.types.String(ret);
 	}
 }
 
@@ -89,16 +80,16 @@ gulp.task( 'pngquant', function() {
         .pipe( pngquant({
             quality: '65-80'
         }))
-        .pipe(gulp.dest('./images/'));
+        .pipe(gulp.dest('./src/images/compressed/'));
 });
 
 gulp.task( 'watch', function() {
 	gulp.watch('./src/scss/**/*.scss', ['styles-admin'] );
 	gulp.watch('./src/js/**/*.js', ['scripts-admin'] );
-	gulp.watch('./src/images/**/*.png', ['pngquant'] );
+	gulp.watch('./src/images/*.png', ['pngquant'] );
 } );
 
 
-gulp.task( 'build', ['styles-admin','scripts-admin', 'pngquant' ] );
+gulp.task( 'build', ['pngquant', 'styles-admin','scripts-admin'] );
 
 gulp.task( 'default', ['build','watch'] );

@@ -255,6 +255,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 		$return = "<div {$attr_str}></div>";
 		$return .= '<noscript>';
 		if ( WP_reCaptcha::instance()->get_option('recaptcha_noscript') ) {
+
 			$return .= '<div style="width: 302px; height: 462px;">' .
 							'<div style="width: 302px; height: 422px; position: relative;">' .
 								'<div style="width: 302px; height: 422px; position: absolute;">' .

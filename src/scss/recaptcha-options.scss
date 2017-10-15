@@ -31,20 +31,20 @@
 		width:302px;
 		height:76px;
 		&[data-theme="light"] {
-			background-image:url( inline-image( 'images/grecaptcha-light-normal.png' ));
+			background-image:url( inline-image( 'src/images/compressed/grecaptcha-light-normal.png' ));
 		}
 		&[data-theme="dark"] {
-			background-image:url( inline-image( 'images/grecaptcha-dark-normal.png' ));
+			background-image:url( inline-image( 'src/images/compressed/grecaptcha-dark-normal.png' ));
 		}
 	}
 	&[data-size="compact"] {
 		width:158px;
 		height:138px;
 		&[data-theme="light"] {
-			background-image:url( inline-image( 'images/grecaptcha-light-compact.png' ));
+			background-image:url( inline-image( 'src/images/compressed/grecaptcha-light-compact.png' ));
 		}
 		&[data-theme="dark"] {
-			background-image:url( inline-image( 'images/grecaptcha-dark-compact.png' ));
+			background-image:url( inline-image( 'src/images/compressed/grecaptcha-dark-compact.png' ));
 		}
 	}
 }
