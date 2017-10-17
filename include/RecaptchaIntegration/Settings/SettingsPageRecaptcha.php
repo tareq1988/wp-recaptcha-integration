@@ -425,7 +425,7 @@ class SettingsPageRecaptcha extends Settings {
 			printf( '<div class="updated notice is-dismissible"><p>%s</p></div>', __('Works!','wp-recaptcha-integration' ) );
 		} else {
 			$errors = $inst->get_captcha_object()->get_errors();
-			printf( '<div class="error notice is-dismissible"><p><strong></strong> %s</p>%s</div>',
+			printf( '<div class="error notice is-dismissible"><p><strong>%s</strong> %s</p></div>',
 				__('Error:</strong> ','wp-recaptcha-integration' ),
 				implode( '<br />', $errors )
 			);
