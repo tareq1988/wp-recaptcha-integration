@@ -15,6 +15,8 @@ Implementations 2.0.0
  - [ ] Lockout: use confirmation mail
  - [ ] Settings: send actual visual settings via ajax
  - [ ] General Option: send client IP
+ - [x] WPMU Network settings
+ - [ ] Default option values
 
 Tests:
  - [x] WP Login

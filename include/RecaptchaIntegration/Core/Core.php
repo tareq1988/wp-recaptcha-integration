@@ -151,6 +151,7 @@ class Core extends Plugin {
 	 *	@return bool
 	 */
 	public function has_api_key() {
+//		var_dump($this->get_option('site_key') , $this->get_option('secret_key'));exit();
 		return $this->get_option('site_key') && $this->get_option('secret_key');
 	}
 

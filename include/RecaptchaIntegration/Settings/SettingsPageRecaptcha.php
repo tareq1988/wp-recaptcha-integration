@@ -3,6 +3,7 @@
 namespace RecaptchaIntegration\Settings;
 
 use RecaptchaIntegration\Ajax;
+use RecaptchaIntegration\Compat;
 use RecaptchaIntegration\Core;
 
 class SettingsPageRecaptcha extends Settings {
@@ -41,9 +42,9 @@ class SettingsPageRecaptcha extends Settings {
 
 		if ( $inst->is_network_activated() ) {
 			$page_hook = 'settings_page_racaptcha-settings';
-			add_action( "load-{$page_hook}", array( $this , 'enqueue_styles' ));
-			add_action( "load-{$page_hook}", array( $this , 'process_network_settings' ));
-			add_action( 'network_admin_menu', array( $this , 'network_settings_menu' ));
+			add_action( "load-{$page_hook}", array( $this , 'enqueue_styles' ) );
+			add_action( "load-{$page_hook}", array( $this , 'process_network_settings' ) );
+			add_action( 'network_admin_menu', array( $this , 'network_settings_menu' ) );
 		}
 
 		add_action( 'pre_update_option_recaptcha_publickey' , array( $this , 'update_option_recaptcha_apikey' ) , 10 , 2 );
@@ -60,6 +61,67 @@ class SettingsPageRecaptcha extends Settings {
 
 	}
 
+	/**
+	 *	Process network options
+	 *
+	 *	@action "load-settings_page_racaptcha-settings"
+	 */
+	function process_network_settings() {
+		if ( current_user_can('manage_network') ) {
+			global $wp_registered_settings;
+
+			$opt_names = array(
+				'recaptcha_site_key',
+				'recaptcha_secret_key',
+				'recaptcha_enable_comments',
+				'recaptcha_enable_signup',
+				'recaptcha_enable_login',
+				'recaptcha_enable_lostpw',
+				'recaptcha_disable_for_known_users',
+			);
+
+			$inst = \WPRecaptcha();
+			$compat = Compat\WordPressMultisite::instance();
+			$updated = false;
+			foreach ( $wp_registered_settings as $option_name => $settings ) {
+				if ( isset( $_POST[ $option_name ] ) ) {
+					$opt_value = $_POST[ $option_name ];
+					vaR_dump($option_name,$opt_value);
+					if ( is_callable( $settings['sanitize_callback'] ) ) {
+						$opt_value = call_user_func( $settings['sanitize_callback'], $opt_value );
+					}
+					vaR_dump($option_name,$opt_value);
+
+					if ( $compat->is_network_option($option_name) ) {
+						$compat->update_option( $option_name, $opt_value );
+						$updated = true;
+					}
+				}
+			}
+
+			if ( $updated ) {
+				wp_safe_redirect( add_query_arg( array( 'updated'=>'true' ) ) );
+			}
+
+		} else {
+			wp_die('Please try again. Muahahahh!');
+		}
+		// expecting api keys,
+	}
+
+	/**
+	 *	Intro text for the api key setting
+	 */
+	public function explain_apikey( ) {
+		?><p class="description"><?php
+			$info_url = 'https://developers.google.com/recaptcha/intro';
+			$admin_url = 'https://www.google.com/recaptcha/admin';
+			printf(
+				__( 'Please register your blog through the <a href="%s">Google reCAPTCHA admin page</a> and enter the public and private key in the fields below. <a href="%s">What is this all about?</a>', 'wp-recaptcha-integration' ) ,
+					$admin_url , $info_url
+				);
+		?></p><?php
+	}
 	/**
 	 *	@action plugin_action_links_{$plugin_file}
 	 */
@@ -97,7 +159,7 @@ class SettingsPageRecaptcha extends Settings {
 			__( 'Recaptcha Settings' , 'wp-recaptcha-integration' ),
 			__( 'Recaptcha' , 'wp-recaptcha-integration' ),
 			'manage_network', 'racaptcha-settings',
-			array( $this , 'network_settings_page' ) );
+			array( $this, 'network_settings_page' ) );
 	}
 
 	/**
@@ -229,19 +291,28 @@ class SettingsPageRecaptcha extends Settings {
 
 		$section = 'recaptcha_protect';
 
-		add_settings_section( $section, __( 'Protection' , 'wp-recaptcha-integration' ), array( $this, 'explain_protection' ), $optionset );
+		add_settings_section( $section, __( 'Protection' , 'wp-recaptcha-integration' ), array( $this, 'explain_protection' ), $this->network_optionset );
+		add_settings_section( $section, __( 'Protection' , 'wp-recaptcha-integration' ), array( $this, 'explain_protection' ), $this->optionset );
 
 		$this->register_setting( $optionset, 'lockout' , 'intval');
 		$this->register_setting( $optionset, 'disable_for_known_users' , 'intval');
 
 		foreach ( apply_filters( 'wp_recaptcha_forms', array() ) as $form_slug => $form_label ) {
-			$this->register_setting( $optionset, 'enable_' . $form_slug, 'intval' );
+			error_log(sprintf('reg %s %s',is_network_admin() ? $this->network_optionset : $this->optionset,$form_slug));
+			$this->register_setting( is_network_admin() ? $this->network_optionset : $this->optionset, 'enable_' . $form_slug, 'intval' );
 		}
 
 		$this->add_settings_field( 'protection',
 			__('Forms to protect','wp-recaptcha-integration'),
 			array( $this, 'input_enable' ),
-			$optionset,
+			$this->optionset,
+			$section
+		);
+
+		$this->add_settings_field( 'protection',
+			__('Forms to protect','wp-recaptcha-integration'),
+			array( $this, 'input_enable' ),
+			$this->network_optionset,
 			$section
 		);
 
@@ -356,15 +427,26 @@ class SettingsPageRecaptcha extends Settings {
 
 		$section = 'recaptcha_apikey';
 
-		add_settings_section( $section, __( 'API Credentials' , 'wp-recaptcha-integration' ), array( $this , 'explain_test_api_key' ), $optionset );
+		add_settings_section( $section, __( 'API Credentials' , 'wp-recaptcha-integration' ), array( $this , 'explain_test_api_key' ), $this->optionset );
+		add_settings_section( $section, __( 'API Credentials' , 'wp-recaptcha-integration' ), array( $this , 'explain_test_api_key' ), $this->network_optionset );
 
 		$this->register_setting( $optionset, 'site_key' , 'trim' );
-		$this->register_setting( $optionset, '__dummy0' , 'trim' );
+		$this->register_setting( $this->optionset, 'test' , 'trim' );
+		$this->register_setting( $this->network_optionset, 'test' , 'trim' );
 
 		$this->add_settings_field( 'test',
-			__('Test'),
+			__( 'Preview', 'wp-recaptcha-integration' ),
 			array( $this, 'input_test' ),
-			$optionset,
+			$this->optionset,
+			$section,
+			array(
+				'label'			=> __('Test','wp-recaptcha-integration'),
+			)
+		);
+		$this->add_settings_field( 'test',
+			__( 'Test', 'wp-recaptcha-integration' ),
+			array( $this, 'input_test' ),
+			$this->network_optionset,
 			$section,
 			array(
 				'label'			=> __('Test','wp-recaptcha-integration'),

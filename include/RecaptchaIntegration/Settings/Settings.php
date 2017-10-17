@@ -31,13 +31,11 @@ abstract class Settings extends Core\Singleton {
 			'name'			=> '',
 			'label'			=> '',
 			'description'	=> '',
-//			'class' 		=> '',
 		));
 		extract($args);
 		$value = WPRecaptcha()->get_option( $name );
-//		$class_attr = $class ? "class=\"{$class}\"" : '';
 
-		printf( '<input type="hidden" naem="%s" value="0" />', $this->option_prefix . $name );
+		printf( '<input type="hidden" name="%s" value="0" />', $this->option_prefix . $name );
 		printf( '<input id="%1$s" type="checkbox" name="%1$s" value="1" %2$s>',
 			$this->option_prefix . $name,
 			checked( $value, true, false )
@@ -122,8 +120,6 @@ abstract class Settings extends Core\Singleton {
 			'description'	=> '',
 		));
 		extract( $args ); // name, value
-
-		$value = WPRecaptcha()->get_option( $name );
 
 		printf('<button class="button button-secondary" name="%s" value="%s">%s</button>', $this->option_prefix . $name, $value, $label );
 
