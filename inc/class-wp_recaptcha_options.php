@@ -128,6 +128,7 @@ class WP_reCaptcha_Options {
 		add_filter( 'wp_redirect' , array( $this , 'remove_new_apikey_url' ) );
 		return $new;
 	}
+
 	/**
 	 *	Add option hook. See update_option_recaptcha_apikey()
 	 *

@@ -29,7 +29,7 @@ class WP_reCaptcha_bbPress {
 	 * Prevent from creating more than one instance
 	 */
 	private function __construct() {
-		add_action('init' , array( &$this , 'init' ) , 0 );
+		add_action('init' , array( $this, 'init' ) , 0 );
 	}
 
 	/**
@@ -38,10 +38,10 @@ class WP_reCaptcha_bbPress {
 	 * set hooks
 	 */
 	function init() {
-		$wp_recaptcha      = WP_reCaptcha::instance();
-		$require_recaptcha = $wp_recaptcha->is_required();
-		$enable_topic      = $wp_recaptcha->get_option('recaptcha_enable_bbp_topic') ;
-		$enable_reply      = $wp_recaptcha->get_option('recaptcha_enable_bbp_reply') ;
+		$inst      = \WPRecaptcha();
+		$require_recaptcha = $inst->required();
+		$enable_topic      = $inst->get_option('enable_bbp_topic') ;
+		$enable_reply      = $inst->get_option('enable_bbp_reply') ;
 
 		if ( $require_recaptcha ) {
 

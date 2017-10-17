@@ -1,3 +1,78 @@
+@charset "UTF-8";
+/* Both Admin Menu and Post Formats */
+/* Post Format Icons */
+/* Welcome Screen Icons */
+/* Image Editing Icons */
+/* Both Image Editing and TinyMCE */
+/* TinyMCE Icons */
+/* Post Icons */
+/* Sorting */
+/* WPorg specific icons: Jobs, Profiles, WordCamps */
+/* Internal/Products */
+/* Taxonomies */
+/* Widget icons */
+/* Media icons */
+/* Alerts/Notifications/Flags */
+/* Social Icons */
+/* Misc/CPT */
+.wp-recaptcha-enable .option {
+  display: inline-block; }
+
+.wp-recaptcha-enable [type="checkbox"] {
+  display: none; }
+  .wp-recaptcha-enable [type="checkbox"] + label {
+    display: block;
+    width: 250px;
+    color: #999;
+    border-radius: 7px;
+    border: 2px solid #bbb;
+    float: left;
+    margin: 0.5em 1em;
+    -webkit-transition: all 0.125s ease-in-out;
+    -o-transition: all 0.125s ease-in-out;
+    transition: all 0.125s ease-in-out;
+    font-weight: bold;
+    padding: 0.5em; }
+    .wp-recaptcha-enable [type="checkbox"] + label:before {
+      content: "";
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+      line-height: 1;
+      font-family: dashicons;
+      text-decoration: inherit;
+      font-weight: 400;
+      font-style: normal;
+      vertical-align: top;
+      text-align: center;
+      -webkit-transition: color .1s ease-in 0;
+      -o-transition: color .1s ease-in 0;
+      transition: color .1s ease-in 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      margin-right: 0.25em;
+      -webkit-transform: scale(1);
+      -ms-transform: scale(1);
+      transform: scale(1);
+      -webkit-transition: -webkit-transform 0.25s cubic-bezier(0, 1.8, 1, 1.8);
+      transition: -webkit-transform 0.25s cubic-bezier(0, 1.8, 1, 1.8);
+      -o-transition: transform 0.25s cubic-bezier(0, 1.8, 1, 1.8);
+      transition: transform 0.25s cubic-bezier(0, 1.8, 1, 1.8);
+      transition: transform 0.25s cubic-bezier(0, 1.8, 1, 1.8), -webkit-transform 0.25s cubic-bezier(0, 1.8, 1, 1.8); }
+  .wp-recaptcha-enable [type="checkbox"]:checked + label {
+    background-color: #fff;
+    border-color: #0085ba;
+    border-style: solid;
+    color: #23282d;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0 0 5px 0px;
+    box-shadow: rgba(0, 0, 0, 0.5) 0 0 5px 0px; }
+    .wp-recaptcha-enable [type="checkbox"]:checked + label:before {
+      content: "";
+      -webkit-transform: scale(1.5);
+      -ms-transform: scale(1.5);
+      transform: scale(1.5); }
+
 .recaptcha-select-language {
   width: 100%; }
 

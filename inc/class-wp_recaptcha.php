@@ -118,6 +118,7 @@ class WP_reCaptcha {
 	 */
 	function init() {
 		load_plugin_textdomain( 'wp-recaptcha-integration', false , dirname( plugin_basename( __FILE__ ) ).'/languages/' );
+
 		$require_recaptcha = $this->is_required();
 
 		if ( $require_recaptcha ) {
@@ -201,7 +202,7 @@ class WP_reCaptcha {
 	 *
 	 *	@return bool
 	 */
-	function is_required() {
+	public function is_required() {
 		$is_required = ! ( $this->get_option('recaptcha_disable_for_known_users') && is_user_logged_in() );
 		return apply_filters( 'wp_recaptcha_required' , $is_required );
 	}
@@ -217,7 +218,7 @@ class WP_reCaptcha {
 	 *	Print recaptcha HTML. Use inside a form.
 	 *
 	 */
- 	function print_recaptcha_html( $attr = array() ) {
+ 	public function print_recaptcha_html( $attr = array() ) {
 		echo $this->begin_inject( );
  		echo $this->recaptcha_html( $attr );
 		echo $this->end_inject( );
@@ -228,7 +229,7 @@ class WP_reCaptcha {
 	 *
 	 *	@return string recaptcha html
 	 */
- 	function recaptcha_html( $attr = array() ) {
+ 	public function recaptcha_html( $attr = array() ) {
 		return $this->captcha_instance()->get_html( $attr );
  	}
 
@@ -239,7 +240,7 @@ class WP_reCaptcha {
 	 *	@param $html string
 	 *	@return string recaptcha html prepended to first parameter.
 	 */
-	function prepend_recaptcha_html( $html ) {
+	public function prepend_recaptcha_html( $html ) {
 		return $this->recaptcha_html() . $html;
 	}
 
@@ -250,7 +251,7 @@ class WP_reCaptcha {
 	 *	@param $moretext string Additional information being included in the comment
 	 *	@return null|string HTML-Comment
 	 */
-	function begin_inject($return = false,$moretext='') {
+	public function begin_inject($return = false,$moretext='') {
 		$html = "\n<!-- BEGIN recaptcha, injected by plugin wp-recaptcha-integration $moretext -->\n";
 		if ( $return ) return $html;
 		echo $html;
@@ -261,7 +262,7 @@ class WP_reCaptcha {
 	 *	@param $return bool Whether to print or to return the comment
 	 *	@return null|string HTML-Comment
 	 */
-	function end_inject( $return = false ) {
+	public function end_inject( $return = false ) {
 		$html = "\n<!-- END recaptcha -->\n";
 		if ( $return ) return $html;
 		echo $html;

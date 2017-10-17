@@ -1,8 +1,36 @@
 (function($){
-	$(document).on('change','[name="recaptcha_theme"],[name="recaptcha_size"]',function(e){
-		$('.recaptcha-preview').attr('data-size',$('[name="recaptcha_size"]:checked').first().val())
-		$('.recaptcha-preview').attr('data-theme',$('[name="recaptcha_theme"]:checked').first().val())
-	});
+	var options = wp_recaptcha_options;
+
+	$(document)
+		.on('click','#wp-recaptcha-api-test-button',function(e){
+			var $container = $('#wp-recaptcha-api-test');
+			e.preventDefault();
+			if ( ! $container.find('.g-recaptcha').length ) {
+				$.get( {
+					url: options.ajax_url,
+					data: {
+						action: 'recaptcha_render',
+					},
+					success: function(response) {
+						$container.html( response );
+						window.wp_recaptcha_init();
+					}
+				} );
+			} else {
+				$.post( {
+					url: options.ajax_url,
+					data: {
+						action: 'recaptcha_verify',
+						'g-recaptcha-response' : $container.find('[name="g-recaptcha-response"]').val()
+					},
+					success: function(response) {
+						$container.html( response );
+					}
+				} );
+
+			}
+//
+		});
 
 	$(document).on('click','#test-api-key' , function(e){
 		if ( ! $('#recaptcha-test-head').length )
@@ -20,6 +48,8 @@
 
 		return false;
 	});
+
+
 	$(document).on('click','#recaptcha-test-verification' , function(e){
 		var data = {
 			'action' : 'recaptcha-test-verification',

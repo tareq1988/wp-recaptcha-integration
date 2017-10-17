@@ -3,7 +3,7 @@
 		$other_captchas = $('.g-recaptcha'),
 		loadedInterval;
 
-	function init() {
+	window.wp_recaptcha_init = function(){
 		$other_captchas.removeClass('g-recaptcha');
 		$captchas = $('.wp-recaptcha').addClass('g-recaptcha');
 
@@ -18,6 +18,9 @@
 		}
 
 		$captchas.each(function(i,el){
+			if ( '' !== $(el).html() ) {
+				return;
+			}
 			var $form = $(el).closest('form');
 			var opts = {
 					sitekey		: wp_recaptcha.site_key,
@@ -27,29 +30,29 @@
 				cb = $(el).attr('data-callback'),
 				submitInterval;
 
-				if ( cb !== '' ) {
+			if ( cb !== '' ) {
 
-					opts.callback = function() {
-						$form.find('[type="submit"]').prop( 'disabled', false );
-					};
-					opts.expiredCallback = function() {
-						$form.find('[type="submit"]').prop( 'disabled', true );
-					}
-
-					if ( ! $form.find('[type="submit"]').prop( 'disabled', true ).length ) {
-						$form.append('<input type="submit" style="visibilit:hidden;width:1px;height;1px;" />')
-					}
-
-					if ( cb == 'submit' && $form.find('[type="submit"]').length ) {
-						submitInterval = setInterval(function(){
-							if ( ! $form.find('[type="submit"]').prop( 'disabled' ) ) {
-								clearInterval(submitInterval);
-								// form.submit() does not work
-								$form.find('[type="submit"]').trigger('click');
-							}
-						}, 100 );
-					}
+				opts.callback = function() {
+					$form.find('[type="submit"]').prop( 'disabled', false );
+				};
+				opts.expiredCallback = function() {
+					$form.find('[type="submit"]').prop( 'disabled', true );
 				}
+
+				if ( ! $form.find('[type="submit"]').prop( 'disabled', true ).length ) {
+					$form.append('<input type="submit" style="visibilit:hidden;width:1px;height;1px;" />')
+				}
+
+				if ( cb == 'submit' && $form.find('[type="submit"]').length ) {
+					submitInterval = setInterval(function(){
+						if ( ! $form.find('[type="submit"]').prop( 'disabled' ) ) {
+							clearInterval(submitInterval);
+							// form.submit() does not work
+							$form.find('[type="submit"]').trigger('click');
+						}
+					}, 100 );
+				}
+			}
 
 			grecaptcha.render( el, opts );
 		});
@@ -79,11 +82,11 @@
 				},333);
 			}
 		} else {
-			init();
+			window.wp_recaptcha_init();
 		}
 		// load recaptcha script
 	} else {
-		$(document).ready( init );
+		$(document).ready( window.wp_recaptcha_init );
 	}
 
 })(jQuery);

@@ -3,7 +3,7 @@
 Plugin Name: WP reCaptcha Integration
 Plugin URI: https://wordpress.org/plugins/wp-recaptcha-integration/
 Description: Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha) as well as the old style reCaptcha. Provides of the box integration for signup, login, comment forms and lost password.
-Version: 1.3.0
+Version: 2.0.0
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 Text Domain: wp-recaptcha-integration
@@ -25,36 +25,36 @@ Text Domain: wp-recaptcha-integration
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+if ( version_compare( PHP_VERSION, '5.3', '<') ) {
+
+	// add admin notice, disable plugin
+	function wp_recaptcha_php_warning() {
+		?>
+		<div class="error">
+			<p><?php
+				_e( 'WP Recaptcha Integration requires at least PHP 5.4', 'wp-recaptcha-integration' );
+			?></p>
+		</div>
+		<?php
+	}
+
+	add_action( 'admin notices', 'wp_recaptcha_php_warning' );
+
+	return;
+}
+
 define( 'WP_RECAPTCHA_FILE', __FILE__ );
 define( 'WP_RECAPTCHA_PATH', dirname(__FILE__) );
+define( 'WP_RECAPTCHA_PLUGIN_FILE', basename( __DIR__ ) . '/' . basename( __FILE__ ) );
 
-/**
- * Autoload Classes
- *
- * @param string $classname
- */
-function wp_recaptcha_integration_autoload( $classname ) {
-	$class_path = dirname(__FILE__). sprintf('/inc/class-%s.php' , strtolower( $classname ) ) ;
-	if ( file_exists($class_path) )
-		require_once $class_path;
+require_once WP_RECAPTCHA_PATH . '/include/autoload.php';
+require_once WP_RECAPTCHA_PATH . '/include/api/api.php';
+
+RecaptchaIntegration\Core\Core::instance();
+
+
+if ( is_admin() || defined( 'DOING_AJAX' ) ) {
+
+	RecaptchaIntegration\Settings\SettingsPageRecaptcha::instance();
+
 }
-spl_autoload_register( 'wp_recaptcha_integration_autoload' );
-
-
-// // disable 2.0.0 updates on php < 5.4
-// function wp_recaptcha_disable_updates($value) {
-// 	if ( version_compare(PHP_VERSION, '5.4', '<') ) {
-// 		$plugin_basename = plugin_basename(__FILE__);
-// 		if ( isset( $value->response[ $plugin_basename ] ) && version_compare( $value->response[ $plugin_basename ]['new_version'] , '2.0.0', '>=' ) ) {
-// 			unset( $value->response[ plugin_basename(__FILE__) ] );
-// 		}
-// 	}
-// 	return $value;
-// }
-// add_filter('site_transient_update_plugins', 'wp_recaptcha_disable_updates');
-
-WP_reCaptcha::instance();
-
-
-if ( is_admin() )
-	WP_reCaptcha_Options::instance();
