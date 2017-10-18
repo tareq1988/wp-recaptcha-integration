@@ -48,7 +48,7 @@ function wp_recaptcha_wp_error( $wp_error = null, $error_code = 'captcha_error' 
 		if ( ! is_wp_error( $wp_error ) ) {
 			$wp_error = new WP_Error();
 		}
-		$wp_error->add( 'wp-recaptcha-invalid', __( 'The Captcha didn’t verify.', 'wp-recaptcha-integration' ) );
+		$wp_error->add( $error_code, __( 'The Captcha didn’t verify.', 'wp-recaptcha-integration' ) );
 	}
 	return $wp_error;
 }
