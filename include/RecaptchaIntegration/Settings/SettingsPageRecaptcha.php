@@ -389,13 +389,24 @@ class SettingsPageRecaptcha extends Settings {
 
 		$settings = $captcha->get_style_options();
 
+		$this->add_settings_field( '__style',
+			__('Style','wp-recaptcha-integration'),
+			array( $this, 'input_style' ),
+			$optionset,
+			$section
+		);
+
 		foreach ( $settings as $option_name => $option_args ) {
 			$this->register_setting( $optionset, $option_name, $option_args ); // sanitze!
+
+			if ( $option_args['input'] === 'radio' ) {
+				continue;
+			}
+
 			$cb = array( $this, 'input_' . $option_args['input'] );
 			if ( ! is_callable( $cb ) ) {
 				$cb = array($this,'input_text');
 			}
-
 			$this->add_settings_field( $option_name,
 				$option_args['label'],
 				$cb,
@@ -404,6 +415,8 @@ class SettingsPageRecaptcha extends Settings {
 				$option_args + array( 'name' => $option_name )
 			);
 		}
+
+
 	}
 
 	/**
@@ -456,6 +469,27 @@ class SettingsPageRecaptcha extends Settings {
 
 	}
 
+	public function input_style( $args ) {
+		$inst = \WPRecaptcha();
+		$captcha = $inst->get_captcha_object();
+		$optionset = is_network_admin() ? $this->network_optionset : $this->optionset;
+
+		$section = 'recaptcha_style';
+
+		add_settings_section( $section, __( 'Style' , 'wp-recaptcha-integration' ), '', $optionset );
+
+		$settings = $captcha->get_style_options();
+
+		foreach ( $settings as $option_name => $option_args ) {
+			$this->register_setting( $optionset, $option_name, $option_args ); // sanitze!
+
+			if ( $option_args['input'] !== 'radio' ) {
+				continue;
+			}
+			echo '<span class="radio-group-label">' . $option_args['label'] . '</span>';
+			$this->input_radio( $option_args + array( 'name' => $option_name ) );
+		}
+	}
 	/**
 	 *	Captcha Testing
 	 */
@@ -482,7 +516,7 @@ class SettingsPageRecaptcha extends Settings {
 	public function ajax_test_render() {
 		header( 'Content-Type: text/html' );
 		$inst = \WPRecaptcha();
-		echo $inst->get_captcha();
+		echo $inst->get_captcha( array('data-callback' => 'test' ) + $_REQUEST );
 		exit();
 	}
 

@@ -17,14 +17,13 @@ Provides of the box integration for signup, login, comment forms as well
 as a plugin API for your own integrations.
 
 = Features: =
-- Secures login, signup und comments with a recaptcha.
-- Supports old as well as new reCaptcha.
+- Secures login, signup and comments with a Google reCAPTCHA.
 - Works together with
 	- WP Multisite
 	- bbPress (thanks to [Tareq Hasan](http://tareq.wedevs.com/)
 	- BuddyPress
 	- AwesomeSupport (thanks to [Julien Liabeuf](http://julienliabeuf.com/)
-	- WooCommerce (Only checkout, registration and login form. Not password reset)
+	- WooCommerce
 	- cformsII
 
 - For integration in your self-coded forms see this [wiki article](https://github.com/mcguffin/wp-recaptcha-integration/wiki/Custom-Themes-and-Forms) for details.
@@ -35,27 +34,20 @@ as a plugin API for your own integrations.
 - Italian (thanks to [Salaros](http://blog.salaros.com/))
 - German
 
-Latest Files on GitHub: [https://github.com/mcguffin/wp-recaptcha-integration](https://github.com/mcguffin/wp-recaptcha-integration)
+[GitHub repository](https://github.com/mcguffin/wp-recaptcha-integration](https://github.com/mcguffin/wp-recaptcha-integration)
 
 = Compatibility =
 
 On a **WP Multisite** you can either activate the plugin network wide or on a single site.
 
-Activated on a single site everything works as usual.
+With network wide activation the API-Key configuration and the protection settings
+for Login, Signup and Lost-Password are moved to the network configuration. Everything
+else—Like Styling and Comment Form protection—is up to the Blog Admin.
 
-With network activation entering the API key and setting up where a captcha is required
-is up to the network admin. A blog admin can override the API key e.g. when his blog is
-running under his/her own domain name.
-
-
-= Known Limitations =
-
-- In **WooCommerce** the reset password form can not be protected by a captcha. Woocommerce does
-  not fire any action in the lost password form, so there is no way for the plugin to hook in.
-  Take a look at [this thread](https://wordpress.org/support/topic/captcha-not-showing-on-lost-password-page?replies=7) for a workaround.
-
-- Due to a lack of filters there is no (and as far as one can see, there will never be)
-  support for the **MailPoet** subscription form.
+The plugin used to provide Form fields for **Ninja Forms** and **Contact Form 7**
+in the past. As these come with their own recaptcha now, the Recaptcha plugin just
+tries to synchronize the API Key configuration. with NF and CF7, if one of them
+is unconfigured.
 
 == Installation ==
 
@@ -65,7 +57,7 @@ Then go to the [Google Recaptcha Site](http://www.google.com/recaptcha), registe
 
 == Frequently asked questions ==
 
-= The login captcha says 'ERROR: (something somthing)'. What can I do? =
+= The login captcha says 'ERROR: (something something)'. What can I do? =
 
 If it says 'Invalid sitekey' and you checked the 'Prevent lockout' option on the plugin
 settings (it's on by default) you can log in with an administrator account and ignore the
@@ -127,16 +119,22 @@ You will either need one of the following:
 That's too bad...
 
 
-= I can't get it to work with my custom comments form. Will you fix for me? =
+= I can't get it to work with my custom comments form / setup. Will you fix for me? =
 
-Nope. I cannot give support on your individual projects for free, no matter how many one
-star reviews you will give me. Have a look at the project wiki or find a WordPress coder.
+Nope. I am not giving give support on individual projects for free. Have a look
+at the project wiki, ask a question in the forum or find a WordPress coder.
+
+If you think you found a general issue, please post a bug report on GitHub.
+
+Emails sent to my Email address you might google somehow will be ignored. But be
+assured of my deepest sympathy.
 
 
 = Privacy: Will the captcha send the visitors IP address to google? =
 
+Yes or maybe.
 Yes and no. The captcha verification process, coming into effect after the user has solved
-the challenge does not require the disclosure of the visitors IP address, so it is omitted.
+the challenge does not require the disclosure of the visitors IP address. You can
 
 But everything related to the displaying of the captcha widget like the challenge image,
 the JavaScripts and so on is loaded directly from Google and is very likely to be logged,
@@ -149,15 +147,19 @@ If that's an issue for you, you better use a self hosted solution.
 
 = Will you support plugin XYZ? =
 
-If XYZ stands for a widely used free and OpenSource plugin in active development with some
-100k+ downloads I will give it a try. Just ask.
+If XYZ stands for a widely used free and OpenSource plugin in active development
+with some 100k+ downloads I will give it a try. Just ask.
+
+IF XYZ stands for MailPoet subscription form the Answer is "not possible".
 
 If XYZ is some rarely used plugin (about 1k+ active installs or so), I will accept pull
 requests on github and push it to the WP repository. Please note that in such cases I will
 not feel responsible for code maintainance.
 
+If you are the plugin author, please read [this]() first. There are a lot of filters
 
-= The captcha is not show up. What’s wrong? =
+
+= The captcha is not show up. Was wrong? =
 
 On the plugin settings page check out if the option “Disable for known users” is activated (it is by default).
 Then log out (or open your page in a private browser window) and try again.
@@ -199,23 +201,6 @@ for a code example.
 = I found a bug. Where should I post it? =
 
 I personally prefer GitHub. The plugin code is here: [GitHub](https://github.com/mcguffin/wp-recaptcha-integration)
-
-
-= I want to use the latest files. How can I do this? =
-
-Use the GitHub Repo rather than the WordPress Plugin. Do as follows:
-
-1. If you haven't already done: [Install git](https://help.github.com/articles/set-up-git)
-
-2. in the console cd into Your 'wp-content/plugins´ directory
-
-3. type `git clone git@github.com:mcguffin/wp-recaptcha-integration.git`
-
-4. If you want to update to the latest files (be careful, might be untested with your WP-Version) type `git pull.
-
-The GitHub master branch is likely to contain unstable and untested code. Use it
-on your own risk. The stable versions are under [releases](https://github.com/mcguffin/wp-recaptcha-integration/releases)
-which are in sync with the WordPress Plugin Repository.
 
 
 = Will you accept translations? =

@@ -11,6 +11,9 @@
 			.attr( 'src', wp_recaptcha.recaptcha_url )
 			.appendTo('body');
 	}
+	window.wp_recaptcha_submit_form = function(){
+		console.log(this,arguments)
+	}
 
 	window.wp_recaptcha_loaded = function(){
 		if ( ! grecaptcha ) {
@@ -21,40 +24,61 @@
 			if ( '' !== $(el).html() ) {
 				return;
 			}
-			var $form = $(el).closest('form');
+			var $form = $(el).closest('form'),
+				$submit = $form.find('[type="submit"]');
 			var opts = {
 					sitekey		: wp_recaptcha.site_key,
 					theme		: $(el).attr('data-theme'),
 					size		: $(el).attr('data-size'),
 				},
 				cb = $(el).attr('data-callback'),
-				submitInterval;
+				submitInterval,
+				captcha_inst_id;
 
-			if ( cb !== '' ) {
+			if ( opts.size === 'invisible' ) {
+				if ( cb === 'test' && !! window.wp_recaptcha_options) {
+					opts.callback = wp_recaptcha_options.test_callback;
+				} else {
+					$form.on('submit',function(e){
+						console.log('form.onsubmit');
+						e.preventDefault();
+						grecaptcha.execute( captcha_inst_id );
+					});
+					opts.callback = function(result) {
+						$form.find('[name="g-recaptcha-response"]').val( result );
+						if ( $form.get(0).submit ) {
+							$form.get(0).submit();
+						} else {
+							$submit.trigger('click');
+						}
+					};
+				}
+			} else if ( cb !== '' && cb !== 'test' ) {
 
 				opts.callback = function() {
-					$form.find('[type="submit"]').prop( 'disabled', false );
+					$submit.prop( 'disabled', false );
 				};
 				opts.expiredCallback = function() {
-					$form.find('[type="submit"]').prop( 'disabled', true );
+					$submit.prop( 'disabled', true );
 				}
 
-				if ( ! $form.find('[type="submit"]').prop( 'disabled', true ).length ) {
+				if ( ! $submit.prop( 'disabled', true ).length ) {
 					$form.append('<input type="submit" style="visibilit:hidden;width:1px;height;1px;" />')
 				}
 
-				if ( cb == 'submit' && $form.find('[type="submit"]').length ) {
+				if ( cb == 'submit' && $submit.length ) {
 					submitInterval = setInterval(function(){
-						if ( ! $form.find('[type="submit"]').prop( 'disabled' ) ) {
-							clearInterval(submitInterval);
+						if ( ! $submit.prop( 'disabled' ) ) {
+							clearInterval( submitInterval );
 							// form.submit() does not work
-							$form.find('[type="submit"]').trigger('click');
+							$submit.trigger('click');
 						}
 					}, 100 );
 				}
 			}
 
-			grecaptcha.render( el, opts );
+			captcha_inst_id = grecaptcha.render( el, opts );
+			$(el).attr('data-grecaptcha-id', captcha_inst_id );
 		});
 
 		$other_captchas.addClass('g-recaptcha');

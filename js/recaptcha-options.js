@@ -1,36 +1,65 @@
 (function($){
 	var options = wp_recaptcha_options;
 
+	function test_captcha() {
+		var $container = $('#wp-recaptcha-api-test').addClass('loading-content').append('<span class="spinner"></span>'),
+			size = $('[name="recaptcha_size"]:checked').val(),
+			response;
+		function post_result() {
+			$.post( {
+				url: options.ajax_url,
+				data: {
+					action: 'recaptcha_verify',
+					'g-recaptcha-response' : $container.find('[name="g-recaptcha-response"]').val()
+				},
+				success: function(response) {
+					$container.html( response );
+				}
+			} );
+		}
+
+		wp_recaptcha_options.test_callback = function( result ) {
+			$container.find('[name="g-recaptcha-response"]').val( result );
+			post_result();
+		}
+
+		if ( ! $container.find('.g-recaptcha').length ) {
+			$.get( {
+				url: options.ajax_url,
+				data: {
+					action: 'recaptcha_render',
+					'data-size'		: size,
+					'data-type'		: $('[name="recaptcha_type"]:checked').val(),
+					'data-theme'	: $('[name="recaptcha_theme"]:checked').val(),
+					'data-callback'	: '',
+				},
+				success: function(response) {
+					$container.html( response );
+					window.wp_recaptcha_init();
+				}
+			} );
+		} else {
+			if ( size === 'invisible' ) {
+				grecaptcha.execute( $container.find('.g-recaptcha').attr('data-grecaptcha-id') );
+			} else {
+				post_result();
+			}
+
+		}
+	}
+
 	$(document)
 		.on('click','#wp-recaptcha-api-test-button',function(e){
-			var $container = $('#wp-recaptcha-api-test');
 			e.preventDefault();
-			if ( ! $container.find('.g-recaptcha').length ) {
-				$.get( {
-					url: options.ajax_url,
-					data: {
-						action: 'recaptcha_render',
-					},
-					success: function(response) {
-						$container.html( response );
-						window.wp_recaptcha_init();
-					}
-				} );
-			} else {
-				$.post( {
-					url: options.ajax_url,
-					data: {
-						action: 'recaptcha_verify',
-						'g-recaptcha-response' : $container.find('[name="g-recaptcha-response"]').val()
-					},
-					success: function(response) {
-						$container.html( response );
-					}
-				} );
-
-			}
+			test_captcha();
 //
 		});
+	$(document).on('change','[name="recaptcha_size"],[name="recaptcha_theme"]', function(e){
+		if ( '' !== $('#wp-recaptcha-api-test').html() ) {
+			$('#wp-recaptcha-api-test').html('');
+			test_captcha();
+		}
+	});
 
 	$(document).on('click','#test-api-key' , function(e){
 		if ( ! $('#recaptcha-test-head').length )

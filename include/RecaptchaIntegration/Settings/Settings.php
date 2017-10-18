@@ -68,8 +68,9 @@ abstract class Settings extends Core\Singleton {
 
 		$selected = WPRecaptcha()->get_option( $name );
 		echo $before;
-		printf( '<div class="radio-%s">', $horizontal ? 'horizontal' : 'vertical' );
+		echo '<div class="radio-group wp-clearfix">';
 		foreach ( $choices as $value => $label ) {
+			echo '<div class="option">';
 			printf('<input id="%1$s-%2$s" type="radio" name="%1$s" value="%2$s" %3$s>',
 				$this->option_prefix . $name,
 				$value,
@@ -78,6 +79,7 @@ abstract class Settings extends Core\Singleton {
 			printf('<label for="%s-%s">', $this->option_prefix . $name, $value );
 			echo $label;
 			echo '</label>';
+			echo '</div>';
 		}
 		echo '</div>';
 		if ( $description ) {

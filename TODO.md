@@ -12,6 +12,7 @@ Documentation
 	 - [ ] Individual support requests
 
 Implementations 2.0.0
+ - [x] Invisible Captcha
  - [ ] Lockout: use confirmation mail
  - [ ] Settings: send actual visual settings via ajax
  - [ ] General Option: send client IP
@@ -23,10 +24,10 @@ Tests:
  - [x] WP Lost PW
  - [x] WP Register
  - [x] WP Comments
- - [ ] WPMU Signup
- - [ ] WPMU Login
- - [ ] WPMU Lost PW
- - [ ] WPMU Setup Blog
+ - [x] WPMU Signup
+ - [x] WPMU Login
+ - [x] WPMU Lost PW
+ - [x] WPMU Setup Blog
  - [x] WC Login
  - [x] WC Signup
  - [x] WC Lostpw

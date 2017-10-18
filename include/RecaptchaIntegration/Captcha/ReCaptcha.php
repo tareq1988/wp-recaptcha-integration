@@ -123,16 +123,6 @@ class ReCaptcha extends Captcha {
 	 */
 	public function get_style_options() {
 		return array(
-			'theme'				=> array(
-				'input'		=> 'radio',
-				'type'		=> 'string',
-				'sanitize_callback'	=> array( $this, 'sanitize_theme' ),
-				'label'		=> __( 'Theme', 'wp-recaptcha-integration' ),
-				'choices'	=> array(
-					'light'	=> __('Light','wp-recaptcha-integration'),
-					'dark'	=> __('Dark','wp-recaptcha-integration'),
-				),
-			),
 			'size'				=> array(
 				'input'		=> 'radio',
 				'type'		=> 'string',
@@ -141,6 +131,17 @@ class ReCaptcha extends Captcha {
 				'choices'	=> array(
 					'normal'	=> __('Normal','wp-recaptcha-integration'),
 					'compact'	=> __('Compact','wp-recaptcha-integration'),
+					'invisible'	=> __('Invisible','wp-recaptcha-integration'),
+				),
+			),
+			'theme'				=> array(
+				'input'		=> 'radio',
+				'type'		=> 'string',
+				'sanitize_callback'	=> array( $this, 'sanitize_theme' ),
+				'label'		=> __( 'Theme', 'wp-recaptcha-integration' ),
+				'choices'	=> array(
+					'light'	=> __('Light','wp-recaptcha-integration'),
+					'dark'	=> __('Dark','wp-recaptcha-integration'),
 				),
 			),
 			'type'				=> array(
@@ -209,7 +210,7 @@ class ReCaptcha extends Captcha {
 		return '';
 	}
 	public function sanitize_size( $value ) {
-		if ( in_array( $value, array( 'normal', 'compact' ) ) ) {
+		if ( in_array( $value, array( 'normal', 'compact', 'invisible' ) ) ) {
 			return $value;
 		}
 		return 'normal';

@@ -1,6 +1,8 @@
 @import 'variables/variables';
 @import 'mixins/mixins';
 
+$input-border-radius:4px;
+
 .wp-recaptcha-enable {
 	.option {
 		display:inline-block;
@@ -10,26 +12,26 @@
 		& + label {
 			display:block;
 			width:250px;
-			color:#999;
-			border-radius:7px;
-			border:2px solid #bbb;
+			border-radius:$input-border-radius;
 			float:left;
 			margin:0.5em 1em;
 			transition: all 0.125s ease-in-out;
 			font-weight: bold;
 			padding:0.5em;
+			background-color:darken($wp-gray-dark,12%);
+			color:#fff;
 			&:before {
 				@include dashicons( $dashicon-unlock );
-				margin-right:0.25em;
+				margin:0 0.25em;
 				transform:scale(1);
 				transition: transform 0.25s cubic-bezier(0, 1.8, 1, 1.8);
 			}
 		}
 		&:checked + label {
-			background-color:#fff;
-			border-color:$wp-blue;
-			border-style:solid;
-			color:$wp-black;
+			background-color:$wp-blue;
+//			border-color:$wp-blue;
+//			border-style:solid;
+//			color:$wp-black;
 		    box-shadow: rgba(0,0,0,.5) 0 0 5px 0px;
 			&:before {
 				content: $dashicon-lock;
@@ -41,115 +43,79 @@
 	}
 }
 
-
-
-.recaptcha-select-language {
-	width:100%;
+.radio-group-label {
+	display:inline-block;
+	margin-right:0.25em;
+	margin:0.5em 0;
+	padding:7px 14px;
+	border:1px solid $wp-gray-dark;
+	border-radius:$input-border-radius 0 0 $input-border-radius;
+	border-right-width:0;
+	font-weight: bold;
+	color:#666;
+	color:$wp-gray-darker;
 }
-.recaptcha-preview-container {
-	// width:100%;
-	@media only screen and (min-width: 600px) {
-		position:relative;
-		float:right;
-	}
-}
-.recaptcha-preview {
-	//display:none;
-//	transform: scale(.5);
-	// margin:0 auto;
-	// transform-origin:center center;
-	// position:absolute;
-	margin:1em auto;
-	border-radius:4px;
-	box-shadow:rgba(0, 0, 0, 0.08) 0px 0px 4px 1px;
-	@media only screen and (min-width: 600px) {
-		position:absolute;
-		bottom:0;
-		right:0;
-		margin:0;
-	}
+.radio-group {
+	display:inline-block;
+	margin-right:1em;
+	vertical-align:top;
 
-	background-position:center center;
-	background-repeat:no-repeat;
-	background-size:100%;
-	&[data-size="normal"] {
-		width:302px;
-		height:76px;
-		&[data-theme="light"] {
-			background-image:url( inline-image( 'src/images/compressed/grecaptcha-light-normal.png' ));
-		}
-		&[data-theme="dark"] {
-			background-image:url( inline-image( 'src/images/compressed/grecaptcha-dark-normal.png' ));
-		}
-	}
-	&[data-size="compact"] {
-		width:158px;
-		height:138px;
-		&[data-theme="light"] {
-			background-image:url( inline-image( 'src/images/compressed/grecaptcha-light-compact.png' ));
-		}
-		&[data-theme="dark"] {
-			background-image:url( inline-image( 'src/images/compressed/grecaptcha-dark-compact.png' ));
-		}
-	}
-}
-
-.radio-horizontal {
-	label {
-		margin-right:1em;
-	}
-}
-
-.recaptcha-onoff {
-	input[type="checkbox"] {
-		display:none;
-	}
-	label {
+	.option {
 		display:block;
-		width:250px;
-		color:#999;
-		border-radius:7px;
-		border:2px solid #bbb;
 		float:left;
-		margin:0.5em 1em;
-		transition: all 0.125s ease-in-out;
-		.title {
-			font-weight:bold;
+		&:first-of-type {
+			label {
+//				border-radius:7px 0 0 7px;
+//				border-left-width:2px;
+			}
+		}
+		&:last-of-type {
+			label {
+				border-radius:0 $input-border-radius $input-border-radius 0;
+				padding-right:1.5em;
+//				border-right-width:2px;
+			}
+		}
+	}
+	[type="radio"] {
+		display:none;
+		& + label {
 			display:block;
-			padding:0.5em 0.5em 0.5em 2.5em;
-		}
-		.dashicons-lock {
-			position:absolute;
-			font-size:1.5em;
+			//width:250px;
 			float:left;
-			padding:6px;
-			color:#bbb;
-			transition: all 0.25s cubic-bezier(0, 1.8, 1, 1.8);
+			margin:0.5em 0;
+			transition: all 0.125s ease-in-out;
+			font-weight: bold;
+			padding:7px 14px;
+			background-color:darken($wp-gray-dark,12%);//$wp-gray-dark;
+			color:#fff;
+			border-left:1px solid $wp-gray-dark;
+			&:before {
+				@include dashicons( $dashicon-no );
+				margin:0 0.25em 0 0;
+				transform:scale(1);
+				transition: transform 0.25s cubic-bezier(0, 1.8, 1, 1.8);
+			}
 		}
-	}
-	input[type="checkbox"]:checked + label {
-		background-color:#fff;
-		border-color:#0074A2;
-		border-style:solid;
-		color:#333;
-	    box-shadow: rgba(0,0,0,.5) 0 0 5px 0px;
-		.dashicons-lock {
-			color:#0074A2;
-			font-size:2em;
-			padding-left:4px;
-			padding-right:8px;
-			padding-top:2px;
+		&:checked + label {
+			background-color:$wp-blue;
+		    box-shadow: rgba(0,0,0,.5) 0 0 5px 0px;
+			border-left-color:$wp-blue;
+			&:before {
+				color:#fff;
+				content: $dashicon-yes;
+				transform:scale(1.5);
+
+			}
 		}
 	}
 }
 
-.warning {
-	color:red;
-}
 
 
-.recaptcha-explain .loading .spinner {
+#wp-recaptcha-api-test .spinner {
 	display:inline-block;
 	float:none;
 	vertical-align:middle;
+	margin:2em;
 }
