@@ -43,6 +43,11 @@ class Core extends Plugin {
 
 		$this->captcha = Captcha\ReCaptcha::instance();
 
+		// lockout mechanics
+		if ( $this->get_option( 'lockout' ) ) {
+			Lockout::instance();
+		}
+
 		// Awesome support
 		if ( class_exists( 'Awesome_Support' ) ) {
 			Compat\AwesomeSupport::instance();
@@ -77,6 +82,7 @@ class Core extends Plugin {
 		if ( function_exists('WC') || class_exists('WooCommerce') ) {
 			Compat\WooCommerce::instance();
 		}
+
 	}
 
 	/**

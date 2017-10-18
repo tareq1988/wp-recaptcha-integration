@@ -55,6 +55,7 @@ RecaptchaIntegration\Core\Core::instance();
 
 if ( is_admin() || defined( 'DOING_AJAX' ) ) {
 
+	RecaptchaIntegration\Admin\Admin::instance();
 	RecaptchaIntegration\Settings\SettingsPageRecaptcha::instance();
 
 }

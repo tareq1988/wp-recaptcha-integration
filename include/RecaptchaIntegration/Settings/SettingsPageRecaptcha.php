@@ -117,12 +117,14 @@ class SettingsPageRecaptcha extends Settings {
 	public function plugin_action_links( $actions, $plugin_file, $plugin_data, $context ) {
 		if ( current_user_can( 'manage_options' ) ) {
 			$actions = array(
-				'settings' => sprintf('<a href="%s">%s</a>', admin_url('options-general.php?page=' . $this->optionset), __('Settings','wp-recaptcha-integration') )
+				'settings' => sprintf('<a href="%s">%s</a>', $this->get_url(), __('Settings','wp-recaptcha-integration') )
 			) + $actions;
 		}
 		return $actions;
 	}
-
+	public function get_url() {
+		return admin_url('options-general.php?page=' . $this->optionset);
+	}
 	/**
 	 *	Enqueue script and css for options page.
 	 */
@@ -323,8 +325,8 @@ class SettingsPageRecaptcha extends Settings {
 			$section,
 			array(
 				'name'			=> 'lockout',
-				'label'			=> __( 'Allow administrator to log in if API keys do not work.','wp-recaptcha-integration' ),
-				'description'	=> __( 'When the captcha verification fails, and the private or public API key does not work the plugin will let you in anyway. Please note that with this option checked plus a broken keypair your site will be open to brute force attacks, that try to guess an administrator password.','wp-recaptcha-integration' ),
+				'label'			=> __( 'Show “Captcha Broken” Link in Login Window.','wp-recaptcha-integration' ),
+				'description'	=> __( 'An Administrator will be sent an e-mail with instructions.','wp-recaptcha-integration' ),
 			)
 		);
 
@@ -529,7 +531,7 @@ class SettingsPageRecaptcha extends Settings {
 		if ( $inst->valid() ) {
 			printf( '<div class="updated notice is-dismissible"><p>%s</p></div>', __('Works!','wp-recaptcha-integration' ) );
 		} else {
-			$errors = $inst->get_captcha_object()->get_errors();
+			$errors = $inst->get_captcha_object()->get_error_messages();
 			printf( '<div class="error notice is-dismissible"><p><strong>%s</strong> %s</p></div>',
 				__('Error:</strong> ','wp-recaptcha-integration' ),
 				implode( '<br />', $errors )

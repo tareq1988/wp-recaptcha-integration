@@ -74,7 +74,7 @@ class WordPress extends Compat {
 		if ( $inst->get_option('enable_login') ) {
 
 			add_action( 'login_form', 'wp_recaptcha_print' );
-			add_filter( 'wp_authenticate_user', array( $this, 'deny_login'), 99 );
+			add_action( 'wp_authenticate', array( $this, 'deny_login' ), 10, 2 );
 			add_filter( 'login_recaptcha_html', 'wp_recaptcha_get' );
 
 		}
@@ -108,11 +108,11 @@ class WordPress extends Compat {
 	 *	@param $user WP_User
 	 *	@return object user or wp_error
 	 */
-	function deny_login( $user ) {
-		if ( isset( $_POST["log"] ) && ! apply_filters( 'wp_recaptcha_valid', true ) ) {
-			return new \WP_Error( 'captcha_error',  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
+	function deny_login( $username, $passsword ) {
+		if ( is_null( $username ) ) {
+			return;
 		}
-		return $user;
+		do_action( 'wp_recaptcha_die' );
 	}
 
 	/**

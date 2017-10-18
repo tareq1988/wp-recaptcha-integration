@@ -384,9 +384,20 @@ class ReCaptcha extends Captcha {
 
 			$response = wp_remote_get( $url );
 
-			if ( ! is_wp_error($response) ) {
-				$response_data = wp_remote_retrieve_body( $response );
-				$this->last_response = json_decode( $response_data );
+			if ( ! is_wp_error( $response ) ) {
+				if ( $response['response']['code'] === 200 ) {
+					$response_data = wp_remote_retrieve_body( $response );
+					$this->last_response = json_decode( $response_data );
+				} else {
+					$this->last_response = (object) array(
+						'success' => false,
+						'wp_error' => new WP_Error(
+							'http_request_failed',
+							sprintf(__('Status code %d', 'wp-recaptcha-integration' ), $response['response']['code'] )
+						),
+					);
+
+				}
 			} else {
 				$this->last_response = (object) array(
 					'success' => false,
@@ -399,10 +410,26 @@ class ReCaptcha extends Captcha {
 
 		return $this->last_response->success;
 	}
+
 	/**
 	 *	@return	array	error messages
 	 */
-	public function get_errors() {
+	public function get_error_codes() {
+
+		if ( ! is_null( $this->last_response ) ) {
+			if ( isset( $this->last_response->{'error-codes'} ) ) {
+				return $this->last_response->{'error-codes'};
+			}
+			if ( isset( $this->last_response->wp_error ) ) {
+				return $this->last_response->wp_error->get_error_codes();
+			}
+		}
+		return array();
+	}
+	/**
+	 *	@return	array	error messages
+	 */
+	public function get_error_messages() {
 		$errors = array();
 		$g_recaptcha_errors = array(
 			'missing-input-secret'		=> __( 'The secret parameter is missing.', 'wp-recaptcha-integration' ),

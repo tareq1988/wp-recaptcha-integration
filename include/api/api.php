@@ -45,10 +45,11 @@ endif;
 if ( ! function_exists( 'wp_recaptcha_wp_error' ) ) :
 function wp_recaptcha_wp_error( $wp_error = null, $error_code = 'captcha_error' ) {
 	if ( ! apply_filters('wp_recaptcha_valid', true ) ) {
+		$message = apply_filters( 'wp_recaptcha_error_message', __( 'The Captcha didn’t verify.', 'wp-recaptcha-integration' ) );
 		if ( ! is_wp_error( $wp_error ) ) {
 			$wp_error = new WP_Error();
 		}
-		$wp_error->add( $error_code, __( 'The Captcha didn’t verify.', 'wp-recaptcha-integration' ) );
+		$wp_error->add( $error_code, $message );
 	}
 	return $wp_error;
 }
@@ -59,7 +60,10 @@ endif;
 if ( ! function_exists( 'wp_recaptcha_die' ) ) :
 function wp_recaptcha_die() {
 	if ( ! apply_filters( 'wp_recaptcha_valid', true ) ) {
-		wp_die( __( 'The Captcha didn’t verify.', 'wp-recaptcha-integration' ) );
+		if ( apply_filters( 'wp_recaptcha_will_die', true ) ) {
+			$message = apply_filters( 'wp_recaptcha_die_message', __( 'The Captcha didn’t verify.', 'wp-recaptcha-integration' ) );
+			wp_die( $message );
+		}
 	}
 }
 add_action( 'wp_recaptcha_die', 'wp_recaptcha_die' );

@@ -24,7 +24,7 @@ class WordPressMultisite extends WordPress {
 		'recaptcha_enable_login',
 		'recaptcha_enable_lostpw',
 		'recaptcha_disable_for_known_users',
-//		'recaptcha_enable_wc_order',
+		'recaptcha_lockout',
 	);
 	protected $shared_options = array(
 		'recaptcha_size',
