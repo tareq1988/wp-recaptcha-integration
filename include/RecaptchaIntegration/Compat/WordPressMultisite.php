@@ -26,6 +26,12 @@ class WordPressMultisite extends WordPress {
 		'recaptcha_disable_for_known_users',
 //		'recaptcha_enable_wc_order',
 	);
+	protected $shared_options = array(
+		'recaptcha_size',
+		'recaptcha_type',
+		'recaptcha_theme',
+		'recaptcha_solved_callback',
+	);
 
 	/**
 	 *	@var bool
@@ -70,9 +76,11 @@ class WordPressMultisite extends WordPress {
 	 *	@see filter hook `wpmu_validate_user_signup`
 	 */
 	function validate_user_signup( $result ) {
+		error_log(var_export($result,true));
 		if ( isset( $_POST['stage'] ) && $_POST['stage'] == 'validate-user-signup' ) {
 			$result['errors'] = apply_filters('wp_recaptcha_wp_error', $result['errors'] , 'generic' );//$this->wp_error_add(  );
 		}
+		error_log(var_export($result,true));
 		return $result;
 	}
 
@@ -97,6 +105,10 @@ class WordPressMultisite extends WordPress {
 
 
 	public function is_network_option( $option ) {
+		// shared options are configurable in both network and blog
+		if ( in_array( $option, $this->shared_options ) ) {
+			return is_network_admin();
+		}
 		return $this->is_network_activated() && in_array( $option, $this->network_options );
 	}
 
@@ -110,10 +122,8 @@ class WordPressMultisite extends WordPress {
 
 	public function update_option( $option, $value ) {
 		if ( $this->is_network_option( $option ) ) {
-			error_log(sprintf('update site option %s %s',$option, $value));
 			return update_site_option( $option, $value );
 		}
-		error_log(sprintf('update option %s %s',$option, $value));
 		return parent::update_option( $option, $value );
 	}
 	public function delete_option( $option ) {

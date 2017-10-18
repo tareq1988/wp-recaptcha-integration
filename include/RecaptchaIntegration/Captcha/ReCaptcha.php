@@ -153,7 +153,6 @@ class ReCaptcha extends Captcha {
 					'audio'	=> __('Audio','wp-recaptcha-integration'),
 				),
 			),
-
 			'solved_callback'	=> array(
 				'input'				=> 'select',
 				'type'				=> 'string',
@@ -193,6 +192,13 @@ class ReCaptcha extends Captcha {
 				'label'				=> __('Noscript Fallback','wp-recaptcha-integration'),
 				'sanitize_callback'	=> 'boolval',
 				'description' 		=> __( 'Leave this unchecked when your site requires JavaScript anyway.','wp-recaptcha-integration' ),
+			),
+			'send_ip'			=> array(
+				'input'				=> 'checkbox',
+				'type'				=> 'boolean',
+				'label'				=> __('Send Client IP','wp-recaptcha-integration'),
+				'sanitize_callback'	=> 'boolval',
+				'description' 		=> __( 'If checked the Users IP Address will be sent to Google when the captcha is verified.','wp-recaptcha-integration' ),
 			),
 		);
 	}
@@ -280,6 +286,7 @@ class ReCaptcha extends Captcha {
 		$inst		= \WPRecaptcha();
 		$theme		= $inst->get_option( 'theme' );
 		$size		= $inst->get_option( 'size' );
+		$type		= $inst->get_option( 'type' );
 		$callback	= $inst->get_option( 'solved_callback' );
 		$noscript	= $inst->get_option( 'noscript' );
 
@@ -291,7 +298,7 @@ class ReCaptcha extends Captcha {
 			'data-theme'			=> $theme,
 			'data-size'				=> $size,
 			'data-sitekey'			=> null,
-			'data-type'				=> null,
+			'data-type'				=> $type,
 			'data-tabindex'			=> null,
 			'data-callback'			=> $callback,
 			'data-expired-callback'	=> null,
@@ -357,11 +364,22 @@ class ReCaptcha extends Captcha {
 		}
 
 		if ( is_null( $this->last_response ) ) {
+			$inst = \WPRecaptcha();
 
 			$url = add_query_arg( array(
 				'secret'	=> WPRecaptcha()->get_option( 'secret_key' ),
 				'response'	=> $_REQUEST['g-recaptcha-response'],
 			),$this->verify_url );
+
+			if ( $inst->get_option( 'send_ip' ) ) {
+				// proxy?
+				foreach ( array( 'HTTP_X_FORWARDED_FOR', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_CLIENT_IP', 'HTTP_VIA', 'HTTP_X_REAL_IP', 'REMOTE_ADDR' ) as $ip_key ) {
+					if ( isset( $_SERVER[ $ip_key ] ) ) {
+						$url = add_query_arg( 'remoteip', $_SERVER[ $ip_key ], $url );
+						break;
+					}
+				}
+			}
 
 			$response = wp_remote_get( $url );
 
@@ -374,6 +392,7 @@ class ReCaptcha extends Captcha {
 					'wp_error' => $response,
 				);
 			}
+			error_log( $this->last_response->success );
 			do_action( 'wp_recaptcha_checked', $this->last_response->success );
 		}
 

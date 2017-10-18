@@ -70,27 +70,16 @@ class SettingsPageRecaptcha extends Settings {
 		if ( current_user_can('manage_network') ) {
 			global $wp_registered_settings;
 
-			$opt_names = array(
-				'recaptcha_site_key',
-				'recaptcha_secret_key',
-				'recaptcha_enable_comments',
-				'recaptcha_enable_signup',
-				'recaptcha_enable_login',
-				'recaptcha_enable_lostpw',
-				'recaptcha_disable_for_known_users',
-			);
-
 			$inst = \WPRecaptcha();
 			$compat = Compat\WordPressMultisite::instance();
 			$updated = false;
 			foreach ( $wp_registered_settings as $option_name => $settings ) {
 				if ( isset( $_POST[ $option_name ] ) ) {
 					$opt_value = $_POST[ $option_name ];
-					vaR_dump($option_name,$opt_value);
+
 					if ( is_callable( $settings['sanitize_callback'] ) ) {
 						$opt_value = call_user_func( $settings['sanitize_callback'], $opt_value );
 					}
-					vaR_dump($option_name,$opt_value);
 
 					if ( $compat->is_network_option($option_name) ) {
 						$compat->update_option( $option_name, $opt_value );
@@ -392,7 +381,7 @@ class SettingsPageRecaptcha extends Settings {
 	private function register_style_settings() {
 		$inst = \WPRecaptcha();
 		$captcha = $inst->get_captcha_object();
-		$optionset = $this->optionset;
+		$optionset = is_network_admin() ? $this->network_optionset : $this->optionset;
 
 		$section = 'recaptcha_style';
 
