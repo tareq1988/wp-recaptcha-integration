@@ -43,10 +43,8 @@ class Core extends Plugin {
 
 		$this->captcha = Captcha\ReCaptcha::instance();
 
-		// lockout mechanics
-		if ( $this->get_option( 'lockout' ) ) {
-			Lockout::instance();
-		}
+		// lockout 
+		Lockout::instance();
 
 		// Awesome support
 		if ( class_exists( 'Awesome_Support' ) ) {

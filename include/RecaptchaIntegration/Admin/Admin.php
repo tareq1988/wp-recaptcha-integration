@@ -4,7 +4,7 @@ namespace RecaptchaIntegration\Admin;
 
 use RecaptchaIntegration\Core;
 
-class Admin extends Core\PluginComponent {
+class Admin extends Core\Singleton {
 
 	protected function __construct() {
 		if ( get_transient( 'wp_recaptcha_api_key_lockout_reset' ) ) {

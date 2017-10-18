@@ -24,7 +24,6 @@ class WordPressMultisite extends WordPress {
 		'recaptcha_enable_login',
 		'recaptcha_enable_lostpw',
 		'recaptcha_disable_for_known_users',
-		'recaptcha_lockout',
 	);
 	protected $shared_options = array(
 		'recaptcha_size',
@@ -76,11 +75,9 @@ class WordPressMultisite extends WordPress {
 	 *	@see filter hook `wpmu_validate_user_signup`
 	 */
 	function validate_user_signup( $result ) {
-		error_log(var_export($result,true));
 		if ( isset( $_POST['stage'] ) && $_POST['stage'] == 'validate-user-signup' ) {
 			$result['errors'] = apply_filters('wp_recaptcha_wp_error', $result['errors'] , 'generic' );//$this->wp_error_add(  );
 		}
-		error_log(var_export($result,true));
 		return $result;
 	}
 

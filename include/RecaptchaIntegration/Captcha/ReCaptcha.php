@@ -307,7 +307,6 @@ class ReCaptcha extends Captcha {
 
 		$attr = wp_parse_args( $attr, $default_attr );
 		$attr = array_intersect_key( $attr, $default_attr );
-//		error_log(sprintf("%d, %s", $this->counter, var_export($_SERVER['REQUEST_URI'],'true')));
 
 		$attr_str = '';
 
@@ -404,7 +403,6 @@ class ReCaptcha extends Captcha {
 					'wp_error' => $response,
 				);
 			}
-			error_log( $this->last_response->success );
 			do_action( 'wp_recaptcha_checked', $this->last_response->success );
 		}
 

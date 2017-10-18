@@ -285,11 +285,9 @@ class SettingsPageRecaptcha extends Settings {
 		add_settings_section( $section, __( 'Protection' , 'wp-recaptcha-integration' ), array( $this, 'explain_protection' ), $this->network_optionset );
 		add_settings_section( $section, __( 'Protection' , 'wp-recaptcha-integration' ), array( $this, 'explain_protection' ), $this->optionset );
 
-		$this->register_setting( $optionset, 'lockout' , 'intval');
 		$this->register_setting( $optionset, 'disable_for_known_users' , 'intval');
 
 		foreach ( apply_filters( 'wp_recaptcha_forms', array() ) as $form_slug => $form_label ) {
-			error_log(sprintf('reg %s %s',is_network_admin() ? $this->network_optionset : $this->optionset,$form_slug));
 			$this->register_setting( is_network_admin() ? $this->network_optionset : $this->optionset, 'enable_' . $form_slug, 'intval' );
 		}
 
@@ -315,18 +313,6 @@ class SettingsPageRecaptcha extends Settings {
 			array(
 				'name'=>'disable_for_known_users',
 				'label'=>__( 'Disable reCaptcha verification for logged in users.','wp-recaptcha-integration' )
-			)
-		);
-
-		$this->add_settings_field('lockout',
-			__( 'Prevent lockout', 'wp-recaptcha-integration' ),
-			array($this,'input_checkbox'),
-			$optionset,
-			$section,
-			array(
-				'name'			=> 'lockout',
-				'label'			=> __( 'Show “Captcha Broken” Link in Login Window.','wp-recaptcha-integration' ),
-				'description'	=> __( 'An Administrator will be sent an e-mail with instructions.','wp-recaptcha-integration' ),
 			)
 		);
 
