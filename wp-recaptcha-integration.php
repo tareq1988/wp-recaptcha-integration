@@ -41,17 +41,17 @@ function wp_recaptcha_integration_autoload( $classname ) {
 spl_autoload_register( 'wp_recaptcha_integration_autoload' );
 
 
-// // disable 2.0.0 updates on php < 5.4
-// function wp_recaptcha_disable_updates($value) {
-// 	if ( version_compare(PHP_VERSION, '5.4', '<') ) {
-// 		$plugin_basename = plugin_basename(__FILE__);
-// 		if ( isset( $value->response[ $plugin_basename ] ) && version_compare( $value->response[ $plugin_basename ]['new_version'] , '2.0.0', '>=' ) ) {
-// 			unset( $value->response[ plugin_basename(__FILE__) ] );
-// 		}
-// 	}
-// 	return $value;
-// }
-// add_filter('site_transient_update_plugins', 'wp_recaptcha_disable_updates');
+// disable 2.0.0 updates on php < 5.4
+function wp_recaptcha_disable_updates($value) {
+	if ( version_compare(PHP_VERSION, '5.4', '<') ) {
+		$plugin_basename = plugin_basename(__FILE__);
+		if ( isset( $value->response[ $plugin_basename ] ) && version_compare( $value->response[ $plugin_basename ]->new_version , '2.0.0', '>=' ) ) {
+			unset( $value->response[ plugin_basename(__FILE__) ] );
+		}
+	}
+	return $value;
+}
+add_filter('site_transient_update_plugins', 'wp_recaptcha_disable_updates');
 
 WP_reCaptcha::instance();
 
