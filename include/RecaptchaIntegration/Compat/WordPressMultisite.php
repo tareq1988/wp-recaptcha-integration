@@ -57,11 +57,25 @@ class WordPressMultisite extends WordPress {
 		$inst = \WPRecaptcha();
 
 		if ( $inst->get_option('enable_signup') ) {
-			add_action( 'signup_extra_fields', array( $this, 'print_recaptcha_html' ) );
-			add_filter( 'wpmu_validate_user_signup', array( $this, 'wpmu_validate_user_signup' ) );
+			add_action( 'signup_extra_fields', 'wp_recaptcha_print');
+			add_filter( 'wpmu_validate_user_signup', array( $this, 'validate_user_signup' ) );
 		}
 		parent::init();
 	}
+
+	/**
+	 *	check recaptcha WPMU signup
+	 *	filter function for `wpmu_validate_user_signup`
+	 *
+	 *	@see filter hook `wpmu_validate_user_signup`
+	 */
+	function validate_user_signup( $result ) {
+		if ( isset( $_POST['stage'] ) && $_POST['stage'] == 'validate-user-signup' ) {
+			$result['errors'] = apply_filters('wp_recaptcha_wp_error', $result['errors'] , 'generic' );//$this->wp_error_add(  );
+		}
+		return $result;
+	}
+
 
 	/**
 	 *	Get plugin option by name.

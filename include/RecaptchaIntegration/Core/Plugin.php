@@ -29,6 +29,9 @@ class Plugin extends Singleton {
 	 */
 	public function maybe_upgrade() {
 		// trigger upgrade
+		if ( ! is_admin() ) {
+			return;
+		}
 		$meta = get_plugin_data( WP_RECAPTCHA_FILE );
 		$new_version = $meta['Version'];
 		$old_version = get_option( 'wp_recaptcha_version' );

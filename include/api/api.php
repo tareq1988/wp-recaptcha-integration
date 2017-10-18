@@ -42,17 +42,17 @@ add_filter( 'wp_recaptcha_submitted', 'wp_recaptcha_submitted' );
 endif;
 
 
-if ( ! function_exists( 'wp_recaptcha_error' ) ) :
-function wp_recaptcha_error( $wp_error = null ) {
-	if ( is_null( $wp_error ) ) {
-		$wp_error = new WP_Error();
-	}
+if ( ! function_exists( 'wp_recaptcha_wp_error' ) ) :
+function wp_recaptcha_wp_error( $wp_error = null, $error_code = 'captcha_error' ) {
 	if ( ! apply_filters('wp_recaptcha_valid', true ) ) {
+		if ( ! is_wp_error( $wp_error ) ) {
+			$wp_error = new WP_Error();
+		}
 		$wp_error->add( 'wp-recaptcha-invalid', __( 'The Captcha didn’t verify.', 'wp-recaptcha-integration' ) );
 	}
 	return $wp_error;
 }
-add_filter( 'wp_recaptcha_error', 'wp_recaptcha_error' );
+add_filter( 'wp_recaptcha_wp_error', 'wp_recaptcha_wp_error', 10, 2 );
 endif;
 
 

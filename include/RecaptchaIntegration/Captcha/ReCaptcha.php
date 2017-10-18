@@ -143,6 +143,16 @@ class ReCaptcha extends Captcha {
 					'compact'	=> __('Compact','wp-recaptcha-integration'),
 				),
 			),
+			'type'				=> array(
+				'input'		=> 'radio',
+				'type'		=> 'string',
+				'sanitize_callback'	=> array( $this, 'sanitize_type' ),
+				'label'		=> __( 'Type', 'wp-recaptcha-integration' ),
+				'choices'	=> array(
+					'image'	=> __('Image','wp-recaptcha-integration'),
+					'audio'	=> __('Audio','wp-recaptcha-integration'),
+				),
+			),
 
 			'solved_callback'	=> array(
 				'input'				=> 'select',
@@ -203,6 +213,12 @@ class ReCaptcha extends Captcha {
 			return $value;
 		}
 		return 'light';
+	}
+	public function sanitize_type( $value ) {
+		if ( in_array( $value, array( 'image', 'audio' ) ) ) {
+			return $value;
+		}
+		return 'image';
 	}
 	public function sanitize_solved_callback( $value ) {
 		if ( in_array( $value, array( '', 'enable', 'submit' ) ) ) {
@@ -269,20 +285,28 @@ class ReCaptcha extends Captcha {
 
 		$this->counter++;
 
-		$attr = wp_parse_args( $attr, array(
-			'id'			=> 'g-recaptcha-' . crc32($_SERVER['REQUEST_URI']) . '-' . $this->counter,
-			'class'			=> 'wp-recaptcha' . ( $noscript ? ' g-recaptcha' : '' ),
-			'data-theme' 	=> $theme,
-			'data-size' 	=> $size,
-			'data-callback'	=> $callback,
-		) );
+		$default_attr = array(
+			'id'					=> 'g-recaptcha-' . crc32($_SERVER['REQUEST_URI']) . '-' . $this->counter,
+			'class'					=> 'wp-recaptcha' . ( $noscript ? ' g-recaptcha' : '' ),
+			'data-theme'			=> $theme,
+			'data-size'				=> $size,
+			'data-sitekey'			=> null,
+			'data-type'				=> null,
+			'data-tabindex'			=> null,
+			'data-callback'			=> $callback,
+			'data-expired-callback'	=> null,
+		);
+
+		$attr = wp_parse_args( $attr, $default_attr );
+		$attr = array_intersect_key( $attr, $default_attr );
 //		error_log(sprintf("%d, %s", $this->counter, var_export($_SERVER['REQUEST_URI'],'true')));
 
 		$attr_str = '';
 
 		foreach ( $attr as $attr_name => $attr_val ) {
-			$attr_str .= sprintf( ' %s="%s"' , $attr_name , esc_attr( $attr_val ) );
-
+			if ( ! is_null( $attr_val ) ) {
+				$attr_str .= sprintf( ' %s="%s"' , $attr_name , esc_attr( $attr_val ) );
+			}
 		}
 
 		$output .= "<div {$attr_str}></div>";
