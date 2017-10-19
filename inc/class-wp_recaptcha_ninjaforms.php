@@ -32,6 +32,10 @@ class WP_reCaptcha_NinjaForms {
 
 	function update_nf_settings( ) {
 		$nf = Ninja_Forms();
+		// check if nf provides get_setting method
+		if ( ! method_exists( $nf, 'get_setting' ) ) {
+			return;
+		}
 		$wr = WP_reCaptcha::instance();
 		$wr_configured = $wr->has_api_key();
 		$nf_configured = false !== $nf->get_setting('recaptcha_site_key') && false !== $nf->get_setting('recaptcha_secret_key');
