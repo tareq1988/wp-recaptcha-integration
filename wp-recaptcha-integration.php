@@ -2,8 +2,8 @@
 /*
 Plugin Name: WP reCaptcha Integration
 Plugin URI: https://wordpress.org/plugins/wp-recaptcha-integration/
-Description: Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha). Provides of the box integration for signup, login, comment forms and lost password.
-Version: 1.3.1
+Description: Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha) as well as the old style reCaptcha. Provides of the box integration for signup, login, comment forms, lost password, Ninja Forms and contact form 7.
+Version: 1.2.0
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 Text Domain: wp-recaptcha-integration
@@ -25,9 +25,6 @@ Text Domain: wp-recaptcha-integration
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define( 'WP_RECAPTCHA_FILE', __FILE__ );
-define( 'WP_RECAPTCHA_PATH', dirname(__FILE__) );
-
 /**
  * Autoload Classes
  *
@@ -40,18 +37,6 @@ function wp_recaptcha_integration_autoload( $classname ) {
 }
 spl_autoload_register( 'wp_recaptcha_integration_autoload' );
 
-
-// disable 2.0.0 updates on php < 5.4
-function wp_recaptcha_disable_updates($value) {
-	if ( version_compare(PHP_VERSION, '5.4', '<') ) {
-		$plugin_basename = plugin_basename(__FILE__);
-		if ( isset( $value->response[ $plugin_basename ] ) && version_compare( $value->response[ $plugin_basename ]->new_version , '2.0.0', '>=' ) ) {
-			unset( $value->response[ plugin_basename(__FILE__) ] );
-		}
-	}
-	return $value;
-}
-add_filter('site_transient_update_plugins', 'wp_recaptcha_disable_updates');
 
 WP_reCaptcha::instance();
 

@@ -46,18 +46,19 @@ class WP_reCaptcha_bbPress {
 		if ( $require_recaptcha ) {
 
 			// WooCommerce support
+			if ( $wp_recaptcha->get_option('recaptcha_flavor') == 'grecaptcha' ) {
 
-			if ( $enable_topic ) {
-				add_action( 'bbp_theme_before_topic_form_submit_wrapper' , array( $wp_recaptcha, 'print_recaptcha_html' ) );
-				add_action( 'bbp_new_topic_pre_extras', array( &$this , 'recaptcha_check' ) );
-			}
+				if ( $enable_topic ) {
+					add_action( 'bbp_theme_before_topic_form_submit_wrapper' , array( $wp_recaptcha, 'print_recaptcha_html' ) );
+					add_action( 'bbp_new_topic_pre_extras', array( &$this , 'recaptcha_check' ) );
+				}
 
-			if ( $enable_reply ) {
-				add_action( 'bbp_theme_before_reply_form_submit_wrapper', array( $wp_recaptcha, 'print_recaptcha_html' ) );
-				add_filter( 'bbp_new_reply_pre_extras', array( &$this , 'recaptcha_check' ) );
+				if ( $enable_reply ) {
+					add_action( 'bbp_theme_before_reply_form_submit_wrapper', array( $wp_recaptcha, 'print_recaptcha_html' ) );
+					add_filter( 'bbp_new_reply_pre_extras', array( &$this , 'recaptcha_check' ) );
+				}
 			}
 		}
-
 	}
 
 	/**
