@@ -72,7 +72,6 @@ gulp.task('scripts-admin', function() {
 		.pipe( rename( { suffix:'.min' } ) )
 		.pipe( sourcemaps.write() )
 		.pipe( gulp.dest( './js/' ) );
-
 });
 
 
@@ -91,6 +90,6 @@ gulp.task( 'watch', function() {
 } );
 
 
-gulp.task( 'build', ['pngquant', 'styles-admin','scripts-admin'] );
+//gulp.task( 'build', ['pngquant', 'styles-admin','scripts-admin'] );
 
-gulp.task( 'default', ['build','watch'] );
+//gulp.task( 'default', ['build','watch'] );
