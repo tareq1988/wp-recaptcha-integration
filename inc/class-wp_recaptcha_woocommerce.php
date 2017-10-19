@@ -58,7 +58,16 @@ class WP_reCaptcha_WooCommerce {
 					add_filter('woocommerce_process_login_errors', array( &$this , 'login_errors' ) , 10 , 3 );
 				}
 				if ( $enable_signup ) {
-					// displaying the captcha at hook 'registration_form' already done by core plugin
+					// Injects recaptcha in Register for WooCommerce >= 3.0
+					// For WooCommerce < 3.0 displaying the captcha at hook 'registration_form' already done by core plugin
+					if ( class_exists( 'WooCommerce' ) ) {
+						global $woocommerce;
+						if ( version_compare( $woocommerce->version, '3.0', ">=" ) ) {
+							add_action('woocommerce_register_form' , array($wp_recaptcha,'print_recaptcha_html'),10,0);
+						}
+					}
+
+
 					add_filter('woocommerce_registration_errors', array( &$this , 'login_errors' ) , 10 , 3 );
 // 					if ( ! $enable_order )
 // 						add_filter('woocommerce_checkout_fields', array( &$this , 'checkout_fields' ) , 10 , 3 );
@@ -146,20 +155,20 @@ class WP_reCaptcha_WooCommerce {
 	 *	hooks into action `woocommerce_checkout_process`
 	 */
 	function recaptcha_check() {
-		if ( ! WP_reCaptcha::instance()->recaptcha_check() ) 
+		if ( ! WP_reCaptcha::instance()->recaptcha_check() )
 			wc_add_notice( __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration'), 'error' );
 	}
-	
+
 	/**
 	 *	WooCommerce recaptcha Check
 	 *	hooks into actions `woocommerce_process_login_errors` and `woocommerce_registration_errors`
 	 */
 	function login_errors( $validation_error ) {
-		if ( ! WP_reCaptcha::instance()->recaptcha_check() ) 
+		if ( ! WP_reCaptcha::instance()->recaptcha_check() )
 			$validation_error->add( 'captcha_error' ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
 		return $validation_error;
 	}
-	
+
 	/**
 	 *	WooCommerce recaptcha Check
 	 *	hooks into actions `woocommerce_process_login_errors` and `woocommerce_registration_errors`
@@ -170,5 +179,3 @@ class WP_reCaptcha_WooCommerce {
 		return $enabled;
 	}
 }
-
-
