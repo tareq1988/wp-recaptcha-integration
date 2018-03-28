@@ -482,25 +482,39 @@ class WP_reCaptcha {
 	 *	@return bool false if check does not validate
 	 */
 	public function get_option( $option_name ) {
+		$option_value = null;
 		switch ( $option_name ) {
 			case 'recaptcha_publickey': // first try local, then global
 			case 'recaptcha_privatekey':
 				$option_value = get_option($option_name);
-				if ( ! $option_value && WP_reCaptcha::is_network_activated() )
+				if ( ! $option_value && WP_reCaptcha::is_network_activated() ) {
 					$option_value = get_site_option( $option_name );
-				return $option_value;
+				}
 			case 'recaptcha_enable_comments': // global on network. else local
 			case 'recaptcha_enable_signup':
 			case 'recaptcha_enable_login':
 			case 'recaptcha_enable_lostpw':
 			case 'recaptcha_disable_for_known_users':
 			case 'recaptcha_enable_wc_order':
-				if ( WP_reCaptcha::is_network_activated() )
-					return get_site_option($option_name);
-				return get_option( $option_name );
+				if ( WP_reCaptcha::is_network_activated() ) {
+					$option_value = get_site_option($option_name);
+				} else {
+					$option_value = get_option( $option_name );
+				}
 			default: // always local
-				return get_option($option_name);
+				$option_value = get_option($option_name);
 		}
+		// if using "env" for enviroment variables, you might use that as well
+		if ( ! $option_value && function_exists('env') ) {
+			$option_value = env( strtoupper( $option_name ) );
+		}
+		// if you're using constants, let's use that
+		if ( ! $option_value && defined( strtoupper( $option_name ) ) ) {
+			$option_value = constant( strtoupper( $option_name ) );
+		}
+		// ... or, you can filter the option value
+		$option_value = apply_filters("wp_recaptcha_integration_option_value_{$option_name}", $option_value, $option_name, $this );
+		return $option_value;
 	}
 
 	/**
