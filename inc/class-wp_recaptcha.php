@@ -117,7 +117,7 @@ class WP_reCaptcha {
 	 *	set hooks
 	 */
 	function init() {
-		load_plugin_textdomain( 'wp-recaptcha-integration', false , dirname( plugin_basename( __FILE__ ) ).'/languages/' );
+		load_plugin_textdomain( 'wp-recaptcha-integration', false, WP_RECAPTCHA_INTEGRATION_DIRECTORY.'/languages/' );
 		$require_recaptcha = $this->is_required();
 
 		if ( $require_recaptcha ) {

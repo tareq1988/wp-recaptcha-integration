@@ -25,6 +25,10 @@ Text Domain: wp-recaptcha-integration
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+
+define( 'WP_RECAPTCHA_INTEGRATION_FILE', __FILE__ );
+define( 'WP_RECAPTCHA_INTEGRATION_DIRECTORY', plugin_dir_path(__FILE__) );
+
 /**
  * Autoload Classes
  *
