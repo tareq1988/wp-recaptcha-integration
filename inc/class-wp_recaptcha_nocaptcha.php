@@ -194,6 +194,12 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 <?php } ?>
 						});
 						el.setAttribute('data-widget-id',wid);
+						// Add an event listener to reset the captcha in case of woocommerce checkout error
+						if ( typeof jQuery !== 'undefined' )
+							jQuery( document.body ).on('checkout_error', function() {
+								grecaptcha.reset(wid);
+    						});
+
 					} else {
 						wid = el.getAttribute('data-widget-id');
 						grecaptcha.reset(wid);
