@@ -222,18 +222,6 @@ class WP_reCaptcha_Options {
 					)
 				);
 
-				global $wp_version;
-				if ( version_compare( $wp_version , '4.2' ) >= 0 ) {
-					register_setting( 'recaptcha_options', 'recaptcha_comment_use_42_filter' , 'intval');
-					add_settings_field('recaptcha_comment_use_42_filter', __('Comment Form rendering','wp-recaptcha-integration'),
-						array(&$this,'input_checkbox'), 'recaptcha', 'recaptcha_advanced' ,
-						array(
-							'name'=>'recaptcha_comment_use_42_filter',
-							'label'=>__( 'My Comment Form is WordPress 4.2 compatible.','wp-recaptcha-integration' ),
-							'description' => __( 'Enable this when your comment form uses the <code>comment_form_submit_button</code> filter. (Or just try if it works.)','wp-recaptcha-integration' ),
-						)
-					);
-				}
 			}
 
 			if ( ! WP_reCaptcha::is_network_activated() || is_network_admin() ) {

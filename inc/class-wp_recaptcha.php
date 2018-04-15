@@ -146,10 +146,7 @@ class WP_reCaptcha {
 				// WP 4.2 introduced `comment_form_submit_button` filter
 				// which is much more likely to work
 				global $wp_version;
-				if ( version_compare( $wp_version , '4.2' ) >= 0 && $this->get_option('recaptcha_comment_use_42_filter') )
-					add_filter('comment_form_submit_button',array($this,'prepend_recaptcha_html'),10,2);
-				else
-					add_filter('comment_form_defaults',array($this,'comment_form_defaults'),10);
+				add_filter('comment_form_submit_button',array($this,'prepend_recaptcha_html'),10,2);
 
 				//*/
 				add_action('pre_comment_on_post',array($this,'recaptcha_check_or_die'));
