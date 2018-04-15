@@ -124,7 +124,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	 *	Sometimes WP uses different locales the the ones supported by nocaptcha.
 	 *
 	 *	@param	$lang	string language code
-	 *	@return	string	recaptcha language code if supported by current flavor, empty string otherwise
+	 *	@return	string	recaptcha language code if supported, empty string otherwise
 	 */
 	public function get_language( $lang ) {
 		/*

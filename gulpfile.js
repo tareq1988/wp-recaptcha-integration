@@ -90,6 +90,6 @@ gulp.task( 'watch', function() {
 } );
 
 
-//gulp.task( 'build', ['pngquant', 'styles-admin','scripts-admin'] );
+gulp.task( 'build', ['pngquant', 'styles-admin','scripts-admin'] );
 
-//gulp.task( 'default', ['build','watch'] );
+gulp.task( 'default', ['build','watch'] );

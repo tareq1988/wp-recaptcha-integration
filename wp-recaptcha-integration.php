@@ -7,6 +7,7 @@ Version: 1.2.1
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 Text Domain: wp-recaptcha-integration
+Domain Path: /languages
 */
 
 /*  Copyright 2014  Jörn Lund  (email : joern AT podpirate DOT org)

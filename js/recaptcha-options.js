@@ -1,15 +1,9 @@
 (function($){
-	$(document).ready(function(){
-		$('[name="recaptcha_flavor"]:checked').trigger('click');
+	$(document).on('change','[name="recaptcha_theme"],[name="recaptcha_size"]',function(e){
+		$('.recaptcha-preview').attr('data-size',$('[name="recaptcha_size"]:checked').first().val())
+		$('.recaptcha-preview').attr('data-theme',$('[name="recaptcha_theme"]:checked').first().val())
 	});
-	$(document).on('click','[name="recaptcha_flavor"]',function(){
-		$(this).closest('.wrap')
-			.removeClass('flavor-recaptcha')
-			.removeClass('flavor-grecaptcha')
-			.addClass('flavor-'+$(this).val());
-	});
-	
-	
+
 	$(document).on('click','#test-api-key' , function(e){
 		if ( ! $('#recaptcha-test-head').length )
 			$(this).closest('div').append('<div id="recaptcha-test-head" />');
@@ -18,7 +12,7 @@
 
 		if ( ! $('#recaptcha-test-head').html() )
 			$('#recaptcha-test-head').load( $(this).data('init-href') );
-		
+
 		$('#recaptcha-test-result').load( $(this).prop('href') );
 		e.preventDefault();
 		e.stopPropagation();
@@ -33,13 +27,13 @@
 			'g-recaptcha-response' : $('.g-recaptcha-response:first').val()
 		};
 		$('#recaptcha-test-result').addClass('loading').html('<span class="spinner"></span>');
-		$.post( ajaxurl , 
-			data , 
+		$.post( ajaxurl ,
+			data ,
 			function(response) {
 				$('#recaptcha-test-result').html(response);
 				$('#test-api-key').show();
 			});
-		
+
 		e.preventDefault();
 		e.stopPropagation();
 		return false;

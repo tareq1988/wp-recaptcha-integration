@@ -45,7 +45,7 @@ class WP_reCaptcha_WooCommerce {
 		$enable_lostpw = $wp_recaptcha->get_option('recaptcha_enable_lostpw');
 		if ( $require_recaptcha ) {
 			// WooCommerce support
-			if ( $wp_recaptcha->get_option('recaptcha_flavor') == 'grecaptcha' && function_exists( 'wc_add_notice' ) ) {
+			if ( function_exists( 'wc_add_notice' ) ) {
 				if ( $enable_order ) {
 					add_action('woocommerce_review_order_before_submit' , array($wp_recaptcha,'print_recaptcha_html'),10,0);
 					add_action('woocommerce_checkout_process', array( &$this , 'recaptcha_check' ) );

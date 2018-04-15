@@ -55,6 +55,59 @@
 	}
 }
 
+
+.recaptcha-select-theme {
+	.theme-item {
+		display:inline-block;
+	}
+	label {
+		display:inline-block;
+		margin:30px;
+		padding:0px;
+		background-color:transparent;
+		border-radius:10px;
+		max-width:200px;
+		-webkit-transition: all 0.125s ease-in-out;
+		transition: all 0.125s ease-in-out;
+	}
+	input[type="radio"] {
+		display:none;
+		&:checked + label {
+			background-color:#0074A2;
+			color:#fff;
+			margin:15px;
+			padding:15px;
+		    box-shadow: rgba(0,0,0,.3) 0 0 15px 5px;
+		}
+	}
+	.title {
+		display:block;
+		font-weight:600;
+		text-align:center;
+		padding-bottom:0.5em;
+	}
+	.visual,
+	img {
+		width:100%;
+		height:auto;
+	}
+	.visual {
+		display:block;
+		-moz-box-sizing:border-box;
+		box-sizing:border-box;
+		background-color:#888;
+		color:#fff;
+		font-weight:bold;
+		padding:1em;
+		text-align:center;
+		border-radius:10px;
+		border:5px dashed #444;
+	}
+}
+
+
+
+
 .recaptcha-onoff {
 	input[type="checkbox"] {
 		display:none;

@@ -37,7 +37,7 @@ class WP_reCaptcha {
 	 *	Prevent from creating more than one instance
 	 */
 	private function __construct() {
-		add_option('recaptcha_flavor','grecaptcha'); // local
+
 		add_option('recaptcha_theme','light'); // local
 		add_option('recaptcha_disable_submit',false); // local
 		add_option('recaptcha_noscript',false); // local
@@ -72,6 +72,7 @@ class WP_reCaptcha {
 			add_action('plugins_loaded' , array(&$this,'plugins_loaded'), 9 );
 
 		}
+		add_action('plugins_loaded', array( $this,'load_textdomain') );
 
 		register_activation_hook( __FILE__ , array( __CLASS__ , 'activate' ) );
 		register_deactivation_hook( __FILE__ , array( __CLASS__ , 'deactivate' ) );
@@ -80,9 +81,18 @@ class WP_reCaptcha {
 
 	/**
 	 *	Load ninja/cf7 php files if necessary
+	 *	@action plugins_loaded
+	 */
+	function load_textdomain() {
+		load_plugin_textdomain( 'wp-recaptcha-integration', false, WP_RECAPTCHA_INTEGRATION_DIRECTORY.'languages' );
+	}
+	/**
+	 *	Load ninja/cf7 php files if necessary
 	 *	Hooks into 'plugins_loaded'
 	 */
 	function plugins_loaded() {
+
+
 		if ( $this->has_api_key() ) {
 			// NinjaForms support
 			// check if ninja forms is present
@@ -112,12 +122,12 @@ class WP_reCaptcha {
 
 		}
 	}
+
 	/**
 	 *	Init plugin
 	 *	set hooks
 	 */
 	function init() {
-		load_plugin_textdomain( 'wp-recaptcha-integration', false, WP_RECAPTCHA_INTEGRATION_DIRECTORY.'/languages/' );
 		$require_recaptcha = $this->is_required();
 
 		if ( $require_recaptcha ) {
@@ -194,23 +204,8 @@ class WP_reCaptcha {
 	 */
 	public function captcha_instance() {
 		if ( is_null( $this->_captcha_instance ) )
-			$this->_captcha_instance = $this->captcha_instance_by_flavor( $this->get_option( 'recaptcha_flavor' ) );
+			$this->_captcha_instance = WP_reCaptcha_NoCaptcha::instance();
 		return $this->_captcha_instance;
-	}
-
-	/**
-	 *	Set current captcha instance and return it.
-	 *
-	 *	@param	string	captcha flavor. 'grecaptcha' (noCaptcha) or 'recaptcha' (reCaptcha)
-	 *	@return	object	WP_reCaptcha_Captcha
-	 */
-	public function captcha_instance_by_flavor( $flavor ) {
-		switch( $flavor ) {
-			case 'grecaptcha':
-				return WP_reCaptcha_NoCaptcha::instance();
-			case 'recaptcha':
-				return WP_reCaptcha_ReCaptcha::instance();
-		}
 	}
 
 	/**
@@ -664,14 +659,14 @@ class WP_reCaptcha {
 	 *	Get recaptcha language code that matches input language code
 	 *
 	 *	@param	$lang	string language code
-	 *	@return	string	recaptcha language code if supported by current flavor, empty string otherwise
+	 *	@return	string	recaptcha language code if supported, empty string otherwise
 	 */
 	function recaptcha_language( $lang ) {
 		return $this->captcha_instance()->get_language( $lang );
 	}
 
 	/**
-	 *	Get languages supported by current recaptcha flavor.
+	 *	Get languages supported.
 	 *
 	 *	@return array languages supported by recaptcha.
 	 */
