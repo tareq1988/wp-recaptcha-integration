@@ -80,12 +80,12 @@ class WP_reCaptcha {
 	}
 
 	/**
-	 *	Load ninja/cf7 php files if necessary
 	 *	@action plugins_loaded
 	 */
 	function load_textdomain() {
 		load_plugin_textdomain( 'wp-recaptcha-integration', false, basename( WP_RECAPTCHA_INTEGRATION_DIRECTORY ) . '/languages' );
 	}
+
 	/**
 	 *	Load ninja/cf7 php files if necessary
 	 *	Hooks into 'plugins_loaded'
