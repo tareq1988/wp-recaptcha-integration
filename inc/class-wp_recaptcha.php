@@ -84,7 +84,7 @@ class WP_reCaptcha {
 	 *	@action plugins_loaded
 	 */
 	function load_textdomain() {
-		load_plugin_textdomain( 'wp-recaptcha-integration', false, WP_RECAPTCHA_INTEGRATION_DIRECTORY.'languages' );
+		load_plugin_textdomain( 'wp-recaptcha-integration', false, basename( WP_RECAPTCHA_INTEGRATION_DIRECTORY ) . '/languages' );
 	}
 	/**
 	 *	Load ninja/cf7 php files if necessary
