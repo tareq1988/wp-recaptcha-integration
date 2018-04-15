@@ -172,7 +172,12 @@ class WP_reCaptcha {
 			}
 			if ( $this->get_option('recaptcha_enable_login') ) {
 				add_action('login_form',array($this,'print_recaptcha_html'));
-				add_filter('wp_authenticate_user',array($this,'deny_login'),99 );
+				if ( $this->get_option('recaptcha_lockout') ) {
+					add_filter( 'wp_authenticate_user', array( $this, 'deny_login' ), 99 );
+				} else {
+					add_filter( 'authenticate', array( $this, 'wp_error' ), 99 );
+				}
+
 				add_filter( 'login_recaptcha_html' , array( $this , 'recaptcha_html' ) );
 			}
 			if ( $this->get_option('recaptcha_enable_lostpw') ) {
@@ -380,25 +385,20 @@ class WP_reCaptcha {
 	 *	check recaptcha on login
 	 *	filter function for `wp_authenticate_user`
 	 *
-	 *	@param $user WP_User
+	 *	@param $user null|WP_User|WP_Error
 	 *	@return object user or wp_error
 	 */
 	function deny_login( $user ) {
-		if ( isset( $_POST["log"]) && ! $this->recaptcha_check() ) {
-			$msg = __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration');
-			if ( $this->get_option('recaptcha_lockout') && in_array( 'administrator' , $user->roles ) && ! $this->test_keys() ) {
-				return $user;
-			} else {
-				return $this->wp_error( $user );
-			}
-			return new WP_Error( 'captcha_error' , $msg );
+		$result = $this->wp_error( $user );
+		if ( is_wp_error( $result ) && in_array( 'administrator', $user->roles ) && ! $this->test_keys() ) {
+			return $user;
 		}
-		return $user;
+		return $result;
 	}
 
 	/**
 	 *	check recaptcha on registration
-	 *	filter function for `registration_errors`
+	 *	filter function for `registration_errors`, `authenticate`
 	 *
 	 *	@param $errors WP_Error
 	 *	@return WP_Error with captcha error added if test fails.
@@ -432,9 +432,8 @@ class WP_reCaptcha {
 	function wp_error( $param , $error_code = 'captcha_error' ) {
 		if ( ! $this->recaptcha_check() ) {
 			return new WP_Error( $error_code ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
-		} else {
-			return $param;
 		}
+		return $param;
 	}
 	/**
 	 *	check recaptcha and return WP_Error on failure.
