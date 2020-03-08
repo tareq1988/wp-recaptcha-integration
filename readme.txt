@@ -13,6 +13,8 @@ reCaptcha for login, signup, comment forms, Ninja Forms and woocommerce.
 
 == Description ==
 
+*This plugin is no longer maintained.*
+
 Integrate reCaptcha in your blog. Supports no Captcha as well as old style recaptcha.
 Provides of the box integration for signup, login, comment formsand Ninja Forms as well
 as a plugin API for your own integrations.
