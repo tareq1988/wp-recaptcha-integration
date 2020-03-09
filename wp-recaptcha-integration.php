@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP reCaptcha Integration
 Plugin URI: https://wordpress.org/plugins/wp-recaptcha-integration/
-Description: <strong>NO LONGER MAINTAINED!</strong> Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha). Provides of the box integration for signup, login, comment forms and lost password.
+Description: Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha). Provides of the box integration for signup, login, comment forms and lost password.
 Version: 1.3.1
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
@@ -57,6 +57,27 @@ add_filter('site_transient_update_plugins', 'wp_recaptcha_disable_updates');
 
 WP_reCaptcha::instance();
 
+function wp_recaptcha_deprecation_notice() {
+/*
+'<tr class="plugin-update-tr%s" id="%s" data-slug="%s" data-plugin="%s">' .
 
-if ( is_admin() )
+*/
+	?>
+	<tr class="plugin-update-tr active" >
+		<td class="plugin-update colspanchange" colspan="3" style="position:relative;top:-1px;">
+			<div class="notice notice-error notice-alt inline">
+				<p>
+					<span class="dashicons dashicons-warning"></span>
+					<strong><?php esc_html_e('Warning:','wp-recaptcha-integration'); ?></strong>
+					<?php esc_html_e('“WP reCaptcha Integration” is no longer maintained. It may disappear without further notice.','wp-recaptcha-integration'); ?>
+				</p>
+			</div>
+		</td>
+	</tr>
+	<?php
+}
+
+if ( is_admin() ) {
+	add_action('after_plugin_row_wp-recaptcha-integration/wp-recaptcha-integration.php','wp_recaptcha_deprecation_notice');
 	WP_reCaptcha_Options::instance();
+}

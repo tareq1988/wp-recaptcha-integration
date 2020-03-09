@@ -13,7 +13,11 @@ reCaptcha for login, signup, comment forms, Ninja Forms and woocommerce.
 
 == Description ==
 
-*This plugin is no longer maintained.*
+<div class="notice notice-error notice-alt">
+
+**Warning** This plugin is no longer maintained. It may disappear in the near or distant future without further notice.
+
+</div>
 
 Integrate reCaptcha in your blog. Supports no Captcha as well as old style recaptcha.
 Provides of the box integration for signup, login, comment formsand Ninja Forms as well
@@ -259,6 +263,9 @@ Since late 2015 WordPress.org offers a plugin translation API. Just use the
 
 
 == Changelog ==
+
+= 1.3.2 =
+- Add End-Of-Life notice.
 
 = 1.3.0 =
 - Drop support for legacy recaptcha

@@ -1,6 +1,6 @@
 {
   "name": "wp-recaptcha-integration",
-  "version": "0.0.1",
+  "version": "1.3.1",
   "description": "Google ReCaptcha Plugin for WordPress",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -26,5 +26,29 @@
     "gulp-sourcemaps": "^1.12.0",
     "gulp-uglify": "^2.1.2",
     "gulp-util": "^3.0.8"
+  },
+  "wporg": {
+    "steps": [
+      "build",
+      "git",
+      "github",
+      "wporg"
+    ],
+    "type": "plugin",
+    "build": {
+      "prebuild": [
+        "wp i18n make-pot . languages/wp-recaptcha-integration.pot --domain=wp-recaptcha-integration --exclude=tmp"
+      ],
+      "build": []
+    },
+    "git": {
+      "host": "github.com",
+      "user": "mcguffin"
+    },
+    "wporg": {
+      "assets": ".wporg",
+      "svn_user": "podpirate",
+      "svn": "https://plugins.svn.wordpress.org/wp-recaptcha-integration/"
+    }
   }
 }
