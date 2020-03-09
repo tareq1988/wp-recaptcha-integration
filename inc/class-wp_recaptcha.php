@@ -37,7 +37,7 @@ class WP_reCaptcha {
 	 *	Prevent from creating more than one instance
 	 */
 	private function __construct() {
-
+		add_option('recaptcha_flavor','grecaptcha'); // local
 		add_option('recaptcha_theme','light'); // local
 		add_option('recaptcha_disable_submit',false); // local
 		add_option('recaptcha_noscript',false); // local
@@ -68,11 +68,10 @@ class WP_reCaptcha {
 
 		if ( $this->has_api_key() ) {
 
-			add_action('init' , array($this,'init') , 9 );
-			add_action('plugins_loaded' , array($this,'plugins_loaded'), 9 );
+			add_action('init' , array(&$this,'init') , 9 );
+			add_action('plugins_loaded' , array(&$this,'plugins_loaded'), 9 );
 
 		}
-		add_action('plugins_loaded', array( $this,'load_textdomain') );
 
 		register_activation_hook( __FILE__ , array( __CLASS__ , 'activate' ) );
 		register_deactivation_hook( __FILE__ , array( __CLASS__ , 'deactivate' ) );
@@ -80,19 +79,10 @@ class WP_reCaptcha {
 	}
 
 	/**
-	 *	@action plugins_loaded
-	 */
-	function load_textdomain() {
-		load_plugin_textdomain( 'wp-recaptcha-integration', false, basename( WP_RECAPTCHA_INTEGRATION_DIRECTORY ) . '/languages' );
-	}
-
-	/**
 	 *	Load ninja/cf7 php files if necessary
 	 *	Hooks into 'plugins_loaded'
 	 */
 	function plugins_loaded() {
-
-
 		if ( $this->has_api_key() ) {
 			// NinjaForms support
 			// check if ninja forms is present
@@ -122,12 +112,12 @@ class WP_reCaptcha {
 
 		}
 	}
-
 	/**
 	 *	Init plugin
 	 *	set hooks
 	 */
 	function init() {
+		load_plugin_textdomain( 'wp-recaptcha-integration', false , dirname( plugin_basename( __FILE__ ) ).'/languages/' );
 		$require_recaptcha = $this->is_required();
 
 		if ( $require_recaptcha ) {
@@ -135,9 +125,9 @@ class WP_reCaptcha {
 			add_action( 'wp_footer' , array($this,'recaptcha_foot') );
 
 			if ( $this->get_option('recaptcha_enable_signup') || $this->get_option('recaptcha_enable_login')  || $this->get_option('recaptcha_enable_lostpw') ) {
-				add_action( 'login_head' , array($this,'recaptcha_head') );
-				add_action( 'login_head' , array($this,'recaptcha_login_head') );
-				add_action( 'login_footer' , array($this,'recaptcha_foot') );
+				add_action( 'login_head' , array(&$this,'recaptcha_head') );
+				add_action( 'login_head' , array(&$this,'recaptcha_login_head') );
+				add_action( 'login_footer' , array(&$this,'recaptcha_foot') );
 			}
 			if ( $this->get_option('recaptcha_enable_comments') ) {
 				/*
@@ -146,57 +136,55 @@ class WP_reCaptcha {
 				// WP 4.2 introduced `comment_form_submit_button` filter
 				// which is much more likely to work
 				global $wp_version;
-				add_filter('comment_form_submit_button',array($this,'prepend_recaptcha_html'),10,2);
+				if ( version_compare( $wp_version , '4.2' ) >= 0 && $this->get_option('recaptcha_comment_use_42_filter') )
+					add_filter('comment_form_submit_button',array($this,'prepend_recaptcha_html'),10,2);
+				else
+					add_filter('comment_form_defaults',array($this,'comment_form_defaults'),10);
 
 				//*/
 				add_action('pre_comment_on_post',array($this,'recaptcha_check_or_die'));
 
-				add_action( 'print_comments_recaptcha' , array( $this , 'print_recaptcha_html' ) );
-				add_filter( 'comments_recaptcha_html' , array( $this , 'recaptcha_html' ) );
+				add_action( 'print_comments_recaptcha' , array( &$this , 'print_recaptcha_html' ) );
+				add_filter( 'comments_recaptcha_html' , array( &$this , 'recaptcha_html' ) );
 			}
 			if ( $this->get_option('recaptcha_enable_signup') ) {
 				// buddypress suuport.
 				if ( function_exists('buddypress') ) {
 					add_action('bp_account_details_fields',array($this,'print_recaptcha_html'));
-					add_action('bp_signup_pre_validate',array($this,'recaptcha_check_or_die'),99 );
+					add_action('bp_signup_pre_validate',array(&$this,'recaptcha_check_or_die'),99 );
 				} else {
 					add_action('register_form',array($this,'print_recaptcha_html'));
-					add_filter('registration_errors',array($this,'registration_errors'));
+					add_filter('registration_errors',array(&$this,'registration_errors'));
 				}
 				if ( is_multisite() ) {
 					add_action( 'signup_extra_fields' , array($this,'print_recaptcha_html'));
-					add_filter('wpmu_validate_user_signup',array($this,'wpmu_validate_user_signup'));
+					add_filter('wpmu_validate_user_signup',array(&$this,'wpmu_validate_user_signup'));
 				}
-				add_filter( 'signup_recaptcha_html' , array( $this , 'recaptcha_html' ) );
+				add_filter( 'signup_recaptcha_html' , array( &$this , 'recaptcha_html' ) );
 
 			}
 			if ( $this->get_option('recaptcha_enable_login') ) {
-				add_action('login_form',array($this,'print_recaptcha_html'));
-				if ( $this->get_option('recaptcha_lockout') ) {
-					add_filter( 'wp_authenticate_user', array( $this, 'deny_login' ), 99 );
-				} else {
-					add_filter( 'authenticate', array( $this, 'wp_error' ), 99 );
-				}
-
-				add_filter( 'login_recaptcha_html' , array( $this , 'recaptcha_html' ) );
+				add_action('login_form',array(&$this,'print_recaptcha_html'));
+				add_filter('wp_authenticate_user',array(&$this,'deny_login'),99 );
+				add_filter( 'login_recaptcha_html' , array( &$this , 'recaptcha_html' ) );
 			}
 			if ( $this->get_option('recaptcha_enable_lostpw') ) {
 				add_action('lostpassword_form' , array($this,'print_recaptcha_html') );
 //*
-				add_action('lostpassword_post' , array($this,'recaptcha_check_or_die') , 99 );
+				add_action('lostpassword_post' , array(&$this,'recaptcha_check_or_die') , 99 );
 /*/ // switch this when pull request accepted and included in official WC release.
-				add_filter('allow_password_reset' , array($this,'wp_error') );
+				add_filter('allow_password_reset' , array(&$this,'wp_error') );
 //*/
-				add_filter( 'lostpassword_recaptcha_html' , array( $this , 'recaptcha_html' ) );
+				add_filter( 'lostpassword_recaptcha_html' , array( &$this , 'recaptcha_html' ) );
 			}
 			if ( 'WPLANG' === $this->get_option( 'recaptcha_language' ) )
-				add_filter( 'wp_recaptcha_language' , array( $this,'recaptcha_wplang' ) , 5 );
+				add_filter( 'wp_recaptcha_language' , array( &$this,'recaptcha_wplang' ) , 5 );
 
-			add_action( 'recaptcha_print' , array( $this , 'print_recaptcha_html' ) );
-			add_filter( 'recaptcha_error' , array( $this , 'wp_error' ) );
-			add_filter( 'recaptcha_html' , array( $this , 'recaptcha_html' ) );
+			add_action( 'recaptcha_print' , array( &$this , 'print_recaptcha_html' ) );
+			add_filter( 'recaptcha_error' , array( &$this , 'wp_error' ) );
+			add_filter( 'recaptcha_html' , array( &$this , 'recaptcha_html' ) );
 		}
-		add_filter( 'recaptcha_valid' , array( $this , 'recaptcha_check' ) );
+		add_filter( 'recaptcha_valid' , array( &$this , 'recaptcha_check' ) );
 	}
 
 	/**
@@ -206,8 +194,23 @@ class WP_reCaptcha {
 	 */
 	public function captcha_instance() {
 		if ( is_null( $this->_captcha_instance ) )
-			$this->_captcha_instance = WP_reCaptcha_NoCaptcha::instance();
+			$this->_captcha_instance = $this->captcha_instance_by_flavor( $this->get_option( 'recaptcha_flavor' ) );
 		return $this->_captcha_instance;
+	}
+
+	/**
+	 *	Set current captcha instance and return it.
+	 *
+	 *	@param	string	captcha flavor. 'grecaptcha' (noCaptcha) or 'recaptcha' (reCaptcha)
+	 *	@return	object	WP_reCaptcha_Captcha
+	 */
+	public function captcha_instance_by_flavor( $flavor ) {
+		switch( $flavor ) {
+			case 'grecaptcha':
+				return WP_reCaptcha_NoCaptcha::instance();
+			case 'recaptcha':
+				return WP_reCaptcha_ReCaptcha::instance();
+		}
 	}
 
 	/**
@@ -385,20 +388,25 @@ class WP_reCaptcha {
 	 *	check recaptcha on login
 	 *	filter function for `wp_authenticate_user`
 	 *
-	 *	@param $user null|WP_User|WP_Error
+	 *	@param $user WP_User
 	 *	@return object user or wp_error
 	 */
 	function deny_login( $user ) {
-		$result = $this->wp_error( $user );
-		if ( is_wp_error( $result ) && in_array( 'administrator', $user->roles ) && ! $this->test_keys() ) {
-			return $user;
+		if ( isset( $_POST["log"]) && ! $this->recaptcha_check() ) {
+			$msg = __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration');
+			if ( $this->get_option('recaptcha_lockout') && in_array( 'administrator' , $user->roles ) && ! $this->test_keys() ) {
+				return $user;
+			} else {
+				return $this->wp_error( $user );
+			}
+			return new WP_Error( 'captcha_error' , $msg );
 		}
-		return $result;
+		return $user;
 	}
 
 	/**
 	 *	check recaptcha on registration
-	 *	filter function for `registration_errors`, `authenticate`
+	 *	filter function for `registration_errors`
 	 *
 	 *	@param $errors WP_Error
 	 *	@return WP_Error with captcha error added if test fails.
@@ -432,8 +440,9 @@ class WP_reCaptcha {
 	function wp_error( $param , $error_code = 'captcha_error' ) {
 		if ( ! $this->recaptcha_check() ) {
 			return new WP_Error( $error_code ,  __("<strong>Error:</strong> the Captcha didn’t verify.",'wp-recaptcha-integration') );
+		} else {
+			return $param;
 		}
-		return $param;
 	}
 	/**
 	 *	check recaptcha and return WP_Error on failure.
@@ -655,14 +664,14 @@ class WP_reCaptcha {
 	 *	Get recaptcha language code that matches input language code
 	 *
 	 *	@param	$lang	string language code
-	 *	@return	string	recaptcha language code if supported, empty string otherwise
+	 *	@return	string	recaptcha language code if supported by current flavor, empty string otherwise
 	 */
 	function recaptcha_language( $lang ) {
 		return $this->captcha_instance()->get_language( $lang );
 	}
 
 	/**
-	 *	Get languages supported.
+	 *	Get languages supported by current recaptcha flavor.
 	 *
 	 *	@return array languages supported by recaptcha.
 	 */

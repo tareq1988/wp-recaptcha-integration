@@ -3,21 +3,14 @@ Contributors: podpirate
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=F8NKC6TCASUXE
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
 Requires at least: 3.8
-Tested up to: 4.9
-Stable tag: 1.3.1
-Requires PHP: 5.4
+Tested up to: 4.8
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 reCaptcha for login, signup, comment forms, Ninja Forms and woocommerce.
 
 == Description ==
-
-<div class="notice notice-error notice-alt">
-
-**Warning** This plugin is no longer maintained. It may disappear in the near or distant future without further notice.
-
-</div>
 
 Integrate reCaptcha in your blog. Supports no Captcha as well as old style recaptcha.
 Provides of the box integration for signup, login, comment formsand Ninja Forms as well
@@ -264,14 +257,13 @@ Since late 2015 WordPress.org offers a plugin translation API. Just use the
 
 == Changelog ==
 
-= 1.3.2 =
-- Add End-Of-Life notice.
+= 1.2.2 =
+- End-of-Life!
 
-= 1.3.0 =
-- Drop support for legacy recaptcha
-- Drop support for WP < 4.2
-- Fix: WooCommerce checkout Error (thanks to [ywatt](https://github.com/ywatt))
-- Fix: Textdomain loading (Thanks, [Bajoras](https://github.com/Bajoras) for bringing this to my attetnion)
+= 1.2.1 =
+- Drop most of Contact form 7 and Ninja Forms support. (Both have their own recaptcha now)
+- Register Form compatibility with WooCommerce 3.0+ Thanks to [ywatt](https://github.com/ingomarent) and [MrFent37](https://wordpress.org/support/users/mrfent37/)
+- Fix WSOD
 
 = 1.2.0 =
 - Support [cformsII](https://wordpress.org/plugins/cforms2/) (thanks to [Bastian Germann](https://github.com/bgermann))

@@ -124,7 +124,7 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 	 *	Sometimes WP uses different locales the the ones supported by nocaptcha.
 	 *
 	 *	@param	$lang	string language code
-	 *	@return	string	recaptcha language code if supported, empty string otherwise
+	 *	@return	string	recaptcha language code if supported by current flavor, empty string otherwise
 	 */
 	public function get_language( $lang ) {
 		/*
@@ -194,12 +194,6 @@ class WP_reCaptcha_NoCaptcha extends WP_reCaptcha_Captcha {
 <?php } ?>
 						});
 						el.setAttribute('data-widget-id',wid);
-						// Add an event listener to reset the captcha in case of woocommerce checkout error
-						if ( typeof jQuery !== 'undefined' )
-							jQuery( document.body ).on('checkout_error', function() {
-								grecaptcha.reset(wid);
-    						});
-
 					} else {
 						wid = el.getAttribute('data-widget-id');
 						grecaptcha.reset(wid);

@@ -29,7 +29,7 @@ class WP_reCaptcha_WooCommerce {
 	 *	Prevent from creating more than one instance
 	 */
 	private function __construct() {
-		add_action('init' , array( $this , 'init' ) , 0 );
+		add_action('init' , array( &$this , 'init' ) , 0 );
 	}
 
 	/**
@@ -45,17 +45,17 @@ class WP_reCaptcha_WooCommerce {
 		$enable_lostpw = $wp_recaptcha->get_option('recaptcha_enable_lostpw');
 		if ( $require_recaptcha ) {
 			// WooCommerce support
-			if ( function_exists( 'wc_add_notice' ) ) {
+			if ( $wp_recaptcha->get_option('recaptcha_flavor') == 'grecaptcha' && function_exists( 'wc_add_notice' ) ) {
 				if ( $enable_order ) {
 					add_action('woocommerce_review_order_before_submit' , array($wp_recaptcha,'print_recaptcha_html'),10,0);
-					add_action('woocommerce_checkout_process', array( $this , 'recaptcha_check' ) );
-					add_filter( 'wc_checkout_recaptcha_html' , array( $this , 'recaptcha_html' ) );
+					add_action('woocommerce_checkout_process', array( &$this , 'recaptcha_check' ) );
+					add_filter( 'wc_checkout_recaptcha_html' , array( &$this , 'recaptcha_html' ) );
 				} else if ( $enable_signup ) {
-					add_filter( 'wp_recaptcha_required' , array( $this , 'disable_on_checkout' ) );
+					add_filter( 'wp_recaptcha_required' , array( &$this , 'disable_on_checkout' ) );
 				}
 				if ( $enable_login ) {
 					add_action('woocommerce_login_form' , array($wp_recaptcha,'print_recaptcha_html'),10,0);
-					add_filter('woocommerce_process_login_errors', array( $this , 'login_errors' ) , 10 , 3 );
+					add_filter('woocommerce_process_login_errors', array( &$this , 'login_errors' ) , 10 , 3 );
 				}
 				if ( $enable_signup ) {
 					// Injects recaptcha in Register for WooCommerce >= 3.0
@@ -68,9 +68,9 @@ class WP_reCaptcha_WooCommerce {
 					}
 
 
-					add_filter('woocommerce_registration_errors', array( $this , 'login_errors' ) , 10 , 3 );
+					add_filter('woocommerce_registration_errors', array( &$this , 'login_errors' ) , 10 , 3 );
 // 					if ( ! $enable_order )
-// 						add_filter('woocommerce_checkout_fields', array( $this , 'checkout_fields' ) , 10 , 3 );
+// 						add_filter('woocommerce_checkout_fields', array( &$this , 'checkout_fields' ) , 10 , 3 );
 				}
 				add_filter('woocommerce_form_field_recaptcha', array( $wp_recaptcha , 'recaptcha_html' ) , 10 , 3 );
 				/*

@@ -52,7 +52,7 @@ class WP_reCaptcha_Awesome_Support {
 
 			if ( $enable_login ) {
 				add_action( 'wpas_after_login_fields', array( $wp_recaptcha, 'print_recaptcha_html' ), 10, 0 );
-				add_filter( 'wpas_try_login', array( $this, 'recaptcha_check' ), 10, 1 );
+				add_filter( 'wpas_try_login', array( &$this, 'recaptcha_check' ), 10, 1 );
 			}
 
 			if ( $enable_registration ) {
