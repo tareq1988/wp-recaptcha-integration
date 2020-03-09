@@ -1,11 +1,7 @@
 WordPress reCaptcha Integration
 ===============================
 
-<div class="flash flash-error">
-
-**This plugin is no longer maintained.** It may magically vanish some day.
-
-</div>
+>**This plugin is no longer maintained.** It may magically vanish some day.
 
 
 This is the official github repository of the [WP reCaptcha integration plugin](https://wordpress.org/plugins/wp-recaptcha-integration/)
