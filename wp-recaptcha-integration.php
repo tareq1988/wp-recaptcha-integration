@@ -1,12 +1,13 @@
 <?php
 /*
-Plugin Name: WP reCaptcha Integration
+Plugin Name: ABANDONED WP reCaptcha Integration
 Plugin URI: https://wordpress.org/plugins/wp-recaptcha-integration/
-Description: <strong>PLUGIN ABANDONED!</strong> Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha). Provides of the box integration for signup, login, comment forms and lost password.
+Description: Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha). Provides of the box integration for signup, login, comment forms and lost password.
 Version: 1.2.2
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 Text Domain: wp-recaptcha-integration
+Domain Path: /languages
 */
 
 /*  Copyright 2014  Jörn Lund  (email : joern AT podpirate DOT org)
@@ -24,6 +25,10 @@ Text Domain: wp-recaptcha-integration
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+
+define( 'WP_RECAPTCHA_INTEGRATION_FILE', __FILE__ );
+define( 'WP_RECAPTCHA_INTEGRATION_DIRECTORY', plugin_dir_path(__FILE__) );
 
 /**
  * Autoload Classes
@@ -50,30 +55,47 @@ function wp_recaptcha_disable_updates($value) {
 }
 add_filter('site_transient_update_plugins', 'wp_recaptcha_disable_updates');
 
-WP_reCaptcha::instance();
+function wp_recaptcha_deprecation_plugin_row( $file, $plugin_data ) {
+	
+	$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
+	printf(
+		'<tr class="plugin-update-tr active" id="wp-recaptcha-integration" data-slug="wp-recaptcha-integration" data-plugin="wp-recaptcha-integration/wp-recaptcha-integration.php">' .
+		'<td colspan="%1$d" class="plugin-update colspanchange">' .
+		'<div class="update-message notice inline error notice-alt"><p><strong>%2$s</strong> %3$s</p></div></td></tr>',
+		esc_attr( $wp_list_table->get_column_count() ),
+		esc_html__( 'WP Recaptcha Integration is no longer maintained.', 'wp-recaptcha-integration' ),
+		esc_html__( 'It will likely vanish from the WordPress plugin repository by September 2020.', 'wp-recaptcha-integration' )
+	);
+}
 
-
-function wp_recaptcha_deprecation_notice() {
-/*
-'<tr class="plugin-update-tr%s" id="%s" data-slug="%s" data-plugin="%s">' .
-
-*/
+function wp_recaptcha_deprecation_admin_notice() {
 	?>
-	<tr class="plugin-update-tr active" >
-		<td class="plugin-update colspanchange" colspan="3" style="position:relative;top:-1px;">
-			<div class="notice notice-error notice-alt inline">
-				<p>
-					<span class="dashicons dashicons-warning"></span>
-					<strong><?php esc_html_e('Warning:','wp-recaptcha-integration'); ?></strong>
-					<?php esc_html_e('“WP reCaptcha Integration” is no longer maintained. It may disappear without further notice.','wp-recaptcha-integration'); ?>
-				</p>
-			</div>
-		</td>
-	</tr>
+	<div class="notice notice-error">
+		<p>
+			<strong>
+				<?php esc_html_e( 'WP Recaptcha Integration is no longer maintained.', 'wp-recaptcha-integration' ); ?>
+			</strong>
+			<?php esc_html_e( 'It will likely vanish from the WordPress plugin repository by September 2020.', 'wp-recaptcha-integration' ); ?>
+			<?php 
+			global $pagenow;
+			if ( 'plugins.php' !== $pagenow && current_user_can('install_plugins') ) {
+				printf( 
+					'<a href="%s">%s</a>',
+					admin_url('plugins.php'),
+					esc_html__( 'Disable it on the plugins page' )
+				);
+			}
+			?>
+		</p>
+	</div>
 	<?php
 }
 
-if ( is_admin() ) {
-	add_action('after_plugin_row_wp-recaptcha-integration/wp-recaptcha-integration.php','wp_recaptcha_deprecation_notice');
+add_action( 'after_plugin_row_wp-recaptcha-integration/wp-recaptcha-integration.php', 'wp_recaptcha_deprecation_plugin_row', 10, 2 );
+add_action( 'admin_notices', 'wp_recaptcha_deprecation_admin_notice' );
+
+WP_reCaptcha::instance();
+
+
+if ( is_admin() )
 	WP_reCaptcha_Options::instance();
-}

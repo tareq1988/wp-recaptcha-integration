@@ -1,25 +1,29 @@
-=== WordPress ReCaptcha Integration ===
+=== ABANDONED WordPress ReCaptcha Integration ===
 Contributors: podpirate
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=F8NKC6TCASUXE
+Donate link: https://noyb.eu/en/support-us
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
 Requires at least: 3.8
-Tested up to: 4.8
+Tested up to: 4.9
 Stable tag: 1.2.2
+Requires PHP: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-reCaptcha for login, signup, comment forms, Ninja Forms and woocommerce.
+*ABANDONED* reCaptcha for login, signup, comment forms, Ninja Forms and woocommerce.
 
 == Description ==
 
-Integrate reCaptcha in your blog. Supports no Captcha as well as old style recaptcha.
-Provides of the box integration for signup, login, comment formsand Ninja Forms as well
+**This plugin is no longer maintained.** It will likely vanish from the WordPress plugin repository by September 2020.
+Thanks to everyone who contributed or used it.
+
+Used to integrate reCaptcha in your blog. Supported no Captcha as well as old style recaptcha.
+Provided of the box integration for signup, login, comment forms and Ninja Forms as well
 as a plugin API for your own integrations.
 
-= Features: =
-- Secures login, signup und comments with a recaptcha.
-- Supports old as well as new reCaptcha.
-- Works together with
+= The Features were: =
+- Secure login, signup und comments with a recaptcha.
+- Supported old as well as new reCaptcha.
+- Worked together with
 	- WP Multisite
 	- bbPress (thanks to [Tareq Hasan](http://tareq.wedevs.com/)
 	- BuddyPress
@@ -40,62 +44,82 @@ Latest Files on GitHub: [https://github.com/mcguffin/wp-recaptcha-integration](h
 
 = Compatibility =
 
-On a **WP Multisite** you can either activate the plugin network wide or on a single site.
+On a **WP Multisite** you could either activate the plugin network wide or on a single site.
 
-Activated on a single site everything works as usual.
+Activated on a single site everything worked as usual.
 
-With network activation entering the API key and setting up where a captcha is required
-is up to the network admin. A blog admin can override the API key e.g. when his blog is
+With network activation entering the API key and setting up where a captcha was required
+was up to the network admin. A blog admin could override the API key e.g. when his blog is
 running under his/her own domain name.
 
 
 = Known Limitations =
-- You can't have more than one old style reCaptcha on a page. This is a limitiation of
-  reCaptcha itself. If that's an issue for you, you should use the no Captcha Form.
+- You couldn't have more than one old style reCaptcha on a page. This was a limitiation of
+  reCaptcha itself. If that was an issue for you, you should have used the no Captcha Form.
 
-- A No Captcha definitely requires client side JavaScript enabled. That's how it does its
-  sophisticated bot detection magic. There is no fallback. If your visitor does not have
-  JS enabled the captcha test will not let him through.
+- A No Captcha definitely required client side JavaScript enabled. That was how it did its
+  sophisticated bot detection magic. There have been no fallbacks. If your visitor hadn't
+  JS enabled the captcha test was not letting him through.
 
-- On a **Contact Form 7** when the reCaptcha is disabled (e.g. for logged in users) the field
-  label will be still visible. This is due to CF7 Shortcode architecture, and can't be fixed.
+- On a **Contact Form 7** when the reCaptcha was disabled (e.g. for logged in users) the field
+  label has been be still visible. This was due to CF7 Shortcode architecture, and couldn't be fixed.
 
-  To handle this there is a filter `recaptcha_disabled_html`. You can return a message for your logged-in
+  To handle this there was a filter `recaptcha_disabled_html`. You could return a message for your logged-in
   users here. Check out the [GitHub Repo](https://github.com/mcguffin/wp-recaptcha-integration) for details.
 
-- As of version 4.3 CF7 comes with its own recaptcha. Both are supposed to work together.
-  I you want to keep the WP ReCaptcha functionality, e.g. if you want to hide the captcha
-  from known users, leave the integration in the CF7 settings unconfigured.
+- As of version 4.3 CF7 came with its own recaptcha. Both were supposed to work together.
+  I you want to keep the WP ReCaptcha functionality, e.g. if you wanted to hide the captcha
+  from known users, you could leave the integration in the CF7 settings unconfigured.
 
-- Old style reCaptcha does not work together with **WooCommerce**.
+- Old style reCaptcha did not work together with **WooCommerce**.
 
-- In **WooCommerce** the reset password form can not be protected by a captcha. Woocommerce does
-  not fire any action in the lost password form, so there is no way for the plugin to hook in.
+- In **WooCommerce** the reset password form could not be protected by a captcha. Woocommerce did
+  not fire any action in the lost password form, so there was no way for the plugin to hook in.
   Take a look at [this thread](https://wordpress.org/support/topic/captcha-not-showing-on-lost-password-page?replies=7) for a workaround.
 
-- Due to a lack of filters there is no (and as far as one can see, there will never be)
+- Due to a lack of filters there was no (and as far as one could see, there will never would have been)
   support for the **MailPoet** subscription form.
 
 == Installation ==
 
-First follow the standard [WordPress plugin installation procedere](http://codex.wordpress.org/Managing_Plugins).
-
-Then go to the [Google Recaptcha Site](http://www.google.com/recaptcha), register your site and enter your API-Keys on the configuration page.
+As th edevelpoment of plugin has stopped quite some time ago, you really should not install it.
 
 == Frequently asked questions ==
 
-= The login captcha says 'ERROR: (something somthing)'. What can I do? =
+= Why did you abandon the plugin? =
 
-If it says 'Invalid sitekey' and you checked the 'Prevent lockout' option on the plugin
-settings (it's on by default) you can log in with an administrator account and ignore the
-captcha. If the keys are really invalid, the plugin will let you in, so you can set up a
+**The short answer:** Privacy concerns.
+
+**The long answer:** Googles (and others) business model is to record as much as 
+possible of your behaviour and to turn it into a model of your future behaviour 
+in order to sell it to who ever is willing to pay for it. every little bit you do 
+on the internet is a small stroke in the big picture which is showing you – your 
+fears and desires, your likes and dislikes, your days and nights – you name it.
+
+As long as you only see some tailor-made ads, you may think this is not be a big 
+problem. In risk assessment it may become one. In politics it definetly is. In 
+2020 we see personality profiles being used in dubious political campaigns, 
+asymmetric warfare and as a suppression technique in numerous dictatorships. 
+Your benevolent despot from the future knows what comes next...
+
+Like hydrogen bombs personality profiles generated from behavioural data should 
+not exists in the first place. The least I can do as a developer, is to not help 
+collecting it.
+
+Thanks for reading that far.
+
+= The login captcha sayed 'ERROR: (something somthing)'. What could I do? =
+
+If it sayed 'Invalid sitekey' and you checked the 'Prevent lockout' option on the plugin
+settings (it's on by default) you could log in with an administrator account and ignore the
+captcha. If the keys were really invalid, the plugin would have been letting you in, so you could set up a
 new keypair.
 
-When you see "Invalid domain for site key", then the key is okay in general, but not for
-your domain. The server can not test this case, so an effective lockout prevention is not
+When you've seen "Invalid domain for site key", then the key was okay in general, but not for
+your domain. The server could not test this case, so an effective lockout prevention was not
 possible.
 
-You will either need one of the following:
+You would either needed one of the following:
 - access to the settings for your sitekey on [reCaptcha API key administration](https://www.google.com/recaptcha/admin#list)
 - access to your WordPress installation (via SSH or FTP) or database access
 - database access
@@ -128,7 +152,7 @@ You will either need one of the following:
 3. Remove the line above from your theme functions.php.
 
 
-**If you have Database access**
+**If you had Database access**
 
 1. Execute the following SQL-Commands in your Database:
    <code>DELETE FROM wp_options WHERE option_name = 'recaptcha_publickey';</code>
@@ -136,26 +160,19 @@ You will either need one of the following:
 
    (Please note that `wp_options` might have a different prefix in your installation.)
 
-2. After the login you will see a message asking you to set up the API keys.
+2. After the login you would have seen a message asking you to set up the API keys.
 
 3. Set up a new keypair on Google and test it.
 
 
-**If none of these works for you**
+**If none of these worked for you**
 
-That's too bad...
+That was too bad...
 
-
-= I can't get it to work with my custom comments form. Will you fix for me? =
-
-Nope. I cannot give support on your individual projects for free, no matter how many one
-star reviews you will give me. Have a look at the project wiki or find a WordPress coder.
-
-
-= Privacy: Will the captcha send the visitors IP address to google? =
+= Privacy: Did the captcha send the visitors IP address to google? =
 
 Yes and no. The captcha verification process, comming into effect after the user has solved
-the challenge does not require the disclosure of the visitors IP address, so it is omitted.
+the challenge does not require the disclosure of the visitors IP address, so it was omitted.
 
 But everything related to the displaying of the captcha widget like the challenge image,
 the JavaScripts and so on is loaded directly from Google and is very likely to be logged,
@@ -164,17 +181,6 @@ evaluated and stored forever.
 In other words: Google knows which (recaptcha protected) website is accessed from which IP.
 
 If that's an issue for you, you better use a self hosted solution.
-
-
-= Will you support plugin XYZ? =
-
-If XYZ stands for a widely used free and OpenSource plugin in active development with some
-100k+ downloads I will give it a try. Just ask.
-
-If XYZ is some rarely used plugin (about 1k+ active installs or so), I will accept pull
-requests on github and push it to the WP repository. Please note that in such cases I will
-not feel responsible for code maintainance.
-
 
 = The captcha does not show up. What’s wrong? =
 
@@ -196,58 +202,6 @@ Here is some code that will fix it:
 If the problem still persist, Houston really has a problem, and you are welcome to post a support request.
 
 
-= Disabled submit buttons should be grey! Why aren't they? =
-
-Very likely the Author of your Theme didn't care that a non functinal form element should
-look different than a functional one. This how you can overcome that issue:
-
-- Go to (https://gist.github.com/mcguffin/7cbfb0dab73eb32cb4a2)
-- Click the "Download Gist" button
-- Unpack the `.tar.gz` file.
-- Create a zip Archive out of the included file `grey-out-disabled.php` and name it `grey-out-disabled.zip`.
-- Install and activate it like any other WordPress plugin
-
-
-= I want my visitors to solve only one Captcha and then never again. Is that possible? =
-
-Yes. You can store in a session if a captcha was solved, and use the `wp_recaptcha_required`
-filter to supress further captchas. See (https://github.com/mcguffin/wp-recaptcha-integration#real-world-example)
-for a code example.
-
-
-= I found a bug. Where should I post it? =
-
-I personally prefer GitHub but you can post it in the forum as well. The plugin code is here: [GitHub](https://github.com/mcguffin/wp-recaptcha-integration)
-
-
-= I want to use the latest files. How can I do this? =
-
-Use the GitHub Repo rather than the WordPress Plugin. Do as follows:
-
-1. If you haven't already done: [Install git](https://help.github.com/articles/set-up-git)
-
-2. in the console cd into Your 'wp-content/plugins´ directory
-
-3. type `git clone git@github.com:mcguffin/wp-recaptcha-integration.git`
-
-4. If you want to update to the latest files (be careful, might be untested with your WP-Version) type `git pull.
-
-Please note that the GitHub repository is more likely to contain unstable and untested code. Urgent fixes
-concerning stability or security (like crashes, vulnerabilities and alike) are more likely to be fixed in
-the official WP plugin repository first.
-
-
-= I found a bug and fixed it. How can I contribute? =
-
-Either post it on [GitHub](https://github.com/mcguffin/wp-recaptcha-integration) or—if you are working on a forked repository—send me a pull request.
-
-
-= Will you accept translations? =
-
-Since late 2015 WordPress.org offers a plugin translation API. Just use the
-"Translate this plugin" button in the right sidebar.
-
-
 == Screenshots ==
 
 1. Plugin Settings (v 1.1.4)
@@ -257,13 +211,11 @@ Since late 2015 WordPress.org offers a plugin translation API. Just use the
 
 == Changelog ==
 
-= 1.2.2 =
-- End-of-Life!
-
-= 1.2.1 =
-- Drop most of Contact form 7 and Ninja Forms support. (Both have their own recaptcha now)
-- Register Form compatibility with WooCommerce 3.0+ Thanks to [ywatt](https://github.com/ingomarent) and [MrFent37](https://wordpress.org/support/users/mrfent37/)
-- Fix WSOD
+= 1.3.0 =
+- Drop support for legacy recaptcha
+- Drop support for WP < 4.2
+- Fix: WooCommerce checkout Error (thanks to [ywatt](https://github.com/ywatt))
+- Fix: Textdomain loading (Thanks, [Bajoras](https://github.com/Bajoras) for bringing this to my attetnion)
 
 = 1.2.0 =
 - Support [cformsII](https://wordpress.org/plugins/cforms2/) (thanks to [Bastian Germann](https://github.com/bgermann))
@@ -401,3 +353,7 @@ Initial Release
 The plugin offers some filters to allow themes and other plugins to hook in.
 
 See [GitHub-Repo](https://github.com/mcguffin/wp-recaptcha-integration) for details.
+
+== Upgrade notice ==
+
+Version 1.3.2 only brings a deprecation notice to the wp admin.
