@@ -3,7 +3,7 @@
 Plugin Name: ABANDONED WP reCaptcha Integration
 Plugin URI: https://wordpress.org/plugins/wp-recaptcha-integration/
 Description: Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha). Provides of the box integration for signup, login, comment forms and lost password.
-Version: 1.2.2
+Version: 1.2.3
 Author: Jörn Lund
 Author URI: https://github.com/mcguffin/
 Text Domain: wp-recaptcha-integration

@@ -1,21 +1,21 @@
 # Copyright (C) 2020 Jörn Lund
-# This file is distributed under the same license as the WP reCaptcha Integration plugin.
+# This file is distributed under the same license as the ABANDONED WP reCaptcha Integration plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP reCaptcha Integration 1.2.2\n"
+"Project-Id-Version: ABANDONED WP reCaptcha Integration 1.2.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-recaptcha-integration\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-03-09T10:12:47+00:00\n"
+"POT-Creation-Date: 2020-05-12T16:14:12+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: wp-recaptcha-integration\n"
 
 #. Plugin Name of the plugin
-msgid "WP reCaptcha Integration"
+msgid "ABANDONED WP reCaptcha Integration"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -23,7 +23,7 @@ msgid "https://wordpress.org/plugins/wp-recaptcha-integration/"
 msgstr ""
 
 #. Description of the plugin
-msgid "<strong>PLUGIN ABANDONED!</strong> Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha). Provides of the box integration for signup, login, comment forms and lost password."
+msgid "Integrate reCaptcha in your blog. Supports no Captcha (new style recaptcha). Provides of the box integration for signup, login, comment forms and lost password."
 msgstr ""
 
 #. Author of the plugin
@@ -326,10 +326,12 @@ msgstr ""
 msgid "Get an image CAPTCHA"
 msgstr ""
 
-#: wp-recaptcha-integration.php:67
-msgid "Warning:"
+#: wp-recaptcha-integration.php:66
+#: wp-recaptcha-integration.php:76
+msgid "WP Recaptcha Integration is no longer maintained."
 msgstr ""
 
-#: wp-recaptcha-integration.php:68
-msgid "“WP reCaptcha Integration” is no longer maintained. It may disappear without further notice."
+#: wp-recaptcha-integration.php:67
+#: wp-recaptcha-integration.php:78
+msgid "It will likely vanish from the WordPress plugin repository by September 2020."
 msgstr ""

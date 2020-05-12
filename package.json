@@ -1,6 +1,6 @@
 {
   "name": "wp-recaptcha-integration",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Google ReCaptcha Plugin for WordPress",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
