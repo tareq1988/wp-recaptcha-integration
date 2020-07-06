@@ -597,8 +597,9 @@ class WP_reCaptcha_Options {
 	 *	Selector for recaptcha theme
 	 */
 	public function select_language() {
-		$option_name = 'recaptcha_language';
-		$option_value = WP_reCaptcha::instance()->get_option( $option_name );
+		$option_name   = 'recaptcha_language';
+		$option_value  = WP_reCaptcha::instance()->get_option( $option_name );
+		$option_flavor = WP_reCaptcha::instance()->get_option( 'recaptcha_flavor' );
 
 		$all_available_langs = array(
 			'recaptcha'		=>	WP_reCaptcha_ReCaptcha::instance()->get_supported_languages(),
