@@ -1,6 +1,6 @@
-=== WordPress ReCaptcha Integration ===
-Contributors: podpirate,tareq1888
-Donate link: https://noyb.eu/en/support-us
+=== ReCaptcha Integration for WordPress ===
+Contributors: podpirate, tareq1988, wedevs, nizamuddinbabu
+Donate link: https://tareq.co/donate/
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
 Requires at least: 3.8
 Tested up to: 4.9
@@ -13,8 +13,6 @@ reCaptcha for login, signup, comment forms, Ninja Forms and woocommerce.
 
 == Description ==
 
-**This plugin is no longer abandoned: [Say hello to Tareq](https://github.com/mcguffin/wp-recaptcha-integration/issues/92)!**
-
 Integrate reCaptcha in your blog. Supports no Captcha as well as old style recaptcha.
 Provides of the box integration for signup, login, comment formsand Ninja Forms as well
 as a plugin API for your own integrations.
@@ -24,14 +22,14 @@ as a plugin API for your own integrations.
 - Supports old as well as new reCaptcha.
 - Works together with
 	- WP Multisite
-	- bbPress (thanks to [Tareq Hasan](http://tareq.wedevs.com/)
+	- bbPress
 	- BuddyPress
-	- AwesomeSupport (thanks to [Julien Liabeuf](http://julienliabeuf.com/)
+	- AwesomeSupport (thanks to [Julien Liabeuf](http://julienliabeuf.com/) )
 	- WooCommerce (Only checkout, registration and login form. Not password reset)
 	- [Ninja Forms](http://ninjaforms.com/)
 	- cformsII
 
-- For integration in your self-coded forms see this [wiki article](https://github.com/mcguffin/wp-recaptcha-integration/wiki/Custom-Themes-and-Forms) for details.
+- For integration in your self-coded forms see this [wiki article](https://github.com/tareq1988/wp-recaptcha-integration/wiki/Custom-Themes-and-Forms) for details.
 
 = Localizations =
 - Brazilian Portuguese (thanks to [Vinícius Ferraz](http://www.viniciusferraz.com))
@@ -39,7 +37,7 @@ as a plugin API for your own integrations.
 - Italian (thanks to [Salaros](http://blog.salaros.com/))
 - German
 
-Latest Files on GitHub: [https://github.com/mcguffin/wp-recaptcha-integration](https://github.com/mcguffin/wp-recaptcha-integration)
+Latest Files on GitHub: [https://github.com/tareq1988/wp-recaptcha-integration](https://github.com/tareq1988/wp-recaptcha-integration)
 
 = Compatibility =
 
@@ -64,7 +62,7 @@ running under his/her own domain name.
   label will be still visible. This is due to CF7 Shortcode architecture, and can't be fixed.
 
   To handle this there is a filter `recaptcha_disabled_html`. You can return a message for your logged-in
-  users here. Check out the [GitHub Repo](https://github.com/mcguffin/wp-recaptcha-integration) for details.
+  users here. Check out the [GitHub Repo](https://github.com/tareq1988/wp-recaptcha-integration) for details.
 
 - As of version 4.3 CF7 comes with its own recaptcha. Both are supposed to work together.
   I you want to keep the WP ReCaptcha functionality, e.g. if you want to hide the captcha
@@ -190,7 +188,7 @@ right before the submit button.) You will have to use another hook, e.g. `commen
 
 Here is some code that will fix it:
 
-- Go to (https://gist.github.com/mcguffin/97d7f442ee3e92b7412e)
+- Go to (https://gist.github.com/tareq1988/97d7f442ee3e92b7412e)
 - Click the "Download Gist" button
 - Unpack the `.tar.gz` file.
 - Create a zip Archive out of the included file `recaptcha-comment-form-fix.php` and name it `recaptcha-comment-form-fix.zip`.
@@ -204,7 +202,7 @@ If the problem still persist, Houston really has a problem, and you are welcome 
 Very likely the Author of your Theme didn't care that a non functinal form element should
 look different than a functional one. This how you can overcome that issue:
 
-- Go to (https://gist.github.com/mcguffin/7cbfb0dab73eb32cb4a2)
+- Go to (https://gist.github.com/tareq1988/7cbfb0dab73eb32cb4a2)
 - Click the "Download Gist" button
 - Unpack the `.tar.gz` file.
 - Create a zip Archive out of the included file `grey-out-disabled.php` and name it `grey-out-disabled.zip`.
@@ -214,13 +212,13 @@ look different than a functional one. This how you can overcome that issue:
 = I want my visitors to solve only one Captcha and then never again. Is that possible? =
 
 Yes. You can store in a session if a captcha was solved, and use the `wp_recaptcha_required`
-filter to supress further captchas. See (https://github.com/mcguffin/wp-recaptcha-integration#real-world-example)
+filter to supress further captchas. See (https://github.com/tareq1988/wp-recaptcha-integration#real-world-example)
 for a code example.
 
 
 = I found a bug. Where should I post it? =
 
-I personally prefer GitHub but you can post it in the forum as well. The plugin code is here: [GitHub](https://github.com/mcguffin/wp-recaptcha-integration)
+I personally prefer GitHub but you can post it in the forum as well. The plugin code is here: [GitHub](https://github.com/tareq1988/wp-recaptcha-integration)
 
 
 = I want to use the latest files. How can I do this? =
@@ -231,7 +229,7 @@ Use the GitHub Repo rather than the WordPress Plugin. Do as follows:
 
 2. in the console cd into Your 'wp-content/plugins´ directory
 
-3. type `git clone git@github.com:mcguffin/wp-recaptcha-integration.git`
+3. type `git clone git@github.com:tareq1988/wp-recaptcha-integration.git`
 
 4. If you want to update to the latest files (be careful, might be untested with your WP-Version) type `git pull.
 
@@ -242,7 +240,7 @@ the official WP plugin repository first.
 
 = I found a bug and fixed it. How can I contribute? =
 
-Either post it on [GitHub](https://github.com/mcguffin/wp-recaptcha-integration) or—if you are working on a forked repository—send me a pull request.
+Either post it on [GitHub](https://github.com/tareq1988/wp-recaptcha-integration) or—if you are working on a forked repository—send me a pull request.
 
 
 = Will you accept translations? =
@@ -403,4 +401,4 @@ Initial Release
 
 The plugin offers some filters to allow themes and other plugins to hook in.
 
-See [GitHub-Repo](https://github.com/mcguffin/wp-recaptcha-integration) for details.
+See [GitHub-Repo](https://github.com/tareq1988/wp-recaptcha-integration) for details.
