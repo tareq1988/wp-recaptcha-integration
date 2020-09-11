@@ -3,7 +3,7 @@ Contributors: podpirate, tareq1988, wedevs, nizamuddinbabu
 Donate link: https://tareq.co/donate/
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
 Requires at least: 3.8
-Tested up to: 5.4
+Tested up to: 5.5
 Stable tag: 1.2.4
 Requires PHP: 5.4
 License: GPLv2 or later
