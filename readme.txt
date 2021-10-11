@@ -3,8 +3,8 @@ Contributors: podpirate, tareq1988, wedevs, nizamuddinbabu
 Donate link: https://tareq.co/donate/
 Tags: security, captcha, recaptcha, no captcha, login, signup, contact form 7, ninja forms, woocommerce
 Requires at least: 3.8
-Tested up to: 5.5
-Stable tag: 1.2.4
+Tested up to: 5.8
+Stable tag: 1.2.5
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -257,6 +257,10 @@ Since late 2015 WordPress.org offers a plugin translation API. Just use the
 
 
 == Changelog ==
+
+= v1.2.5 (11 October, 2021) =
+
+ - WordPress 5.8.1 compatibility
 
 = v1.2.4 (6 July, 2020) =
 - Removed abandonment notice, plugin is no longer unmaintained.
